@@ -28,6 +28,7 @@ class PgVectorClient:
         self._create_extension()
         self._create_table()
     
+    
     def _create_extension(self):
         """Enable pgvector extension."""
         try:
@@ -38,6 +39,7 @@ class PgVectorClient:
             logger.error(f"Failed to create extension: {e}")
             raise
     
+
     def _create_table(self):
         """Create documents table with vector index."""
         sql = f"""
@@ -68,6 +70,7 @@ class PgVectorClient:
         except Exception as e:
             logger.error(f"Failed to create table: {e}")
             raise
+
     
     def insert_chunks(self, chunks: List[Dict]):
         """Insert chunks with embeddings (matches schema: source, chunk_id)."""
@@ -96,7 +99,8 @@ class PgVectorClient:
         
         logger.info(f"Inserted {len(chunks)} chunks")
 
-    def search_new(
+
+    def search(
         self,
         query_embedding: list[float],
         k: int = 5,
@@ -152,44 +156,6 @@ class PgVectorClient:
             logger.error(f"Search failed: {e}")
             return []
 
-
-    
-    # def search(self, query_embedding: List[float], k: int = 5, similarity_threshold: float = 0.7) -> List[Dict]:
-    #     """Vector similarity search."""
-    #     try:
-    #         query_embedding_str = f"[{','.join(map(str, query_embedding))}]"
-            
-    #         with self.conn.cursor() as cur:
-    #             cur.execute("""
-    #                 SELECT 
-    #                     content, source, chunk_id, 
-    #                     start_token, end_token, token_count,
-    #                     1 - (embedding <=> %s::vector) AS similarity
-    #                 FROM documents
-    #                 WHERE 1 - (embedding <=> %s::vector) > %s
-    #                 ORDER BY embedding <=> %s::vector
-    #                 LIMIT %s
-    #             """, (query_embedding_str, query_embedding_str, similarity_threshold, query_embedding_str, k))
-                
-    #             results = cur.fetchall()
-                
-    #             return [
-    #                 {
-    #                     "content": row[0],
-    #                     "source": row[1],
-    #                     "chunk_id": row[2],
-    #                     "start_token": row[3],
-    #                     "end_token": row[4],
-    #                     "token_count": row[5],
-    #                     "similarity": float(row[6])
-    #                 }
-    #                 for row in results
-    #             ]
-                
-    #     except Exception as e:
-    #         logger.error(f"Search failed: {e}")
-    #         return []
-    
     # def count_documents(self) -> int:
     #     """Get total number of chunks in database."""
     #     with self.conn.cursor() as cur:

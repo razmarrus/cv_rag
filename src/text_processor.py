@@ -41,9 +41,11 @@ class TextProcessor:
                 f"Model {model_name} not found, using cl100k_base"
             )
 
+
     def count_tokens(self, text: str) -> int:
         """Count tokens in text using model tokenizer."""
         return len(self.tokenizer.encode(text)) if text else 0
+
 
     def chunk_text(
         self,
@@ -84,6 +86,7 @@ class TextProcessor:
             chunk_id += 1
 
         return chunks
+
 
     def chunk_file(self, file_path: str) -> List[Dict]:
         """Read and chunk a single text file.
