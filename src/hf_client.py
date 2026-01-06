@@ -143,7 +143,7 @@ Answer based only on the context provided. If the answer is not in the context, 
                 temperature=temperature
             )
                         
-            answer = response.strip()
+            answer = response.choices[0].message.content.strip() #strip()
             logger.info(f"Generated answer ({len(answer)} chars)")
             return answer
             
