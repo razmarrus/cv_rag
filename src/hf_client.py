@@ -33,6 +33,12 @@ class HuggingFaceClient:
             model=embedding_model,
             token=hf_token
         )
+
+        # llm_client=InferenceClient(
+        #             model="mistralai/Mistral-7B-Instruct-v0.2",
+        #             token=HF_TOKEN
+        #         )
+
         
         self.llm_client = InferenceClient(
             model=llm_model,
@@ -117,15 +123,26 @@ Answer based only on the context provided. If the answer is not in the context, 
         prompt = self.build_prompt(question, context)
         
         try:
-            response = self.llm_client.text_generation(
-                prompt,
-                max_new_tokens=max_new_tokens,
-                temperature=temperature,
-                do_sample=True,
-                top_p=0.9,
-                return_full_text=False
+            # response = self.llm_client.text_generation(
+            #     prompt,
+            #     max_new_tokens=max_new_tokens,
+            #     temperature=temperature,
+            #     do_sample=True,
+            #     top_p=0.9,
+            #     return_full_text=False
+            # )
+            messages = [
+            {
+                "role": "user",
+                "content": prompt #f"Based on this context:\n\n{context_text}\n\nAnswer: {llm_question}?"
+            }]
+
+            response = self.llm_client.chat_completion(
+                messages=messages,
+                max_tokens=max_new_tokens,
+                temperature=temperature
             )
-            
+                        
             answer = response.strip()
             logger.info(f"Generated answer ({len(answer)} chars)")
             return answer
