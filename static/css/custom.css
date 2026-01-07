@@ -1,0 +1,29 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: #f8f9fa;
+}
+
+.card {
+    border: none;
+    border-radius: 10px;
+}
+
+.btn-primary {
+    border-radius: 5px;
+    padding: 12px;
+    font-weight: 500;
+}
+
+textarea.form-control {
+    border-radius: 5px;
+    resize: vertical;
+}
+
+.alert {
+    border-radius: 5px;
+}
+
+footer {
+    font-size: 0.875rem;
+}
+
