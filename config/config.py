@@ -34,3 +34,10 @@ class Config:
     # Rate Limiting (for future use)
     RATE_LIMIT = "10/hour"
     
+    # @classmethod
+    # def validate(cls):
+    #     """Validate required configuration."""
+    #     required = ["HF_TOKEN", "DATABASE_URL"]
+    #     missing = [key for key in required if not getattr(cls, key)]
+    #     if missing:
+    #         raise ValueError(f"Missing required config: {', '.join(missing)}")

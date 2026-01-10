@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  # FastAPI Application (External Database)
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cv_rag_app
+    ports:
+      - "8000:8000"
+    environment:
+      - HF_TOKEN=${HF_TOKEN}
+      - DATABASE_URL=${DATABASE_URL}
+      - EMBEDDING_MODEL=${EMBEDDING_MODEL:-sentence-transformers/all-MiniLM-L6-v2}
+      - LLM_MODEL=${LLM_MODEL:-mistralai/Mistral-7B-Instruct-v0.2}
+    restart: unless-stopped
+    volumes:
+      # Development mode - remove for production
+      - ./src:/app/src
+      - ./templates:/app/templates
+      - ./static:/app/static
+
