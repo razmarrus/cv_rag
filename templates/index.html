@@ -13,7 +13,7 @@
     <div class="container py-5">
         <!-- Header -->
         <header class="text-center mb-5">
-            <h1 class="display-4 mb-3">About Me</h1>
+            <h1 class="display-4 mb-3">Ask About Me</h1>
             <p class="lead text-muted">
                 Welcome! I'm a data scientist with experience in machine learning and software engineering. 
                 Ask me anything about my background, skills, or projects.
@@ -28,17 +28,19 @@
                         <h2 class="card-title mb-4">Ask a Question</h2>
                         
                         <!-- Question Form -->
-                        <form method="POST" action="/ask">
+                        <form method="POST" action="/ask" id="questionForm">
                             <div class="mb-3">
                                 <textarea 
                                     class="form-control" 
                                     name="question" 
+                                    id="questionInput"
                                     rows="3" 
                                     placeholder="e.g., What is your experience with machine learning?"
                                     required>{% if question %}{{ question }}{% endif %}</textarea>
                             </div>
-                            <button type="submit" class="btn btn-primary btn-lg w-100">
-                                Ask Question
+                            <button type="submit" class="btn btn-primary btn-lg w-100" id="submitBtn">
+                                <span id="btnText">Ask Question</span>
+                                <span id="btnSpinner" class="spinner-border spinner-border-sm d-none" role="status"></span>
                             </button>
                         </form>
 
