@@ -3,21 +3,10 @@ FROM python:3.11-slim
 # Prevent Python from writing .pyc files and buffer stdout/stderr
 # Prevents Python from writing .pyc files (cached compiled Python code
 
-ENV PYTHONDONTWRITEBYTECODE=1 
+ENV PYTHONDONTWRITEBYTECODE=1
 
 # Makes Python output appear immediately in logs
 ENV PYTHONUNBUFFERED=1
-
-# libpq-dev - Header files and libraries for PostgreSQL
-# gcc - GNU Compiler Collection (GCC)
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    gcc \
-    g++ \
-    postgresql-client \
-    libpq-dev \
-    curl \
-    && rm -rf /var/lib/apt/lists/*
 
 # Set working directory
 WORKDIR /app
@@ -25,9 +14,18 @@ WORKDIR /app
 # Copy requirements first (better layer caching)
 COPY requirements.txt .
 
-# Install Python dependencies
-RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
+# Optional offline install:
+# - put pre-downloaded wheels into ./wheels (see README below)
+COPY wheels/ /wheels/
+
+# Install Python dependencies (prefers local wheels; falls back to PyPI)
+RUN python -m pip install --no-cache-dir --upgrade pip setuptools wheel && \
+    if ls /wheels/*.whl >/dev/null 2>&1; then \
+        python -m pip install --no-cache-dir --find-links=/wheels -r requirements.txt || \
+        python -m pip install --no-cache-dir -r requirements.txt; \
+    else \
+        python -m pip install --no-cache-dir -r requirements.txt; \
+    fi
 
 # Copy application code
 COPY . .
@@ -40,7 +38,7 @@ EXPOSE 8000
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-  CMD curl -f http://localhost:8000/health || exit 1
+  CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/health', timeout=5).read()" || exit 1
 
 # Run the application
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

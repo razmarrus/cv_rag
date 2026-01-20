@@ -1,46 +1,26 @@
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
+rag_cv_env/
 venv/
-env/
-ENV/
+.venv/
 
-# Jupyter
+__pycache__/
+**/__pycache__/
+*.py[cod]
+
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
 notebooks/
-*.ipynb
 .ipynb_checkpoints/
 
-# IDE
-.vscode/
+.git/
 .idea/
-*.swp
-*.swo
+.vscode/
 
-# OS
 .DS_Store
 Thumbs.db
 
-# Git
-.git/
-.gitignore
+.env
+.env.*
 
-# Environment
-.env.local
-.env.*.local
-
-# Logs
 *.log
-
-# Data
-*.csv
-*.json
-*.txt
-data/
-
-# Docker
-Dockerfile
-docker-compose.yml
-.dockerignore

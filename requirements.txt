@@ -8,11 +8,12 @@ python-multipart==0.0.6
 python-dotenv==1.0.0
 
 # Database
-psycopg2-binary==2.9.9
+psycopg2-binary==2.9.11
 
 # ML/NLP - HuggingFace Inference API clients
-numpy==1.26.4
-tiktoken==0.5.2
+numpy==1.26.4; python_version < "3.13"
+numpy==2.3.5; python_version >= "3.13"
+tiktoken>=0.5.2
 huggingface-hub==0.20.2
 
 # Utilities
