@@ -1,4 +1,4 @@
-FROM python:3.11-slim
+FROM python:3.13-slim
 
 # Prevent Python from writing .pyc files and buffer stdout/stderr
 # Prevents Python from writing .pyc files (cached compiled Python code
@@ -12,7 +12,7 @@ ENV PYTHONUNBUFFERED=1
 WORKDIR /app
 
 # Copy requirements first (better layer caching)
-COPY requirements.txt .
+COPY requirements-backend.txt .
 
 # Optional offline install:
 # - put pre-downloaded wheels into ./wheels (see README below)
@@ -21,10 +21,10 @@ COPY wheels/ /wheels/
 # Install Python dependencies (prefers local wheels; falls back to PyPI)
 RUN python -m pip install --no-cache-dir --upgrade pip setuptools wheel && \
     if ls /wheels/*.whl >/dev/null 2>&1; then \
-        python -m pip install --no-cache-dir --find-links=/wheels -r requirements.txt || \
-        python -m pip install --no-cache-dir -r requirements.txt; \
+        python -m pip install --no-cache-dir --find-links=/wheels -r requirements-backend.txt || \
+        python -m pip install --no-cache-dir -r requirements-backend.txt; \
     else \
-        python -m pip install --no-cache-dir -r requirements.txt; \
+        python -m pip install --no-cache-dir -r requirements-backend.txt; \
     fi
 
 # Copy application code

@@ -1,37 +1,5 @@
-# Web Framework
-fastapi==0.109.0
-uvicorn[standard]==0.27.0
-jinja2==3.1.3
-python-multipart==0.0.6
+# Main Requirements
+# For backend/production use, installs minimal dependencies
+# For notebook/development use: pip install -r requirements-notebook.txt
 
-# Configuration
-python-dotenv==1.0.0
-
-# Database
-psycopg2-binary==2.9.11
-
-# ML/NLP - HuggingFace Inference API clients
-numpy==1.26.4; python_version < "3.13"
-numpy==2.3.5; python_version >= "3.13"
-tiktoken>=0.5.2
-huggingface-hub==0.20.2
-
-# Utilities
-python-dateutil==2.8.2
-requests>=2.32.0
-tqdm>=4.66.0
-
-# torch>=2.5.0                    # ~2-3 GB
-# transformers>=4.45.0            # ~500 MB
-# sentence-transformers>=3.0.0    # ~200 MB
-# pandas>=2.2.0                  
-# matplotlib>=3.9.0               
-# seaborn>=0.13.0     
-
-# Only for notebooks
-# jupyter>=1.1.0                  
-# notebook>=7.0.0                
-# ipykernel>=6.29.0    
-
-# Only for testing
-# pytest>=8.0.0                  
+-r requirements-backend.txt
