@@ -1,31 +1,5 @@
-# Core Dependencies
-python-dotenv
-numpy>=2.0.0
+# Main Requirements
+# For backend/production use, installs minimal dependencies
+# For notebook/development use: pip install -r requirements-notebook.txt
 
-# Hugging Face & Transformers
-huggingface-hub>=0.25.0
-transformers>=4.45.0
-sentence-transformers>=3.0.0
-torch>=2.5.0
-
-# Database
-psycopg2-binary>=2.9.9
-pgvector>=0.3.0
-
-# Text Processing & Tokenization
-tiktoken>=0.7.0
-
-# Data Analysis & Visualization
-pandas>=2.2.0
-matplotlib>=3.9.0
-seaborn>=0.13.0
-
-# Utilities
-requests>=2.32.0
-tqdm>=4.66.0
-
-# Development & Testing (optional)
-pytest>=8.0.0
-jupyter>=1.1.0
-notebook>=7.0.0
-ipykernel>=6.29.0
+-r requirements-backend.txt

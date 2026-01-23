@@ -29,9 +29,12 @@ class HuggingFaceClient:
         self.embedding_model = embedding_model
         self.llm_model = llm_model
         
+        # Use HuggingFace router endpoint with explicit provider
         self.embedding_client = InferenceClient(
             model=embedding_model,
             token=hf_token
+            # base_url="https://router.huggingface.co"
+            # provider="hf-inference"
         )
 
         # llm_client=InferenceClient(
@@ -43,6 +46,8 @@ class HuggingFaceClient:
         self.llm_client = InferenceClient(
             model=llm_model,
             token=hf_token
+            # ,
+            # provider="hf-inference"
         )
         
         logger.info(f"Initialized embedding model: {embedding_model}")
