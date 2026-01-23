@@ -11,11 +11,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const questionInput = document.getElementById('questionInput');
     
     if (form && submitBtn) {
-        form.addEventListener('submit', function() {
+        form.addEventListener('submit', function(event) {
             submitBtn.disabled = true;
             btnText.textContent = 'Thinking...';
             btnSpinner.classList.add('active');
-            questionInput.disabled = true;
         });
     }
 });
