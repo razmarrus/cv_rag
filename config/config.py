@@ -29,7 +29,7 @@ class Config:
     CHUNK_OVERLAP = 50
     MAX_CONTEXT_TOKENS = 2000
     TOP_K_CHUNKS = 5
-    SIMILARITY_THRESHOLD = 0.7
+    SIMILARITY_THRESHOLD = 0.1
     
     # Rate Limiting (for future use)
     RATE_LIMIT = "10/hour"

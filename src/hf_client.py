@@ -94,7 +94,7 @@ class HuggingFaceClient:
         Returns:
             Formatted prompt string
         """
-        prompt = f"""<s>[INST] You are a helpful assistant. Answer the question based on the provided context.
+        prompt = f"""<s>[INST] You are a helpful assistant. Answer the question based on the provided context. Answer in human written style. Keep friendly and easy to read tone. 
 
 Context:
 {context}
