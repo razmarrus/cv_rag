@@ -4,17 +4,17 @@
 // TODO: Add question history (localStorage)
 
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('CV RAG System loaded');
     const form = document.getElementById('questionForm');
     const submitBtn = document.getElementById('submitBtn');
     const btnText = document.getElementById('btnText');
     const btnSpinner = document.getElementById('btnSpinner');
     const questionInput = document.getElementById('questionInput');
     
-    form.addEventListener('submit', function() {
-        submitBtn.disabled = true;
-        btnText.textContent = 'Processing...';
-        btnSpinner.classList.remove('d-none');
-        questionInput.disabled = true;
-    });
+    if (form && submitBtn) {
+        form.addEventListener('submit', function(event) {
+            submitBtn.disabled = true;
+            btnText.textContent = 'Thinking...';
+            btnSpinner.classList.add('active');
+        });
+    }
 });

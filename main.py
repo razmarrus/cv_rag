@@ -82,18 +82,27 @@ def query_rag(question: str) -> dict:
     
     try:
         # Step 1: Generate embedding
+        logger.info(f"Step 1: Generating embedding for question: '{question}'")
         query_embedding = hf_client.get_embeddings([question])[0]
         if not isinstance(query_embedding, list):
             query_embedding = query_embedding.tolist()
+        logger.info(f"Embedding generated: dimension={len(query_embedding)}")
         
         # Step 2: Search database
+        logger.info(f"Step 2: Searching database (k={Config.TOP_K_CHUNKS}, threshold={Config.SIMILARITY_THRESHOLD})")
         chunks = db_client.search(
             query_embedding,
             k=Config.TOP_K_CHUNKS,
             similarity_threshold=Config.SIMILARITY_THRESHOLD
         )
+        logger.info(f"Search returned {len(chunks)} chunks")
+        
+        if chunks:
+            for i, chunk in enumerate(chunks):
+                logger.info(f"Chunk {i+1}: similarity={chunk.get('similarity', 0):.3f}, source={chunk.get('source', 'unknown')}")
         
         if not chunks:
+            logger.warning("No chunks found matching similarity threshold")
             return {
                 "answer": "I couldn't find relevant information to answer your question.",
                 "sources": [],
@@ -102,13 +111,19 @@ def query_rag(question: str) -> dict:
             }
         
         # Step 3: Assemble context
+        logger.info("Step 3: Assembling context from chunks")
         context = text_processor.assemble_context(chunks, question=question)
+        logger.info(f"Context assembled: {len(context)} characters")
         
         # Step 4: Generate answer
+        logger.info("Step 4: Generating answer with LLM")
         answer = hf_client.generate_answer(
             question=question,
-            context=context
+            context=context,
+            max_new_tokens=Config.MAX_NEW_TOKENS,
+            temperature=Config.TEMPERATURE
         )
+        logger.info(f"Answer generated: {len(answer)} characters")
         
         execution_time = time.time() - start_time
         
@@ -192,4 +207,4 @@ async def shutdown_event():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8001)
+    uvicorn.run(app, host="0.0.0.0", port=8000)

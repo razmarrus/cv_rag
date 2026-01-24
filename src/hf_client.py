@@ -94,7 +94,7 @@ class HuggingFaceClient:
         Returns:
             Formatted prompt string
         """
-        prompt = f"""<s>[INST] You are a helpful assistant. Answer the question based on the provided context.
+        prompt = f"""<s>[INST] You are a helpful assistant. Answer the question based on the provided context. Answer in human written style. Keep friendly and easy to read tone. 
 
 Context:
 {context}
@@ -110,8 +110,8 @@ Answer based only on the context provided. If the answer is not in the context, 
         self,
         question: str,
         context: str,
-        max_new_tokens: int = 512,
-        temperature: float = 0.7
+        max_new_tokens: int = 500,
+        temperature: float = 0.2
     ) -> str:
         """
         Generate answer using LLM.
