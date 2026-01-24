@@ -119,7 +119,9 @@ def query_rag(question: str) -> dict:
         logger.info("Step 4: Generating answer with LLM")
         answer = hf_client.generate_answer(
             question=question,
-            context=context
+            context=context,
+            max_new_tokens=Config.MAX_NEW_TOKENS,
+            temperature=Config.TEMPERATURE
         )
         logger.info(f"Answer generated: {len(answer)} characters")
         

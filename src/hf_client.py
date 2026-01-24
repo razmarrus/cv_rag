@@ -110,8 +110,8 @@ Answer based only on the context provided. If the answer is not in the context, 
         self,
         question: str,
         context: str,
-        max_new_tokens: int = 512,
-        temperature: float = 0.7
+        max_new_tokens: int = 500,
+        temperature: float = 0.2
     ) -> str:
         """
         Generate answer using LLM.
