@@ -87,3 +87,12 @@ docker logs rag_pgvector -f
 ```bash
 docker ps
 ```
+
+Compose
+`docker-compose -f docker-compose.external-db.yml up --build -d`
+
+With logs
+`docker-compose -f docker-compose.external-db.yml up --build`
+
+Restart
+`docker-compose -f docker-compose.external-db.yml restart app`

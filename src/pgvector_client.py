@@ -138,6 +138,23 @@ class PgVectorClient:
                 """, (query_embedding_str, query_embedding_str, similarity_threshold, k))
 
                 results = cur.fetchall()
+                logger.info(f"Found {len(results)} results above threshold {similarity_threshold}")
+                
+                # If no results, check top matches without threshold
+                if not results:
+                    logger.info("Checking top 3 matches without threshold...")
+                    cur.execute("""
+                        SELECT
+                            source,
+                            chunk_id,
+                            1 - (embedding <=> %s::vector) AS similarity
+                        FROM documents
+                        ORDER BY similarity DESC
+                        LIMIT 3
+                    """, (query_embedding_str,))
+                    top_matches = cur.fetchall()
+                    for i, match in enumerate(top_matches):
+                        logger.info(f"Top {i+1}: source={match[0]}, chunk={match[1]}, similarity={match[2]:.3f}")
 
                 return [
                     {

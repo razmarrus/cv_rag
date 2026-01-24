@@ -9,12 +9,11 @@ class Config:
     
     # API Keys
     HF_TOKEN = os.getenv("HF_TOKEN")
-    
-    # Models
+
     EMBEDDING_MODEL = os.getenv(
         "EMBEDDING_MODEL", 
-        #         "sentence-transformers/all-MiniLM-L6-v2"
         "BAAI/bge-small-en-v1.5"
+        
     )
     LLM_MODEL = os.getenv(
         "LLM_MODEL", 
@@ -36,11 +35,11 @@ class Config:
     CHUNK_OVERLAP = 125
     MAX_CONTEXT_TOKENS = 3500
     TOP_K_CHUNKS = 6
-    SIMILARITY_THRESHOLD = 0.65
+    SIMILARITY_THRESHOLD = 0.5
     
     # Generation Settings
     TEMPERATURE = 0.2
-    # MAX_NEW_TOKENS = 500
+    MAX_NEW_TOKENS = 500
     
     # Rate Limiting (for future use)
     RATE_LIMIT = "10/hour"
