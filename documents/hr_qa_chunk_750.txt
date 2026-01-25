@@ -1,0 +1,153 @@
+================================================================================
+CHUNK_01_PROFESSIONAL_IDENTITY_AND_EXPERIENCE
+================================================================================
+I'm a Machine Learning Engineer with 5 years of professional experience building end-to-end ML solutions that create real business impact. My professional level is mid-senior, and I've worked across multiple roles including ML Engineer, Data Scientist, and AI Engineer throughout my career.
+
+What really drives me is taking full ownership of the complete ML lifecycle - from raw data extraction and dataset creation all the way through model training, tuning, automation, and production deployment. I don't just build models in notebooks; I build production-ready systems that solve actual business problems. My approach is collaborative and hands-on, and I work closely with stakeholders throughout projects to ensure the technical solutions actually deliver tangible business value.
+
+I've built ML systems across various industries - pharmaceutical customer analytics, industrial applications like rail infrastructure and water management, and most recently I've been focusing heavily on LLM solutions and RAG systems. What makes my experience unique is that I combine deep technical ML expertise with strong data engineering and cloud infrastructure skills.
+
+Common Questions:
+Q: How many years of experience does Margot have? A: 5 years in machine learning and data engineering
+Q: What is Margot's role? A: Machine Learning Engineer, also experienced as Data Scientist
+Q: Is Margot junior or senior? A: Mid-senior level with 5 years experience
+Q: What does Margot specialize in? A: End-to-end ML solutions from data to production deployment
+================================================================================
+
+================================================================================
+CHUNK_02_MACHINE_LEARNING_AND_AI_EXPERTISE
+================================================================================
+My Machine Learning and AI Capabilities - What I Actually Build
+
+I have hands-on experience across a wide range of ML techniques. For time-series work, I specialize in prediction and forecasting - I've built sales forecasting models for pharmaceutical companies with 3% error rates. I'm experienced with clustering algorithms like K-means and Birch for customer segmentation, and I've done extensive work with regression analysis and predictive modeling using techniques like Gradient Boosting (CatBoost, LightGBM, XGBoost), Random Forest, and ensemble methods.
+
+More recently, I've been working heavily with Large Language Models (LLMs) and Retrieval-Augmented Generation (RAG) systems. I've built production RAG chatbots serving 300+ users, integrated GPT models for document processing, and worked with vector databases for semantic search. I'm experienced with Natural Language Processing, document parsing, prompt engineering, and LLM deployment at scale.
+
+Beyond that, I've worked with deep learning using PyTorch and TensorFlow, classical ML with Scikit-learn, and I'm comfortable with both supervised and unsupervised learning approaches. I believe in choosing the right tool for the problem rather than always reaching for the most complex solution.
+
+Q: Does Margot have LLM experience? A: Yes, extensive production LLM and RAG systems
+Q: Can Margot build RAG systems? A: Yes, built RAG chatbot with 30+ domains and 300 users
+Q: Does Margot work with time-series? A: Yes, time-series prediction and forecasting
+Q: What ML techniques does Margot know? A: Clustering, regression, time-series, LLMs, RAG, deep learning
+Q: Has Margot deployed ML to production? A: Yes, production ML systems across multiple companies
+================================================================================
+
+================================================================================
+CHUNK_03_PROGRAMMING_AND_TECHNICAL_STACK
+================================================================================
+Programming Languages and Core Technical Skills I Use Daily
+
+Python is my main language - I'd say I'm at an expert level after 5 years of using it daily for ML and data engineering work. I write clean, production-ready Python code for everything from data pipelines to ML model development to LLM integration. I'm very comfortable with the entire Python ML ecosystem.
+
+SQL is my second most-used language. I write complex queries, optimize database performance, and handle data manipulation and analytical queries. I've worked with SQL extensively for data extraction, transformation, and analysis across multiple database systems.
+
+For distributed data processing, I use PySpark - that's Python's API for Apache Spark. I've used it to process large-scale datasets that don't fit in memory, optimize Spark jobs for performance, and build distributed data transformation pipelines.
+
+Beyond the core languages, I'm experienced with the essential ML and data science libraries: Pandas for data manipulation, NumPy for numerical computing, Scikit-learn for classical ML algorithms, PyTorch and TensorFlow for deep learning, and libraries like Matplotlib and Seaborn for visualization. I also work with LLM-specific tools like LangChain, Hugging Face, and vector database libraries.
+
+Q: What programming languages does Margot know? A: Python, SQL, PySpark
+Q: Is Margot proficient in Python? A: Yes, expert level with 5 years daily use
+Q: Can Margot write SQL? A: Yes, complex queries and database optimization
+Q: Does Margot know PySpark? A: Yes, distributed data processing with Spark
+Q: What ML libraries does Margot use? A: Scikit-learn, PyTorch, TensorFlow, Pandas, NumPy
+================================================================================
+
+================================================================================
+CHUNK_04_CLOUD_PLATFORMS_AZURE_AND_AWS
+================================================================================
+My Cloud Experience - Azure and AWS for Production ML Systems
+
+I have extensive multi-cloud experience with both Microsoft Azure and Amazon Web Services (AWS), and I've deployed production ML systems on both platforms. My cloud philosophy is that infrastructure is just as important as the models themselves.
+
+On the Azure side, I've worked with Azure Event Hub for real-time data streaming (handling bursts up to 1000 messages per minute), Azure Function Apps for serverless computing and real-time processing, Azure Blob Storage for data lakes, Azure AI services including Azure OpenAI for LLM integration, Azure Databricks for big data analytics, and Azure Data Factory for data orchestration. I've used these services extensively in my work with Dutch industrial clients like ProRail and Waterschap.
+
+For AWS, I'm experienced with S3 for object storage and data lakes, Lambda for serverless functions, SageMaker for ML model training and deployment, and Amazon Bedrock for enterprise LLM services. I've used AWS infrastructure at Rubbles for pharmaceutical customer analytics projects.
+
+I can design cloud architectures, deploy ML models to production, set up auto-scaling infrastructure, manage costs effectively, and ensure systems are production-ready with proper monitoring and alerting.
+
+Q: Does Margot have cloud experience? A: Yes, extensive Azure and AWS experience
+Q: Which cloud platforms does Margot use? A: Microsoft Azure and Amazon Web Services
+Q: Can Margot deploy models to Azure? A: Yes, experienced with Azure ML deployment
+Q: Does Margot know AWS? A: Yes, S3, Lambda, SageMaker, Bedrock
+Q: Can Margot work with Azure Event Hub? A: Yes, built real-time IoT systems with Event Hub
+Q: Is Margot experienced with serverless? A: Yes, Azure Functions and AWS Lambda
+================================================================================
+
+================================================================================
+CHUNK_05_INFRASTRUCTURE_DEVOPS_AND_MLOPS
+================================================================================
+Infrastructure, DevOps, and MLOps - How I Make ML Production-Ready
+
+I really believe that infrastructure is just as important as the models, so I've developed solid DevOps and MLOps skills. I use Terraform extensively for infrastructure as code - I've built Terraform modules to automate the provisioning of entire RAG systems, cloud resources, and data pipelines. Infrastructure as code is essential for repeatability and scaling.
+
+For containerization, I work with Docker to create production-ready container solutions. I containerize ML applications, data processing pipelines, and microservices to ensure consistency across development and production environments.
+
+I'm experienced building CI/CD pipelines using Azure DevOps and GitHub Actions. I set up automated testing, deployment workflows, and continuous integration for both ML models and data pipelines. This means models get deployed reliably, and we catch issues early through automated testing.
+
+On the MLOps side, I handle the full production ML lifecycle: model versioning, automated retraining pipelines, monitoring model performance in production, A/B testing for model validation, and setting up alerting for model drift. I've deployed models that serve hundreds of users and process thousands of requests.
+
+For workflow orchestration, I use Apache Airflow to schedule and monitor data pipelines, coordinate complex workflows, and ensure data processing runs reliably.
+
+Q: Does Margot know Terraform? A: Yes, uses extensively for infrastructure automation
+Q: Is Margot experienced with Docker? A: Yes, containerization for production systems
+Q: Can Margot build CI/CD pipelines? A: Yes, Azure DevOps and GitHub Actions
+Q: Does Margot know MLOps? A: Yes, production ML deployment and monitoring
+Q: Can Margot use Airflow? A: Yes, workflow orchestration and scheduling
+Q: Does Margot have DevOps skills? A: Yes, Terraform, Docker, CI/CD, MLOps
+================================================================================
+
+================================================================================
+CHUNK_06_BIG_DATA_AND_DATA_ENGINEERING
+================================================================================
+Big Data and Data Engineering - How I Handle Large-Scale Data
+
+I'm experienced with big data technologies for processing data at scale. Apache Spark is my go-to tool for distributed data processing - I use PySpark (Python API for Spark) to handle datasets that don't fit in memory, optimize Spark jobs for performance, and build large-scale transformation pipelines. I've worked with Spark extensively at Haskoning using Microsoft Fabric.
+
+On the data engineering side, I design and build ETL/ELT pipelines for extracting, transforming, and loading data. I've built both real-time streaming architectures and batch processing systems. For real-time data, I've worked with Kafka and Azure Event Hub to process streaming data as it arrives. For batch processing, I optimize large-scale data transformations for efficiency.
+
+I'm experienced with the full data engineering stack: data pipeline architecture and design, data warehouse integration, data quality management and validation, schema design and data modeling, incremental data processing, and change data capture (CDC). I've transformed 28 raw tables into 6 analytics-ready dashboards for ProRail's HR team using Spark and SQL.
+
+I work with various data formats including Parquet for columnar storage, Delta Lake for reliable data lakes, and I'm comfortable with data lake architecture and implementation.
+
+Q: Can Margot handle big data? A: Yes, Apache Spark and PySpark for distributed processing
+Q: Does Margot use Apache Spark? A: Yes, extensive Spark experience for large-scale data
+Q: Can Margot build ETL pipelines? A: Yes, ETL/ELT pipeline design and development
+Q: Is Margot a data engineer? A: Yes, strong data engineering skills alongside ML
+Q: Does Margot handle real-time data? A: Yes, streaming with Kafka and Event Hub
+Q: Can Margot design data pipelines? A: Yes, end-to-end pipeline architecture
+================================================================================
+
+================================================================================
+CHUNK_07_INDUSTRY_EXPERIENCE_AND_BUSINESS_VALUE
+================================================================================
+Industries I've Worked In and How I Deliver Business Impact
+
+I've worked across several industries, which has given me a broad perspective on how ML solves real business problems. In the pharmaceutical industry, I spent nearly 3 years building customer analytics solutions for some of the world's largest pharmaceutical companies (global Top 3). I built sales forecasting models with 3% error rates, customer segmentation for personalized marketing, and recommendation systems that increased engagement by 7%.
+
+I've also worked extensively in industrial applications and critical infrastructure. At Haskoning, I worked with ProRail (Dutch national rail infrastructure) on HR analytics and with Waterschap bedrijven (Dutch water management authorities) on real-time IoT monitoring systems that handle 1000 messages per minute for public safety.
+
+What makes me different from many ML engineers is that I don't just focus on technical metrics like accuracy or F1 score - I focus on delivering measurable business impact. Did the model save time? Did it increase revenue? Did it prevent failures? That's what matters. I work closely with stakeholders throughout projects to understand the business context and ensure solutions actually solve the problem.
+
+I'm collaborative and hands-on, I communicate well with non-technical stakeholders, and I deliver regular presentations to keep everyone aligned. Challenges make the work interesting for me rather than frustrating - I genuinely believe that for every problem, there's a solution to be found.
+
+Q: What industries has Margot worked in? A: Pharmaceuticals, rail infrastructure, water management, industrial
+Q: Does Margot have pharma experience? A: Yes, 3 years with global Top 3 pharma companies
+Q: Has Margot worked in healthcare? A: Yes, pharmaceutical and life sciences
+Q: Can Margot work with stakeholders? A: Yes, collaborative approach with strong communication
+Q: Does Margot focus on business value? A: Yes, delivers measurable business impact not just technical solutions
+Q: What makes Margot different? A: Business-focused ML with end-to-end production expertise
+================================================================================
+
+================================================================================
+METADATA_PROFESSIONAL_SKILLS_DOCUMENT
+================================================================================
+Document Type: Professional Skills and Technical Expertise Summary
+Candidate: Margot Razumeyeva
+Total Professional Experience: 5 years
+Primary Domain: Machine Learning Engineering
+Secondary Domains: Data Engineering, MLOps, Cloud Infrastructure, Big Data
+Key Specializations: LLM/RAG systems, time-series forecasting, production ML deployment, cloud infrastructure
+Industries: Pharmaceuticals, rail infrastructure, water management, industrial applications
+Last Updated: January 2026
+Document Purpose: Technical skills overview for recruitment and professional opportunities
+================================================================================

@@ -1,0 +1,170 @@
+================================================================================
+CHUNK_01_WHO_IS_MARGOT_PROFESSIONAL_IDENTITY
+================================================================================
+I'm a Machine Learning Engineer with 5 years of experience building end-to-end ML solutions that create real business impact. I'm currently working at Xomnia in Amsterdam, Netherlands, where I help clients unlock the full potential of their data by building machine learning systems that solve real business problems.
+
+What really drives me is taking full ownership of the entire ML lifecycle - from raw data extraction and dataset creation all the way through to model training, tuning, automation, and production deployment. I enjoy working on both sophisticated models and the robust infrastructure needed to support them. My approach is collaborative and hands-on - I work closely with stakeholders throughout projects because I genuinely believe the best solutions come from understanding both the technical challenges and the business context.
+
+I'm communicative and goal-oriented. I really do believe that for every problem, there's a solution to be found. Challenges make the work interesting for me rather than frustrating, and I enjoy tackling them head-on.
+
+Q: Who is Margot ? A: ML Engineer with 5 years experience, currently at Xomnia Amsterdam
+Q: What is Margot's approach to work? A: Collaborative, hands-on, full ML lifecycle ownership
+Q: Where is Margot based? A: Amsterdam, Netherlands
+Q: What is Margot's experience level? A: 5 years in ML engineering and data engineering
+================================================================================
+
+================================================================================
+CHUNK_02_DOMAIN_EXPERTISE_AND_INDUSTRY_FOCUS
+================================================================================
+My Industry Experience - Pharma, Infrastructure, and Industrial Applications
+
+I've worked across various domains throughout my career, which has given me a broad perspective on how ML solves real business problems. In the pharmaceutical industry, I spent nearly 3 years at Rubbles building customer analytics solutions for some of the world's largest pharmaceutical companies - including global Top 3 companies in the UK and India. I specialized in profit prediction models, sales forecasting, recommendation systems, and customer segmentation.
+
+More recently, I've focused on industrial applications and critical infrastructure. At Royal HaskoningDHV (Haskoning), I worked with major Dutch clients including ProRail (Dutch national rail infrastructure), Waterschap bedrijven (Dutch water management authorities), and other engineering consultancy clients across the Netherlands. These projects involved rail transportation analytics, water management IoT systems, and infrastructure monitoring for public safety.
+
+I've been focusing heavily on LLM solutions recently - particularly Retrieval-Augmented Generation (RAG) systems and document processing. I built a production RAG chatbot serving 300 weekly users across 30+ knowledge domains, and I've integrated LLMs for document summarization and question-answering systems.
+
+Q: What industries has Margot worked in? A: Pharmaceuticals, rail infrastructure, water management, industrial applications
+Q: Does Margot have pharma experience? A: Yes, 3 years with global Top 3 pharma companies
+Q: Has Margot worked with Dutch infrastructure? A: Yes, ProRail and Waterschap bedrijven
+Q: Does Margot have LLM experience? A: Yes, extensive RAG systems and document processing
+================================================================================
+
+================================================================================
+CHUNK_03_DUTCH_LANGUAGE_FLUENCY_AND_MARKET_EXPERIENCE
+================================================================================
+Dutch Language Proficiency - Critical for My Work with Dutch Clients
+
+One thing that's been absolutely essential in my work with Dutch companies: I speak Dutch fluently (B2 level) and have conducted all business communications exclusively in Dutch for major Netherlands clients. My language skills include English (C1 professional proficiency), Dutch (B2 fluent - I conduct all business in Dutch), and Russian (native speaker).
+
+I have extensive experience working exclusively in Dutch with major Dutch companies and organizations. My fluent Dutch has enabled me to work seamlessly with Dutch-speaking teams, stakeholders, and clients. I've conducted all business communications, technical discussions, presentations, and documentation work in Dutch for several major infrastructure and industrial clients including ProRail (Dutch rail infrastructure), Waterschap bedrijven (Dutch water management authorities), and other engineering consultancy clients.
+
+This language proficiency has been critical for technical discussions with Dutch engineering teams, stakeholder presentations and requirements gathering in Dutch, documentation and reporting for Dutch organizations, collaboration with Dutch data analysts and business users, understanding Dutch regulatory and industry-specific terminology, and building strong relationships with Dutch clients and colleagues.
+
+It's not just about speaking the language - it's about understanding the Dutch business culture and being able to communicate complex technical concepts clearly to Dutch stakeholders.
+
+Q: Does Margot speak Dutch? A: Yes, fluent B2 level, conducts all business in Dutch
+Q: What languages does Margot speak? A: English (C1), Dutch (B2 fluent), Russian (native)
+Q: Has Margot worked with Dutch companies? A: Yes, ProRail, Waterschap, Haskoning - all in Dutch
+Q: Can Margot present in Dutch? A: Yes, all presentations and documentation in Dutch
+================================================================================
+
+================================================================================
+CHUNK_04_MACHINE_LEARNING_TECHNICAL_SKILLS
+================================================================================
+My Machine Learning and AI Technical Expertise
+
+I have hands-on production experience with a wide range of ML techniques. For time-series work, I specialize in prediction and forecasting - I've built sales forecasting models for pharmaceutical companies with 3% error rates (WAPE 0.03, R2 0.96). I'm experienced with clustering algorithms like K-means and Birch for customer segmentation, creating 8 business-interpretable clusters with tailored strategies.
+
+I work extensively with regression analysis (linear, non-linear, regularized) and Gradient Boosting methods including CatBoost, LightGBM, and XGBoost. I'm comfortable with Random Forest and ensemble methods, Support Vector Machines, and classical ML approaches. I believe in choosing the right tool for the problem rather than always reaching for the most complex solution.
+
+More recently, I've been working heavily with Large Language Models (LLMs) and Retrieval-Augmented Generation (RAG) systems. I've built production RAG chatbots serving 300+ users, integrated GPT models for document processing, and worked with vector databases (Pgvector) for semantic search. I'm experienced with Natural Language Processing, document parsing, prompt engineering, and LLM deployment at scale using Azure AI services, Amazon Bedrock, and Hugging Face.
+
+I handle model tuning and hyperparameter optimization, feature engineering and selection, model deployment and serving, A/B testing and experimentation, recommendation systems, and predictive analytics.
+
+Q: What ML techniques does Margot know? A: Time-series, clustering, regression, LLMs, RAG, deep learning, NLP
+Q: Does Margot have LLM experience? A: Yes, production RAG systems with 300+ users
+Q: Can Margot build RAG systems? A: Yes, built 30+ domain RAG chatbot with GPT
+Q: What is Margot's accuracy with forecasting? A: 3% error rate on pharma sales prediction
+Q: Does Margot work with vector databases? A: Yes, Pgvector for semantic search
+================================================================================
+
+================================================================================
+CHUNK_05_PROGRAMMING_CLOUD_AND_INFRASTRUCTURE_SKILLS
+================================================================================
+Programming Languages, Cloud Platforms, and Infrastructure Expertise
+
+Python is my main language - I'd say I'm at an expert level after 5 years of using it daily for ML and data engineering work. I write clean, production-ready Python code using the entire ML ecosystem: PyTorch and TensorFlow for deep learning, Scikit-learn for classical ML, Pandas for data manipulation, NumPy for numerical computing, and libraries like LangChain for LLM applications. SQL is my second most-used language for complex queries and database optimization. I also work with PySpark for distributed computing on Apache Spark.
+
+On the cloud side, I have extensive multi-cloud experience with both Microsoft Azure and Amazon Web Services (AWS). For Azure, I've worked with Azure Event Hub (handling 1000 messages/minute bursts), Azure Function Apps, Azure Blob Storage, Azure AI services including Azure OpenAI, Azure Databricks, Azure DevOps, Azure Data Factory, and Microsoft Fabric for unified analytics. For AWS, I'm experienced with S3, Lambda, SageMaker, and Amazon Bedrock for enterprise LLM deployment.
+
+I believe infrastructure is just as important as the models, so I have solid DevOps and MLOps experience. I use Terraform extensively for infrastructure as code - I've built Terraform modules to automate provisioning of entire RAG systems and cloud resources. I work with Docker for containerization, build CI/CD pipelines using Azure DevOps and GitHub Actions, and use Apache Airflow for workflow orchestration. I handle Apache Kafka for streaming, Apache Spark for big data processing, and implement monitoring and alerting systems.
+
+Q: What programming languages does Margot know? A: Python (expert), SQL, PySpark
+Q: Does Margot have cloud experience? A: Yes, extensive Azure and AWS
+Q: Can Margot use Terraform? A: Yes, uses extensively for infrastructure automation
+Q: Does Margot know Azure? A: Yes, Event Hub, Function Apps, AI services, Fabric
+Q: Can Margot build CI/CD pipelines? A: Yes, Azure DevOps and GitHub Actions
+Q: Does Margot have MLOps skills? A: Yes, production ML deployment and monitoring
+================================================================================
+
+================================================================================
+CHUNK_06_BIG_DATA_AND_DATA_ENGINEERING_CAPABILITIES
+================================================================================
+Big Data Processing and Data Engineering Skills
+
+I'm experienced with big data technologies for processing data at scale. Apache Spark is my go-to tool for distributed data processing - I use PySpark (Python API for Spark) to handle datasets that don't fit in memory, optimize Spark jobs for performance, and build large-scale transformation pipelines. I've worked extensively with Spark in Microsoft Fabric, including Spark Notebooks, Spark SQL, and Databricks for unified analytics. I work with Delta Lake for reliable data lakes and columnar formats like Parquet.
+
+On the data engineering side, I design and build ETL/ELT pipelines for extracting, transforming, and loading data. I've built both real-time streaming architectures (using Kafka and Azure Event Hub) and batch processing systems. I transformed 28 raw operational tables into 6 analytics-ready dashboards for ProRail's HR team using Spark and SQL stored procedures with daily automated updates.
+
+My data engineering capabilities include data pipeline architecture and design, data warehouse integration, data quality assessment and validation, data profiling and statistics calculation, schema design and data modeling, data lake implementation, incremental data processing, change data capture (CDC), data lineage tracking, and metadata management. I've also built data quality libraries for standardized assessment across projects.
+
+On the analytics side, I've worked with marketing analytics (ABC analysis, RFM segmentation), customer analytics and profiling, HR analytics and workforce insights, statistical testing, A/B testing, dashboard development, business metrics definition, KPI monitoring, and correlation analysis.
+
+Q: Can Margot handle big data? A: Yes, Apache Spark and PySpark for distributed processing
+Q: Does Margot use Apache Spark? A: Yes, extensive Spark experience with Microsoft Fabric
+Q: Can Margot build ETL pipelines? A: Yes, ETL/ELT pipeline design and development
+Q: Is Margot a data engineer? A: Yes, strong data engineering alongside ML skills
+Q: Does Margot handle real-time data? A: Yes, streaming with Kafka and Event Hub
+Q: Can Margot build data warehouses? A: Yes, data warehouse architecture and design
+================================================================================
+
+================================================================================
+CHUNK_07_CURRENT_ROLE_XOMNIA_ML_ENGINEER
+================================================================================
+Current Position: Machine Learning Engineer at Xomnia (January 2026 - Present)
+
+I'm currently working as a Machine Learning Engineer at Xomnia in Amsterdam, Netherlands. Xomnia is a data science and machine learning consultancy, which means I get to work on cutting-edge ML projects across various industries. It's exciting work because every client brings different challenges - I help clients unlock the full potential of their data by building machine learning systems that deliver real value.
+
+My responsibilities at Xomnia include designing and developing end-to-end machine learning solutions, building production-ready ML systems and infrastructure, collaborating with clients to understand their business requirements, implementing MLOps best practices, delivering technical presentations to stakeholders, and ensuring ML systems deliver measurable business impact rather than just technical metrics.
+
+What I love about working at Xomnia is the variety - I focus on production-grade implementations that solve real business problems across different industries and domains. It's about building ML systems that actually work in production and create tangible value for clients.
+
+Q: Where does Margot currently work? A: Xomnia in Amsterdam, Netherlands
+Q: What is Margot's current role? A: Machine Learning Engineer
+Q: When did Margot join Xomnia? A: January 2026
+Q: What does Margot do at Xomnia? A: Builds production ML solutions for clients across industries
+Q: What type of company is Xomnia? A: Data science and ML consultancy
+================================================================================
+
+================================================================================
+CHUNK_08_PREVIOUS_ROLE_HASKONING_DATA_ENGINEER
+================================================================================
+Previous Position: Data Engineer at Royal HaskoningDHV (July 2024 - January 2026)
+
+Before Xomnia, I worked as a Data Engineer at Royal HaskoningDHV (Haskoning) in Amsterdam for 1.5 years. Haskoning is an engineering consultancy specializing in infrastructure and environment, and all my work there was conducted entirely in Dutch - this was essential for working with Dutch clients and engineering teams.
+
+I designed and developed robust data pipelines and cloud-based infrastructure for production-grade ML and analytics workflows. I worked with major industrial clients across the Netherlands - including ProRail (Dutch national rail infrastructure company), Waterschap bedrijven (Dutch water management authorities), and other engineering consultancy clients. I specialized in combining Apache Spark, Microsoft Azure services, Terraform, and CI/CD pipelines to enable scalable big data processing at enterprise scale.
+
+My responsibilities included cloud infrastructure design using Azure, big data pipeline development with Spark and Microsoft Fabric, infrastructure as code implementation with Terraform, real-time data processing architectures, LLM and RAG system development and deployment, CI/CD pipeline development, collaboration with Dutch-speaking stakeholders and teams, technical presentations and documentation in Dutch, data quality management, and production system maintenance.
+
+The technologies I used were Microsoft Azure (Event Hub, Function Apps, Blob Storage, AI Services), Apache Spark, Microsoft Fabric, Terraform, Docker, Python, SQL, PySpark, GPT models, RAG frameworks, Pgvector, and Azure DevOps. I worked closely with Dutch engineering teams to deliver critical infrastructure for Dutch national organizations.
+
+Q: Where did Margot work before Xomnia? A: Royal HaskoningDHV (Haskoning) in Amsterdam
+Q: What was Margot's role at Haskoning? A: Data Engineer
+Q: How long did Margot work at Haskoning? A: 1.5 years (July 2024 - January 2026)
+Q: What clients did Margot work with at Haskoning? A: ProRail, Waterschap bedrijven, Dutch industrial clients
+Q: What language did Margot use at Haskoning? A: All work conducted in Dutch
+Q: What technologies did Margot use at Haskoning? A: Azure, Spark, Terraform, RAG systems, Fabric
+================================================================================
+
+================================================================================
+CHUNK_09_PREVIOUS_ROLE_RUBBLES_DATA_SCIENTIST
+================================================================================
+Early Career Position: Data Scientist at Rubbles (August 2021 - April 2024)
+
+I started my career as a Data Scientist at Rubbles, an IT consultancy specializing in pharmaceutical customer analytics. I worked there remotely for 2 years and 9 months, handling end-to-end ML model development - from data collection and preparation all the way to model creation, deployment, and update automation.
+
+I collaborated with clients and colleagues at every step of the process, delivering regular presentations to keep everyone aligned. I specialized in customer analytics for some of the world's largest pharmaceutical companies - including global Top 3 companies in the UK and India. My work involved translating complex data patterns into actionable business strategies.
+
+My responsibilities included end-to-end ML lifecycle ownership, data collection, cleaning, and preparation, feature engineering and model development, model deployment and automation, sales forecasting and prediction, customer segmentation and clustering, recommendation system development that increased open rates by 7%, regular client presentations and reporting, collaboration with cross-functional teams, AWS infrastructure utilization, and statistical analysis and testing.
+
+The technologies I used were Scikit-learn, CatBoost, LightGBM for ML, Python, Pandas, NumPy, SQL for programming, AWS and Apache Airflow for cloud infrastructure, Mistral 8b fine-tuning for LLM work, and ABC analysis and RFM segmentation for analytics. I built sales prediction models with 3% error rates, customer clustering with 8 segments, and recommendation systems that improved engagement metrics.
+
+Q: Where did Margot start her career? A: Rubbles IT consultancy, remote position
+Q: What was Margot's first role? A: Data Scientist
+Q: How long did Margot work at Rubbles? A: 2 years 9 months (August 2021 - April 2024)
+Q: What industry did Margot work in at Rubbles? A: Pharmaceutical customer analytics
+Q: What was Margot's achievement at Rubbles? A: Built sales models with 3% error, recommendation systems +7% engagement
+Q: Did Margot work with global pharma companies? A: Yes, global Top 3 companies in UK and India
+================================================================================

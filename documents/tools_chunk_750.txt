@@ -1,0 +1,275 @@
+================================================================================
+CHUNK_01_PYTHON_PROGRAMMING_CORE_LANGUAGE
+================================================================================
+Python Experience - What is Margot's Python Proficiency Level?
+
+Python is my main programming language. I've been using Python daily for 5 years at an expert level for machine learning and data engineering work. I write clean, production-ready Python code using the entire ML and data science ecosystem.
+
+My Python expertise covers the complete ML development lifecycle: data collection and preprocessing with Pandas and NumPy, feature engineering and statistical analysis, model development with Scikit-learn, PyTorch, and TensorFlow, deep learning implementations, gradient boosting with CatBoost, LightGBM, and XGBoost, data visualization using Matplotlib and Seaborn, and LLM integration using LangChain and Hugging Face APIs.
+
+I use Python for building end-to-end pipelines - from extracting raw data from warehouses and creating datasets to tuning models and automating updates. I've deployed Python-based solutions on AWS and Azure infrastructure, integrated Python with Apache Spark (PySpark) for distributed computing, and built serverless Python applications using Azure Function Apps.
+
+All my machine learning projects have been implemented in Python, including sales forecasting models, customer segmentation systems, recommendation engines, RAG chatbot platforms, real-time IoT processing pipelines, and document summarization systems.
+
+Q: What is Margot's primary programming language? A: Python, expert level with 5 years daily use
+Q: Does Margot know Python? A: Yes, main language for ML and data engineering
+Q: How long has Margot used Python? A: 5 years of professional experience
+Q: Can Margot write production Python code? A: Yes, builds production-ready ML systems in Python
+Q: What Python libraries does Margot use? A: Pandas, NumPy, Scikit-learn, PyTorch, TensorFlow, LangChain
+Q: Is Margot proficient in Python? A: Yes, expert level for ML and data engineering
+================================================================================
+
+================================================================================
+CHUNK_02_APACHE_SPARK_BIG_DATA_PROCESSING
+================================================================================
+Apache Spark and PySpark - Does Margot Have Big Data Processing Experience?
+
+Yes, I have extensive experience with Apache Spark for distributed data processing using PySpark (Python API for Spark). I use Spark to handle large-scale datasets that don't fit in memory, optimize Spark jobs for performance, and build enterprise-grade transformation pipelines.
+
+I've worked extensively with Spark in Microsoft Fabric, including Spark Notebooks for interactive development, Spark SQL for distributed queries, and scheduled Spark pipelines for automated processing. I transformed 28 raw operational tables into 6 analytics-ready dashboards for ProRail's HR team using Spark and SQL stored procedures with daily automated updates.
+
+My Spark experience includes distributed data processing for multi-year historical employee data, complex joins across large tables, window functions for time-series analysis, aggregations for metric calculation, partitioning strategies for performance optimization, caching for frequently accessed data, broadcasting for small reference tables, and incremental processing for efficient daily updates.
+
+I work with Delta Lake for reliable data lakes, Parquet and other columnar formats, and integrate Spark with Microsoft Fabric Pipelines and CI/CD workflows. I've used Spark for ETL/ELT pipeline development, real-time and batch processing, and data quality assessment at scale.
+
+Technologies: Apache Spark, PySpark, Spark SQL, Spark Notebooks, Microsoft Fabric, Delta Lake, Parquet, distributed computing.
+
+Q: Does Margot have Spark experience? A: Yes, extensive PySpark for distributed data processing
+Q: Can Margot use Apache Spark? A: Yes, built production pipelines transforming 28 tables to 6 dashboards
+Q: Does Margot know PySpark? A: Yes, uses PySpark for large-scale ETL and analytics
+Q: Has Margot worked with Microsoft Fabric? A: Yes, Spark Notebooks, Pipelines, and Data Warehousing
+Q: Can Margot handle big data? A: Yes, Apache Spark for datasets that don't fit in memory
+Q: Does Margot optimize Spark jobs? A: Yes, partitioning, caching, broadcasting, performance tuning
+================================================================================
+
+================================================================================
+CHUNK_03_SQL_DATABASE_QUERYING
+================================================================================
+SQL and Database Expertise - What is Margot's SQL Experience?
+
+SQL is my second most-used language after Python. I write complex SQL queries, optimize database performance, and build stored procedures for production systems. I use SQL extensively for data extraction, transformation, complex business logic, and analytics.
+
+My SQL experience includes working closely with data analysts to transform raw data using SQL stored procedures at ProRail, building scheduled pipelines that converted 28 raw tables into 6 analytics-ready tables, implementing complex business logic in stored procedures for HR analytics (employee history timeline construction, leave balance calculations, contract status derivation), and data quality validation through SQL.
+
+I write optimized SQL for distributed systems using Spark SQL for large-scale queries, joining large tables efficiently, aggregating metrics across millions of records, and implementing incremental update logic. I've used SQL with Microsoft Fabric Data Warehousing, AWS databases, and Azure SQL services.
+
+My SQL skills cover complex joins and subqueries, window functions for analytics, common table expressions (CTEs), query optimization and indexing, stored procedure development, data modeling and schema design, performance tuning, and integration with Python (Pandas, SQLAlchemy).
+
+I use SQL across all data projects for data extraction from warehouses, exploratory data analysis, feature engineering for ML models, data validation and quality checks, and analytics dashboard preparation.
+
+Q: Does Margot know SQL? A: Yes, second most-used language with complex query expertise
+Q: Can Margot write SQL queries? A: Yes, complex queries, stored procedures, optimization
+Q: Has Margot built stored procedures? A: Yes, for HR analytics with business logic and validation
+Q: Does Margot use SQL for data engineering? A: Yes, transforms 28 tables using SQL and Spark SQL
+Q: Can Margot optimize SQL? A: Yes, query optimization, indexing, performance tuning
+Q: Does Margot write complex SQL? A: Yes, joins, window functions, CTEs, aggregations
+================================================================================
+
+================================================================================
+CHUNK_04_AZURE_CLOUD_PLATFORM_SERVICES
+================================================================================
+Microsoft Azure Cloud Platform - What Azure Services Has Margot Used?
+
+I have extensive Microsoft Azure experience, having built production-grade ML and analytics systems on Azure infrastructure. I've worked with Azure Event Hub for real-time streaming data ingestion handling bursts up to 1000 messages per minute for IoT telemetry, Azure Function Apps for serverless computing and real-time data processing, Azure Blob Storage for data lakes and document storage, Azure AI services including Azure OpenAI for GPT model integration, and Azure Cognitive Services.
+
+I've used Azure Databricks for unified analytics, Azure DevOps for CI/CD pipelines and version control, Azure Data Factory for data orchestration, and Microsoft Fabric for comprehensive data platform (Pipelines, Spark Notebooks, Data Warehousing).
+
+For my RAG chatbot project, I used Azure AI services for GPT-based knowledge retrieval, Azure Blob Storage for SharePoint document storage, and Terraform-managed Azure infrastructure supporting 30+ isolated domains with 300 weekly users. For the IoT platform, I built Terraform-managed Azure infrastructure with Event Hub and Function Apps optimized for variable traffic patterns.
+
+I implement infrastructure as code using Terraform for all Azure resources, automated deployment with CI/CD pipelines, Docker containerization on Azure, monitoring and alerting systems, and cost optimization strategies. I've delivered solutions for major Dutch clients using Azure exclusively, conducting all technical work in Dutch.
+
+Technologies: Azure Event Hub, Function Apps, Blob Storage, Azure AI, Azure OpenAI, Databricks, DevOps, Data Factory, Microsoft Fabric, Terraform, Docker.
+
+Q: Does Margot have Azure experience? A: Yes, extensive production systems on Azure infrastructure
+Q: Can Margot use Azure Event Hub? A: Yes, built IoT platform handling 1000 messages/minute
+Q: Does Margot know Azure AI services? A: Yes, integrated Azure OpenAI for RAG chatbot with 300 users
+Q: Has Margot worked with Microsoft Fabric? A: Yes, Pipelines, Spark Notebooks, Data Warehousing for ProRail
+Q: Can Margot use Azure Function Apps? A: Yes, serverless real-time processing for water management
+Q: Does Margot build Azure infrastructure? A: Yes, Terraform-managed Azure for multiple production systems
+================================================================================
+
+================================================================================
+CHUNK_05_TERRAFORM_INFRASTRUCTURE_AS_CODE
+================================================================================
+Terraform Infrastructure as Code - Does Margot Use Terraform?
+
+Yes, I use Terraform extensively for infrastructure as code (IaC), automating provisioning and management of cloud resources. I believe infrastructure is just as important as the models themselves, so I've built solid experience managing infrastructure through Terraform.
+
+For my RAG chatbot platform, I used Terraform to enable rapid provisioning of new knowledge domains. I built Terraform-managed infrastructure supporting 30+ isolated RAG flows with automated deployment. This allowed me to spin up new domains quickly while maintaining consistent architecture and security controls across all instances.
+
+For the real-time IoT platform, I built Terraform-managed infrastructure optimized for traffic bursts up to 1000 messages per minute. I designed the infrastructure to be cost-efficient during normal operations but automatically scale during peak events like storms or emergencies.
+
+My Terraform experience includes complete infrastructure defined as code, version controlled infrastructure changes, repeatable deployments across environments (dev, staging, production), automated resource provisioning for Azure services (Event Hub, Function Apps, Blob Storage, AI Services), infrastructure testing and validation, cost optimization through resource management, and integration with CI/CD pipelines for automated deployment.
+
+I use Terraform for provisioning data pipelines, ML infrastructure, streaming platforms, and multi-tenant systems. This enables me to manage complex cloud architectures efficiently and ensure infrastructure remains maintainable and scalable.
+
+Technologies: Terraform, Infrastructure as Code (IaC), Azure resource management, automated provisioning, CI/CD integration.
+
+Q: Does Margot use Terraform? A: Yes, extensively for infrastructure automation and provisioning
+Q: Can Margot build infrastructure as code? A: Yes, Terraform-managed infrastructure for production systems
+Q: Has Margot automated infrastructure? A: Yes, Terraform for 30+ domain RAG system and IoT platform
+Q: Does Margot know IaC? A: Yes, infrastructure as code with Terraform for Azure
+Q: Can Margot provision cloud resources? A: Yes, automated Terraform provisioning for rapid deployment
+Q: Does Margot use Terraform for ML infrastructure? A: Yes, for data pipelines and ML systems on Azure
+================================================================================
+
+================================================================================
+CHUNK_06_MACHINE_LEARNING_FRAMEWORKS_LIBRARIES
+================================================================================
+Machine Learning Frameworks and Libraries - What ML Tools Does Margot Use?
+
+I work with comprehensive ML frameworks and libraries for classical machine learning and deep learning. For classical ML, I use Scikit-learn extensively for time-series prediction, clustering algorithms, regression analysis, model selection, and feature engineering. I built sales forecasting models achieving 3% error using Scikit-learn linear models with feature engineering and iterative experimentation.
+
+For gradient boosting, I have hands-on production experience with CatBoost, LightGBM, and XGBoost. I developed CatBoost models for personalized content recommendation across email, call center, and offline channels for a Top-3 India pharma company, achieving 7% increase in email open rates. I built automated training pipelines per channel with custom-tailored datasets and regular model updates.
+
+For deep learning, I use PyTorch and TensorFlow for neural network development, model training, and deployment. For clustering, I've implemented K-means and Birch algorithms combined with marketing analytics (ABC analysis, RFM segmentation) to create 8 business-interpretable customer clusters for Big Pharma.
+
+For data manipulation and analysis, I use Pandas extensively for data preprocessing, cleaning, transformation, and exploratory analysis. NumPy for numerical computing and array operations. Matplotlib and Seaborn for data visualization, creating charts and dashboards for stakeholder presentations.
+
+My ML workflow includes data exploration with Pandas, feature engineering, model development with Scikit-learn or boosting libraries, hyperparameter tuning, model evaluation and validation, deployment to production, and automated retraining pipelines.
+
+Q: What ML libraries does Margot use? A: Scikit-learn, CatBoost, LightGBM, XGBoost, PyTorch, TensorFlow
+Q: Does Margot use Scikit-learn? A: Yes, for forecasting, clustering, regression with 3% error models
+Q: Can Margot use gradient boosting? A: Yes, CatBoost for recommendations with 7% engagement increase
+Q: Does Margot know PyTorch or TensorFlow? A: Yes, both for deep learning model development
+Q: What libraries for data processing? A: Pandas and NumPy for data manipulation and analysis
+Q: Does Margot use CatBoost? A: Yes, automated training pipelines for pharmaceutical recommendations
+================================================================================
+
+================================================================================
+CHUNK_07_LLM_RAG_TECHNOLOGIES
+================================================================================
+LLM and RAG Technologies - What LLM Tools Has Margot Worked With?
+
+I have extensive experience with Large Language Models and Retrieval-Augmented Generation systems. For LLM integration, I've worked with GPT models via Azure AI services and Azure OpenAI for my RAG chatbot serving 300 weekly users across 30+ domains. I integrated Mistral 8b for document summarization and contextual Q&A for an insurance company, enabling users to extract insights from 60+ page documents in seconds.
+
+For RAG frameworks, I built a complete RAG system with automated SharePoint document extraction, intelligent document parsing and chunking, embedding generation using Azure OpenAI, vector storage in Pgvector database, semantic search and retrieval, GPT-based answer generation from context, and citation tracking for answer verification.
+
+I use LangChain for LLM application development, Hugging Face API for model access and deployment, and Amazon Bedrock for enterprise LLM deployment. For vector databases, I work with Pgvector for embedding storage and efficient similarity search, supporting daily automated updates across multiple knowledge domains.
+
+My LLM experience includes document parsing for various formats (PDF, Word, Excel, PowerPoint), prompt engineering and optimization, context window management, fine-tuning open-source models (Mistral 8b), embedding generation and management, multi-turn conversation support, and production deployment of LLM systems with monitoring.
+
+Technologies: GPT models, Mistral 8b, Azure AI, Azure OpenAI, RAG frameworks, LangChain, Hugging Face, Amazon Bedrock, Pgvector, embedding models, document parsing.
+
+Q: Does Margot have LLM experience? A: Yes, production GPT-based RAG system with 300 users
+Q: Can Margot build RAG systems? A: Yes, 30+ domain RAG chatbot with automated updates
+Q: Has Margot used GPT models? A: Yes, Azure OpenAI integration for knowledge retrieval
+Q: Does Margot know LangChain? A: Yes, uses for LLM application development
+Q: Can Margot use Mistral models? A: Yes, fine-tuned Mistral 8b for insurance document summarization
+Q: What vector databases does Margot use? A: Pgvector for embedding storage and semantic search
+Q: Has Margot deployed LLMs to production? A: Yes, RAG chatbot and document Q&A systems
+================================================================================
+
+================================================================================
+CHUNK_08_DEVOPS_CICD_CONTAINERIZATION
+================================================================================
+DevOps, CI/CD, and Containerization - What DevOps Tools Does Margot Use?
+
+I have solid DevOps and MLOps experience, believing infrastructure is as crucial as the models. I use Docker extensively for containerization, ensuring production-ready and consistent deployments. I built Docker containers for Azure Function Apps in the IoT platform, enabling consistent dev and production environments, easy local testing and debugging, and simplified deployment.
+
+For CI/CD, I build and manage pipelines using Azure DevOps and GitHub Actions for automated testing and deployment. I've implemented CI/CD pipelines for the HR data layer with daily scheduled updates, the RAG chatbot with automated infrastructure provisioning, and the IoT platform with continuous deployment to production.
+
+I use Git for version control across all projects, managing code repositories, infrastructure as code (Terraform), and collaboration with distributed teams. For workflow orchestration, I work with Apache Airflow to schedule and automate ML pipelines, ETL workflows, and model retraining. I built Airflow-orchestrated pipelines for pharmaceutical recommendation systems on AWS infrastructure and sales forecasting models with automated monthly updates.
+
+My DevOps practices include infrastructure as code with Terraform, automated deployment pipelines, containerized applications with Docker, monitoring and alerting systems for production ML, data quality management frameworks, and automated testing and validation.
+
+I've also worked with Apache Kafka for streaming data pipelines and Apache Hadoop for distributed storage in big data ecosystems.
+
+Technologies: Docker, CI/CD (Azure DevOps, GitHub Actions), Git, Apache Airflow, Apache Kafka, Apache Hadoop, Terraform, monitoring systems.
+
+Q: Does Margot use Docker? A: Yes, containerization for production ML and data systems
+Q: Can Margot build CI/CD pipelines? A: Yes, Azure DevOps and GitHub Actions for automated deployment
+Q: Does Margot know Git? A: Yes, version control for code and infrastructure
+Q: Has Margot used Apache Airflow? A: Yes, orchestrated ML pipelines and automated retraining
+Q: Does Margot have DevOps experience? A: Yes, infrastructure, containerization, CI/CD, monitoring
+Q: Can Margot use Kafka? A: Yes, streaming data pipelines with Apache Kafka
+Q: Does Margot implement MLOps? A: Yes, automated pipelines, monitoring, model deployment
+================================================================================
+
+================================================================================
+CHUNK_09_AWS_CLOUD_SERVICES
+================================================================================
+Amazon Web Services (AWS) - What AWS Experience Does Margot Have?
+
+I have AWS experience from my work at Rubbles, where I deployed machine learning solutions on AWS infrastructure for pharmaceutical customer analytics. I used AWS for production ML workflows serving global Top-3 pharma companies in the UK and India.
+
+My AWS experience includes working with AWS infrastructure for ML deployment and model serving, Apache Airflow on AWS for workflow orchestration and automated pipelines, Amazon S3 for object storage and data lakes, AWS Lambda for serverless functions, Amazon SageMaker for ML workflows, and Amazon Bedrock for enterprise LLM deployment.
+
+I built automated training pipelines on AWS with Apache Airflow for the pharmaceutical recommendation system, scheduling model retraining, managing data workflows, and orchestrating ETL processes. I deployed sales forecasting models with automated monthly updates on AWS infrastructure, ensuring reliable and scalable production systems.
+
+I used AWS for storing and processing large-scale pharmaceutical customer data, deploying gradient boosting models (CatBoost) for multi-channel recommendations, hosting time-series prediction models for sales forecasting, and integrating ML models into client infrastructure for automated decision-making.
+
+While my more recent work has focused on Azure infrastructure for Dutch clients, my AWS foundation remains strong for multi-cloud ML deployments and infrastructure flexibility.
+
+Technologies: AWS infrastructure, Amazon S3, AWS Lambda, Amazon SageMaker, Amazon Bedrock, Apache Airflow on AWS, multi-cloud deployment.
+
+Q: Does Margot have AWS experience? A: Yes, deployed ML systems for pharmaceutical analytics
+Q: Can Margot use AWS? A: Yes, infrastructure for production ML workflows
+Q: Has Margot used Amazon Bedrock? A: Yes, for enterprise LLM deployment
+Q: Does Margot know AWS Lambda? A: Yes, serverless functions for ML deployment
+Q: Can Margot work with Apache Airflow on AWS? A: Yes, orchestrated recommendation system pipelines
+Q: Does Margot use Amazon S3? A: Yes, object storage and data lakes
+Q: Is Margot multi-cloud? A: Yes, extensive Azure and AWS experience
+================================================================================
+
+================================================================================
+CHUNK_10_STATISTICAL_ANALYSIS_MARKETING_ANALYTICS
+================================================================================
+Statistical Analysis and Marketing Analytics - What Analytics Frameworks Does Margot Use?
+
+I have strong statistical analysis and marketing analytics expertise from my pharmaceutical customer analytics work. I use statistical testing and hypothesis validation extensively to ensure model reliability and business conclusions are data-driven.
+
+For marketing analytics, I work with ABC analysis for customer value segmentation, RFM analysis (Recency, Frequency, Monetary) for customer behavior patterns, customer clustering and segmentation, cohort analysis for trend identification, and correlation analysis for feature relationships.
+
+I combined clustering ML algorithms (K-means, Birch) with marketing analytics frameworks (ABC, RFM) to create 8 business-interpretable customer clusters for a UK-based Big Pharma company. This hybrid approach created segments that made business sense to marketing teams rather than just mathematical groupings.
+
+My statistical work includes time-series analysis for sales forecasting, feature importance identification and quantification for sales drivers, seasonality detection and modeling, A/B testing and experimentation design, confidence interval calculation, hypothesis testing for model validation, and statistical significance testing for business insights.
+
+I identify and quantify key business drivers - for sales forecasting, I identified the most and least valuable factors affecting sales including seasonality, historical sales patterns, and marketing campaign effectiveness. This allowed the client to compare different factors and make data-driven budget decisions.
+
+Technologies: Statistical testing, ABC analysis, RFM segmentation, time-series analysis, hypothesis testing, A/B testing, correlation analysis.
+
+Q: Does Margot do statistical analysis? A: Yes, hypothesis testing and statistical validation
+Q: Can Margot use marketing analytics? A: Yes, ABC analysis, RFM segmentation for customer analytics
+Q: Does Margot know A/B testing? A: Yes, experimentation design and statistical testing
+Q: Has Margot done customer segmentation? A: Yes, combined ML clustering with ABC and RFM analysis
+Q: Can Margot analyze time-series? A: Yes, seasonality detection and forecasting
+Q: Does Margot identify business drivers? A: Yes, quantified sales factors and marketing impact
+================================================================================
+
+================================================================================
+CHUNK_11_DATA_QUALITY_PIPELINES_SHAREPOINT
+================================================================================
+Data Quality Management, Pipeline Tools, and SharePoint Integration
+
+I implement comprehensive data quality management across all projects. For the IoT platform, I built data quality management (DQM) with automated alerts on anomalies or system failures, schema validation for message structure, range checks for sensor readings, consistency checks across related sensors, missing data detection, duplicate message handling, outlier detection and flagging, timestamp validation, and device health status tracking.
+
+For data pipelines, I build scheduled pipelines with daily automated updates, such as converting 28 raw ProRail tables into 6 analytics-ready dashboards with daily refresh. I design ETL/ELT pipelines for extracting, transforming, and loading data, implement incremental processing for efficiency, manage data quality checks and validation, and automate the entire workflow from source to analytics.
+
+For the RAG chatbot, I integrated with SharePoint API for automated document extraction from SharePoint libraries containing 100-3,000 documents per domain. I built automated SharePoint ingestion supporting PDF, Word, Excel, PowerPoint formats, with metadata extraction and tracking, change detection for incremental updates, document versioning and history, and daily automated refresh across 30+ domains.
+
+My pipeline experience includes real-time streaming architectures using Azure Event Hub and Kafka, batch processing systems with Spark, data warehouse integration, data lake implementation, and metadata management.
+
+Technologies: Data quality frameworks, SharePoint API, ETL/ELT pipelines, Azure Event Hub, Apache Kafka, scheduled automation, incremental processing.
+
+Q: Does Margot implement data quality? A: Yes, comprehensive DQM with automated validation and alerts
+Q: Can Margot integrate with SharePoint? A: Yes, automated extraction from SharePoint for RAG system
+Q: Does Margot build data pipelines? A: Yes, ETL/ELT with daily automated updates
+Q: Has Margot worked with streaming data? A: Yes, Azure Event Hub and Kafka for real-time processing
+Q: Can Margot handle document ingestion? A: Yes, automated SharePoint parsing for 30+ RAG domains
+Q: Does Margot build scheduled pipelines? A: Yes, daily automated updates for HR and RAG systems
+================================================================================
+
+================================================================================
+METADATA_TOOLS_AND_TECHNOLOGIES_DOCUMENT
+================================================================================
+Document Type: Comprehensive Tools and Technologies Reference
+Candidate: Margot Razumeyeva (Margo Razumeyeva)
+Document Purpose: Searchable technical skills and tool proficiency reference
+Categories Covered: Programming languages, ML frameworks, cloud platforms, DevOps, data engineering, analytics
+Key Technologies: Python, Spark, SQL, Azure, Terraform, Docker, RAG, LLMs, Scikit-learn, CatBoost
+Experience Level: 5 years professional experience across all major tools
+Production Use: All technologies used in real production systems with measurable outcomes
+Last Updated: January 2026
+Context: Based on actual project implementations and daily professional use
+================================================================================
