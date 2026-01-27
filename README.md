@@ -61,7 +61,7 @@ HF_TOKEN=your_huggingface_token
 EOF
 
 # Start application
-docker compose -f docker-compose.external-db.yml up --build
+docker compose up --build
 
 # Access application
 open http://localhost:8000
@@ -76,8 +76,8 @@ HF_TOKEN=your_huggingface_token
 DATABASE_URL=postgresql://user:password@host:5432/database
 EOF
 
-# Start application
-docker compose -f docker-compose.external-db.yml up --build
+# Start application (uses bundled PostgreSQL by default)
+docker compose up --build
 ```
 
 ## Technical Features
@@ -94,6 +94,7 @@ docker compose -f docker-compose.external-db.yml up --build
 ```
 cv_rag/
 ├── main.py                      # FastAPI application & RAG pipeline
+├── ingest_documents.py          # ETL script for document ingestion
 ├── config/
 │   └── config.py               # Environment-based configuration
 ├── src/
@@ -106,7 +107,7 @@ cv_rag/
 │   ├── css/custom.css          # Styling
 │   └── js/app.js               # Frontend logic
 ├── documents/                   # Source CV documents
-├── docker-compose.external-db.yml
+├── docker-compose.yml           # Docker services configuration
 └── Dockerfile
 ```
 
@@ -114,22 +115,24 @@ cv_rag/
 
 ```bash
 # Start services (foreground with logs)
-docker compose -f docker-compose.external-db.yml up --build
+docker compose up --build
 
 # Start in background
-docker compose -f docker-compose.external-db.yml up --build -d
+# docker compose -f docker-compose.external-db.yml up --build -d
+docker compose up --build -d
 
 # Stop services
-docker compose -f docker-compose.external-db.yml down
+# docker compose -f docker-compose.external-db.yml down
+docker compose down
 
 # View logs
-docker compose -f docker-compose.external-db.yml logs -f app
+docker compose logs -f app
 
 # Restart app only
-docker compose -f docker-compose.external-db.yml restart app
+docker compose restart app
 
 # Access database
-docker compose -f docker-compose.external-db.yml exec postgres psql -U raguser -d ragdb
+docker compose exec postgres psql -U raguser -d ragdb
 ```
 
 ## Running Without Docker
@@ -161,7 +164,7 @@ After starting the services, load your documents into the database:
 
 ```bash
 # Run ingestion script (creates embeddings and stores chunks)
-docker compose -f docker-compose.external-db.yml exec app python ingest_documents.py
+docker compose exec app python ingest_documents.py
 ```
 
 ## Configuration Options

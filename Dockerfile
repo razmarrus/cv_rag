@@ -1,4 +1,4 @@
-FROM python:3.13-slim
+FROM python:3.11-slim-bookworm
 
 # Prevent Python from writing .pyc files and buffer stdout/stderr
 # Prevents Python from writing .pyc files (cached compiled Python code
@@ -40,5 +40,5 @@ EXPOSE 8000
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
   CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/health', timeout=5).read()" || exit 1
 
-# Run the application
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Run the application (optimized for Raspberry Pi - single worker to conserve memory)
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "1"]

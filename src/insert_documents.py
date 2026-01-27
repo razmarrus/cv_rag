@@ -7,16 +7,13 @@ into a PostgreSQL vector database.
 
 import logging
 import os
-import sys
 from typing import List, Dict
 
 from dotenv import load_dotenv
 
-sys.path.insert(0, 'src/')
-
-from text_processor import TextProcessor
-from pgvector_client import PgVectorClient
-from hf_client import HuggingFaceClient
+from src.text_processor import TextProcessor
+from src.pgvector_client import PgVectorClient
+from src.hf_client import HuggingFaceClient
 
 
 logging.basicConfig(level=logging.INFO)
@@ -106,28 +103,37 @@ def extract_chunks(text_processor, file_paths):
     return all_chunks
 
 
-def transform_chunks_with_embeddings(hf_client, chunks):
+def transform_chunks_with_embeddings(hf_client, chunks, batch_size=32):
     """
-    Generate embeddings for chunks and add them to chunk dictionaries.
+    Generate embeddings for chunks with batching and add them to chunk dictionaries.
     
     Args:
         hf_client (HuggingFaceClient): HuggingFaceClient instance.
         chunks (list): List of chunk dictionaries.
+        batch_size (int): Number of chunks per API call.
     
     Returns:
         list: Chunks with embeddings added.
     """
-    texts = [chunk['content'] for chunk in chunks]
-    embeddings = hf_client.get_embeddings(texts)
+    logger.info(f"Generating embeddings for {len(chunks)} chunks in batches of {batch_size}...")
     
-    logger.info(f"Generated embeddings for {len(embeddings)} chunks")
+    all_embeddings = []
+    
+    for i in range(0, len(chunks), batch_size):
+        batch = chunks[i:i + batch_size]
+        texts = [chunk['content'] for chunk in batch]
+        
+        logger.info(f"Processing batch {i//batch_size + 1}/{(len(chunks)-1)//batch_size + 1} ({len(texts)} chunks)")
+        batch_embeddings = hf_client.get_embeddings(texts)
+        all_embeddings.extend(batch_embeddings)
     
     for i, chunk in enumerate(chunks):
-        embedding = embeddings[i]
+        embedding = all_embeddings[i]
         if hasattr(embedding, 'tolist'):
             embedding = embedding.tolist()
         chunk['embedding'] = embedding
     
+    logger.info(f"Generated {len(all_embeddings)} embeddings successfully")
     return chunks
 
 

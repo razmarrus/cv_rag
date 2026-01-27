@@ -36,14 +36,12 @@ class Config:
     MAX_CONTEXT_TOKENS = 3500
     TOP_K_CHUNKS = 6
     SIMILARITY_THRESHOLD = 0.5
-    
-    # Generation Settings
+
     TEMPERATURE = 0.2
     MAX_NEW_TOKENS = 500
-    
-    # Rate Limiting (for future use)
+
     RATE_LIMIT = "10/hour"
-    
+
     @classmethod
     def validate(cls):
         """Validate required configuration."""

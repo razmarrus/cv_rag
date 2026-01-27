@@ -6,6 +6,12 @@ services:
       POSTGRES_USER: raguser
       POSTGRES_PASSWORD: ragpass
       POSTGRES_DB: ragdb
+      # PostgreSQL memory tuning for Raspberry Pi
+      POSTGRES_SHARED_BUFFERS: "128MB"
+      POSTGRES_MAX_CONNECTIONS: "20"
+      POSTGRES_WORK_MEM: "4MB"
+    mem_limit: 256m
+    cpus: "1.5"
     ports:
       - "5432:5432"
     volumes:
@@ -21,11 +27,13 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: cv_rag_app
+    mem_limit: 512m
+    cpus: "2"
     ports:
       - "8000:8000"
     environment:
       HF_TOKEN: ${HF_TOKEN}
-      EMBEDDING_MODEL: ${EMBEDDING_MODEL:-sentence-transformers/all-MiniLM-L6-v2}
+      EMBEDDING_MODEL: ${EMBEDDING_MODEL:-BAAI/bge-small-en-v1.5}
       LLM_MODEL: ${LLM_MODEL:-mistralai/Mistral-7B-Instruct-v0.2}
       DATABASE_URL: postgresql://raguser:ragpass@postgres:5432/ragdb
     depends_on:
