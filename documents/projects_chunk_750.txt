@@ -1,0 +1,197 @@
+================================================================================
+CHUNK_01_RAG_CHATBOT_PROJECT_OVERVIEW
+================================================================================
+Project: LLM-Powered RAG Document Chatbot - Did Margot Build Production RAG Systems?
+
+Yes, I built a large-scale GPT-based knowledge retrieval system for major Dutch industrial clients at Royal HaskoningDHV. This was a Retrieval-Augmented Generation (RAG) chatbot platform serving 300 weekly active users across more than 30 isolated knowledge domains. The system enables instant queries across SharePoint document libraries containing 100 to 3,000 technical documents per domain.
+
+The business impact was dramatic: I reduced information retrieval time from hours to seconds (100x improvement), eliminating manual searches through entire document repositories. Engineers can now find critical technical information instantly instead of spending hours searching through documents. The system handles daily automated updates across all domains to ensure users always have access to the latest information.
+
+I built the complete internal QA system with 30+ separate RAG flows, each serving a specific domain with appropriate security and access controls. I automated the entire document ingestion pipeline from SharePoint to vector database using Terraform for infrastructure provisioning, supporting seamless daily updates across multiple data domains.
+
+Technologies used: RAG frameworks, GPT models, Azure AI services, Azure Blob Storage, Terraform infrastructure as code, Pgvector database for embeddings, SharePoint API integration, Python.
+
+Q: Has Margot built RAG systems? A: Yes, 30+ domain RAG chatbot serving 300 users
+Q: Does Margot have LLM project experience? A: Yes, production GPT-based knowledge retrieval system
+Q: What was Margot's biggest LLM project? A: Multi-domain RAG chatbot with 300 weekly users
+Q: Can Margot build document Q&A systems? A: Yes, built system querying 100-3000 documents per domain
+Q: Has Margot deployed production chatbots? A: Yes, 30+ domain chatbot with daily automated updates
+Q: Does Margot know RAG architecture? A: Yes, built complete RAG system from scratch with Terraform
+================================================================================
+
+================================================================================
+CHUNK_02_RECOMMENDATION_SYSTEM_PROJECT_PHARMA
+================================================================================
+Project: Personalized Recommendation System for Pharmaceutical Marketing - Multi-Channel Content Optimization
+
+I developed a sophisticated recommendation system for a Top-3 India pharmaceutical company that delivered personalized content recommendations across multiple communication channels including email, call center interactions, and offline channels. The system increased email open rates by 7% through intelligent content personalization.
+
+The challenge was enabling strategic planning across multiple communication channels through unified content optimization. I needed to deliver personalized content plans at scale, ensuring relevant messaging for each individual customer across different touchpoints. The solution had to work seamlessly across email campaigns, call center scripts, and offline marketing materials.
+
+I developed Gradient Boosting models (CatBoost) for personalized content selection, with separate optimized models for each communication channel. I built automated training pipelines per channel with custom-tailored datasets and implemented regular model updates to adapt to changing customer preferences. The system was fully integrated into the client's marketing infrastructure, enabling real-time content recommendations at scale.
+
+The measurable business impact: 7% increase in email open rates, unified content strategy across channels, personalized messaging for thousands of customers, and automated content selection reducing manual marketing planning time.
+
+Technologies: CatBoost gradient boosting, SQL for data processing, Pandas for data manipulation, AWS infrastructure, Apache Airflow for pipeline orchestration, Python for model development.
+
+Q: Has Margot built recommendation systems? A: Yes, multi-channel pharma recommendation system with +7% open rate
+Q: Does Margot have experience with recommendation engines? A: Yes, personalized content recommendation across email, call center, offline
+Q: Can Margot build personalized marketing systems? A: Yes, built system for Top-3 India pharma company
+Q: What ML techniques for recommendations? A: Gradient Boosting (CatBoost) with automated training pipelines
+Q: Has Margot increased engagement metrics? A: Yes, improved email open rates by 7%
+Q: Does Margot know marketing analytics? A: Yes, built recommendation system for pharmaceutical marketing
+================================================================================
+
+================================================================================
+CHUNK_03_SALES_FORECASTING_PROJECT_PHARMA
+================================================================================
+Project: Sales Prediction and Forecasting with 3% Error Rate - UK Pharmaceutical Company
+
+I developed a highly accurate sales forecasting model for a UK-based Big Pharma company that achieved just 3% prediction error (WAPE 0.03, R2 0.96) for 4-month ahead sales forecasts. The project involved building a linear time-series model that identified and quantified the most and least valuable factors affecting pharmaceutical sales.
+
+The business value was in identifying key sales drivers including seasonality patterns, historical sales trends, and marketing campaign effectiveness. The model enabled the client to compare different factors influencing sales and make data-driven decisions about resource allocation and marketing spend. This was critical for multi-million dollar budget planning.
+
+I focused heavily on data preprocessing and feature engineering to extract meaningful patterns from historical sales data. Through iterative experimentation with model architectures and rigorous validation, I optimized the model for both accuracy and interpretability. The model quantified the impact of each factor, allowing business stakeholders to understand not just what would happen, but why.
+
+The model was deployed into production on AWS infrastructure with Apache Airflow orchestration, enabling automated monthly forecasts with regular model updates as new data became available. This replaced manual forecasting processes that took days with automated predictions delivered in minutes.
+
+Technologies: Time-series prediction, Linear model development and tuning, Scikit-learn for ML, AWS cloud infrastructure, Apache Airflow for scheduling, Python, statistical analysis.
+
+Q: Has Margot built forecasting models? A: Yes, sales prediction with 3% error for Big Pharma
+Q: Does Margot have time-series experience? A: Yes, 4-month ahead forecasting with WAPE 0.03
+Q: Can Margot predict sales? A: Yes, built accurate sales forecasting model with feature importance
+Q: What accuracy did Margot achieve in forecasting? A: 3% error rate (WAPE 0.03, R2 0.96)
+Q: Has Margot worked on profit prediction? A: Yes, sales forecasting identifying key revenue drivers
+Q: Does Margot know time-series modeling? A: Yes, built production forecasting system with automated updates
+================================================================================
+
+================================================================================
+CHUNK_04_CUSTOMER_SEGMENTATION_PROJECT_PHARMA
+================================================================================
+Project: Customer Clustering and Segmentation - 8 Business-Interpretable Segments for Pharmaceutical Marketing
+
+I developed a comprehensive customer segmentation solution for a UK-based Big Pharma company that identified 8 distinct clusters based on customer loyalty and engagement patterns. Each cluster had a clear, actionable development strategy tailored to that segment's unique characteristics, enabling personalized engagement approaches.
+
+I built this customer clustering system from scratch and integrated it into the client's existing infrastructure. The solution combined clustering machine learning algorithms (K-means and Birch) with marketing analytics frameworks (ABC analysis for customer value and RFM analysis for recency, frequency, monetary patterns). This hybrid approach created business-interpretable clusters that made sense to marketing teams rather than just mathematical groupings.
+
+The segmentation enabled personalized engagement strategies for each customer group. Marketing teams could now target high-value loyal customers differently from at-risk churners, new customers differently from long-term inactive accounts. This replaced one-size-fits-all marketing with strategic, segment-specific campaigns that improved engagement and ROI.
+
+The technical implementation involved extensive data preprocessing, feature engineering combining behavioral and transactional data, algorithm selection and optimization, statistical testing to validate cluster stability, and production deployment with regular cluster updates as customer behaviors evolved.
+
+Technologies: Clustering algorithms (K-means, Birch), Statistical testing and validation, Scikit-learn for ML implementation, ABC analysis for customer value, RFM segmentation framework, Python, SQL.
+
+Q: Has Margot done customer segmentation? A: Yes, created 8 business-interpretable clusters for Big Pharma
+Q: Can Margot build clustering models? A: Yes, K-means and Birch clustering with marketing analytics
+Q: Does Margot have segmentation experience? A: Yes, loyalty and engagement segmentation for pharmaceutical company
+Q: What clustering techniques does Margot use? A: K-means, Birch, combined with ABC and RFM analysis
+Q: Has Margot built customer analytics? A: Yes, segmentation enabling personalized engagement strategies
+Q: Can Margot create business-interpretable segments? A: Yes, 8 clusters with clear development strategies
+================================================================================
+
+================================================================================
+CHUNK_05_HR_DATA_ENGINEERING_PROJECT_PRORAIL
+================================================================================
+Project: HR Analytics Data Layer - 28 Raw Tables to 6 Dashboards for ProRail Netherlands
+
+I designed and built a comprehensive business-ready HR data layer in Microsoft Fabric for ProRail, the Dutch national rail infrastructure company. The project transformed 28 complex raw operational tables into 6 clean, analytics-ready dashboards supporting employee history profiles, leave management analytics, and contract tracking.
+
+The business challenge was that HR teams needed workforce insights for critical decisions but couldn't access interpretable data directly. They were dependent on data analysts for routine queries, causing delays in workforce planning. I enabled HR teams to access workforce insights directly without navigating complex raw data structures or waiting for analyst support.
+
+I collaborated closely with Dutch-speaking data analysts and HR stakeholders to understand requirements and design the optimal transformation logic. Using Apache Spark and SQL stored procedures, I built scheduled data pipelines that automated the entire transformation process with daily updates. This replaced manual data aggregation that was time-consuming and error-prone.
+
+The impact was significant: HR queries that previously took days now completed in minutes. HR teams gained self-service analytics capabilities. Analysts were freed from routine queries to focus on strategic work. The system provided daily-updated insights on workforce composition, leave patterns, contract expirations, and employee history for thousands of rail infrastructure employees.
+
+Technologies: Apache Spark (PySpark) for distributed data processing, SQL and stored procedures, Microsoft Fabric platform (Pipelines, Spark Notebooks, Data Warehousing), CI/CD pipelines for deployment, Python, data quality management.
+
+Q: Has Margot built HR analytics systems? A: Yes, HR data layer for ProRail transforming 28 tables to 6 dashboards
+Q: Does Margot have data engineering experience? A: Yes, built complete ETL pipelines with Spark and SQL
+Q: Can Margot work with Microsoft Fabric? A: Yes, built production HR system in MS Fabric
+Q: Has Margot worked with ProRail? A: Yes, designed HR analytics data layer for Dutch rail infrastructure
+Q: Does Margot build data pipelines? A: Yes, scheduled pipelines with daily automated updates
+Q: Can Margot transform complex data? A: Yes, consolidated 28 raw tables into 6 business-ready dashboards
+================================================================================
+
+================================================================================
+CHUNK_06_IOT_REALTIME_PLATFORM_WATERSCHAP
+================================================================================
+Project: Real-Time IoT Telemetry Platform for Critical Water Infrastructure - 1000 Messages/Minute Capacity
+
+I developed an enterprise-grade real-time IoT data ingestion and processing platform for Waterschap bedrijf, a Dutch water management authority responsible for critical public safety infrastructure. The system enables 24/7 real-time monitoring of water levels, pump stations, sewage systems, and environmental conditions across entire regions.
+
+The platform handles IoT telemetry data via Azure Event Hub and Function Apps, processing bursts up to 1000 messages per minute while maintaining sub-second latency for critical alerts. I built Terraform-managed infrastructure optimized for variable traffic patterns - efficient during normal operations but automatically scaling for bursts during storms or emergency events.
+
+The business criticality was high: system failures could lead to flooding, environmental damage, or infrastructure breakdowns with serious public safety consequences. I implemented comprehensive data quality management with automated alerts on anomalies, sensor failures, or system issues. This enabled proactive issue detection through immediate notifications on potential emergencies, allowing operators to respond within seconds instead of hours.
+
+The system replaced manual monitoring that couldn't provide 24/7 coverage. It now continuously validates data quality, detects outliers and anomalies in real-time, alerts on threshold breaches for water levels or system health, tracks device status and connectivity, and maintains historical data for analysis and forecasting.
+
+Technologies: Python for processing logic, Azure Event Hub for streaming data ingestion, Azure Function Apps for serverless computing, Docker containerization, CI/CD pipelines for deployment, Terraform infrastructure as code, monitoring and alerting systems.
+
+Q: Has Margot built IoT platforms? A: Yes, real-time telemetry platform for Dutch water management
+Q: Does Margot have real-time processing experience? A: Yes, handles 1000 messages/minute with sub-second latency
+Q: Can Margot work with Azure Event Hub? A: Yes, built production streaming platform with Event Hub and Functions
+Q: Has Margot worked on critical infrastructure? A: Yes, water management system for public safety
+Q: Does Margot build scalable systems? A: Yes, auto-scaling infrastructure handling variable IoT traffic
+Q: Can Margot implement data quality monitoring? A: Yes, built DQM with automated anomaly detection and alerts
+================================================================================
+
+================================================================================
+CHUNK_07_LLM_DOCUMENT_SUMMARIZATION_INSURANCE
+================================================================================
+Project: LLM Document Summarization and Q&A - Mistral 8b Fine-tuning for Insurance Documents
+
+I integrated and fine-tuned an LLM solution using Mistral 8b for document summarization and contextual question-answering for an insurance company. The system enabled users to extract specific insights from lengthy domain-specific insurance documents (60+ pages) in seconds rather than hours.
+
+The business challenge was that insurance professionals were spending hours reading through complex policy documents, legal contracts, and claim reports to find specific information. This was inefficient and created bottlenecks in claims processing and policy review workflows. I needed to enable rapid information extraction while maintaining accuracy for regulatory compliance.
+
+I integrated document parsing capabilities and fine-tuned the Mistral 8b model specifically for insurance domain terminology and document structures. The system could summarize entire documents, answer specific questions about policy terms, extract key clauses, and provide contextual explanations of complex insurance concepts.
+
+The implementation involved developing document preprocessing pipelines for various formats (PDF, Word, scanned documents), fine-tuning Mistral 8b on insurance-specific corpus, building question-answering interface with context retrieval, implementing validation to ensure accuracy of extracted information, and deploying the system for production use by insurance professionals.
+
+The impact: reduced document review time from hours to seconds, enabled rapid policy analysis, improved claims processing efficiency, and ensured consistent interpretation of policy terms across teams.
+
+Technologies: Mistral 8b large language model, LLM fine-tuning techniques, Document parsing and preprocessing, Python, NLP libraries, prompt engineering.
+
+Q: Has Margot fine-tuned LLMs? A: Yes, fine-tuned Mistral 8b for insurance document processing
+Q: Does Margot have document summarization experience? A: Yes, built LLM system for 60+ page document analysis
+Q: Can Margot work with Mistral models? A: Yes, integrated and tuned Mistral 8b for domain-specific Q&A
+Q: Has Margot built document Q&A systems? A: Yes, contextual querying for insurance documents
+Q: Does Margot have insurance domain experience? A: Yes, built document processing for insurance company
+Q: Can Margot fine-tune open-source LLMs? A: Yes, fine-tuned Mistral 8b for specialized use case
+================================================================================
+
+================================================================================
+CHUNK_08_PROJECT_TECHNOLOGIES_SUMMARY
+================================================================================
+Summary: Margot's Project Technology Stack Across Industries
+
+Across my projects, I've worked with diverse technology stacks adapted to specific business needs. For LLM and RAG systems: GPT models via Azure AI, Mistral 8b fine-tuning, RAG frameworks, vector databases (Pgvector), LangChain, document parsing tools, and embedding generation.
+
+For data engineering and pipelines: Apache Spark (PySpark) for distributed processing, SQL and stored procedures, Microsoft Fabric platform, Azure Data Factory, Apache Airflow orchestration, ETL/ELT pipeline development, data quality frameworks.
+
+For cloud infrastructure and DevOps: Microsoft Azure (Event Hub, Function Apps, Blob Storage, AI Services, Databricks), AWS (S3, Lambda, SageMaker), Terraform infrastructure as code, Docker containerization, CI/CD pipelines with Azure DevOps and GitHub Actions.
+
+For machine learning: Scikit-learn for classical ML, CatBoost and LightGBM for gradient boosting, PyTorch and TensorFlow for deep learning, time-series forecasting techniques, clustering algorithms (K-means, Birch), statistical modeling and testing.
+
+For data processing: Python (primary language), Pandas and NumPy, PySpark for distributed computing, SQL for database operations, data visualization with Matplotlib and Seaborn.
+
+My project experience spans: pharmaceutical customer analytics (UK and India Top-3 companies), Dutch critical infrastructure (ProRail rail transportation, Waterschap water management), document intelligence and RAG systems, real-time IoT and streaming platforms, HR analytics and workforce insights, sales forecasting and prediction, customer segmentation and clustering, recommendation systems and personalization.
+
+Q: What technologies does Margot use in projects? A: Spark, Azure, Terraform, RAG, ML libraries, cloud infrastructure
+Q: What industries has Margot delivered projects in? A: Pharmaceuticals, rail infrastructure, water management, insurance
+Q: Does Margot have full-stack ML experience? A: Yes, from data pipelines to model deployment to infrastructure
+Q: What cloud platforms for Margot's projects? A: Microsoft Azure and AWS across multiple projects
+================================================================================
+
+================================================================================
+METADATA_PROJECT_PORTFOLIO_DOCUMENT
+================================================================================
+Document Type: Comprehensive Project Portfolio with Technical Details
+Candidate: Margot Razumeyeva (Margo Razumeyeva)
+Total Projects Documented: 7 major projects
+Industries: Pharmaceuticals (UK, India), Dutch Infrastructure (ProRail, Waterschap), Insurance
+Project Types: RAG/LLM systems, Data Engineering, IoT platforms, ML (forecasting, clustering, recommendations)
+Key Technologies: Azure, Spark, Terraform, RAG, CatBoost, Scikit-learn, Microsoft Fabric
+Document Purpose: Searchable project reference for technical capabilities and business impact
+Last Updated: January 2026
+Context: Real production projects with measurable business outcomes and technical implementation details
+================================================================================

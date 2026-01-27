@@ -37,10 +37,7 @@ class TextProcessor:
             self.tokenizer = tiktoken.encoding_for_model(model_name)
         except KeyError:
             self.tokenizer = tiktoken.get_encoding("cl100k_base")
-            logger.warning(
-                f"Model {model_name} not found, using cl100k_base"
-            )
-
+            logger.warning(f"Model {model_name} not found, using cl100k_base")
 
     def count_tokens(self, text: str) -> int:
         """Count tokens in text using model tokenizer."""

@@ -29,7 +29,6 @@ class HuggingFaceClient:
         self.embedding_model = embedding_model
         self.llm_model = llm_model
         
-        # Use HuggingFace router endpoint with explicit provider
         self.embedding_client = InferenceClient(
             model=embedding_model,
             token=hf_token
@@ -46,8 +45,7 @@ class HuggingFaceClient:
         self.llm_client = InferenceClient(
             model=llm_model,
             token=hf_token
-            # ,
-            # provider="hf-inference"
+
         )
         
         logger.info(f"Initialized embedding model: {embedding_model}")
@@ -64,7 +62,6 @@ class HuggingFaceClient:
         Returns:
             List of embedding vectors (as Python lists)
         """
-
         try:
             embeddings = self.embedding_client.feature_extraction(texts)
             
@@ -94,7 +91,7 @@ class HuggingFaceClient:
         Returns:
             Formatted prompt string
         """
-        prompt = f"""<s>[INST] You are a helpful assistant. Answer the question based on the provided context. Answer in human written style. Keep friendly and easy to read tone. 
+        prompt = f"""<s>[INST] You are a helpful assistant. Answer the question based on the provided context. Answer in human written style. Keep friendly and easy to read tone.
 
 Context:
 {context}
@@ -104,7 +101,6 @@ Question: {question}
 Answer based only on the context provided. If the answer is not in the context, say so. [/INST]
 """
         return prompt
-    
 
     def generate_answer(
         self,
@@ -137,10 +133,11 @@ Answer based only on the context provided. If the answer is not in the context, 
             #     return_full_text=False
             # )
             messages = [
-            {
-                "role": "user",
-                "content": prompt #f"Based on this context:\n\n{context_text}\n\nAnswer: {llm_question}?"
-            }]
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ]
 
             response = self.llm_client.chat_completion(
                 messages=messages,
@@ -148,12 +145,10 @@ Answer based only on the context provided. If the answer is not in the context, 
                 temperature=temperature
             )
                         
-            answer = response.choices[0].message.content.strip() #strip()
+            answer = response.choices[0].message.content.strip()
             logger.info(f"Generated answer ({len(answer)} chars)")
             return answer
             
         except Exception as e:
             logger.error(f"Answer generation failed: {e}")
             raise RuntimeError(f"Failed to generate answer: {e}") from e
-
-

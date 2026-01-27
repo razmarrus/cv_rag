@@ -9,10 +9,6 @@ sudo systemctl start docker.service
 
 ## Container Management
 
-### Check Running Containers
-```bash
-docker ps
-```
 
 ### Check All Containers (including stopped)
 ```bash
@@ -46,6 +42,8 @@ docker-compose -f docker-compose.external-db.yml restart app
 ```bash
 docker-compose -f docker-compose.external-db.yml down
 ```
+
+`docker rm -f container_name` - remove docker container
 
 ## Virtual Environment
 
@@ -96,3 +94,8 @@ With logs
 
 Restart
 `docker-compose -f docker-compose.external-db.yml restart app`
+
+## Pi
+
+`ssh razmarrus@192.168.0.180`
+`sudo shutdown -h now` or `sudo poweroff`
