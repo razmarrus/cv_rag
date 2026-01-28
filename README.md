@@ -14,8 +14,8 @@ The system showcases the ML engineering work I do professionally: building RAG p
 
 **Source Code (`src/`)**
 - `text_processor.py`: Handles document chunking with token-aware splitting (512 tokens, 50 token overlap) and context assembly within LLM token budgets
-- `hf_client.py`: Manages HuggingFace API integration for embeddings (sentence-transformers/all-MiniLM-L6-v2) and text generation (Mistral-7B-Instruct)
-- `pgvector_client.py`: PostgreSQL client with pgvector extension for vector similarity search using cosine distance
+- `hf_client.py`: Manages HuggingFace API integration for embeddings (sentence-transformers/all-MiniLM-L6-v2) and text generation (Mistral-7B-Instruct). Implements context manager pattern for explicit memory management on resource-constrained hardware
+- `pgvector_client.py`: PostgreSQL client with pgvector extension for vector similarity search using cosine distance. Implements connection pooling for concurrent query handling
 
 **Backend (`main.py`)**
 FastAPI application serving both REST API and web interface. Orchestrates the RAG pipeline: embedding generation, vector search, context assembly, and LLM answer generation. Includes health checks, error handling, and comprehensive logging.
@@ -85,6 +85,8 @@ docker compose up --build
 - **FastAPI**: Async REST API with automatic OpenAPI documentation
 - **HuggingFace Integration**: Remote Inference API for embeddings and LLM generation
 - **Vector Search**: PostgreSQL with pgvector extension for semantic similarity
+- **Connection Pooling**: Threaded connection pool for concurrent database access
+- **Memory Management**: Context manager pattern for explicit cleanup on resource-constrained hardware
 - **Responsive UI**: Modern Pico CSS framework with loading states
 - **Docker Deployment**: Multi-container setup with health checks
 - **Production Ready**: Logging, error handling, configuration management
@@ -184,6 +186,44 @@ CHUNK_OVERLAP=50
 TOP_K_CHUNKS=5
 SIMILARITY_THRESHOLD=0.1
 ```
+
+## Memory Management & Optimization
+
+### Context Manager for Embeddings
+
+The system implements explicit memory management for embedding operations using Python context managers. This is particularly important for resource-constrained deployments like Raspberry Pi.
+
+
+**Motivation:**
+
+When generating embeddings, temporary objects (numpy arrays, list wrappers) are created that consume memory. While Python's garbage collector handles cleanup, on memory-constrained hardware like Raspberry Pi (512MB container limit), explicit cleanup ensures:
+
+1. **Immediate Memory Release**: Objects are deleted as soon as they're no longer needed, not when GC decides to run
+2. **Predictable Resource Usage**: Memory footprint is bounded and deterministic per request
+3. **Exception Safety**: Cleanup occurs even if errors happen during processing
+4. **Clear Lifecycle**: Embedding scope is visually apparent in code
+
+**Technical Details:**
+
+The `embedding_context` context manager (in `hf_client.py`):
+- Generates embedding from text
+- Yields the embedding vector for use
+- Executes `del` statements on exit to remove references
+- Forces garbage collection with `gc.collect()`
+
+
+### Connection Pooling
+
+
+**Technical Details:**
+
+- Uses `ThreadedConnectionPool` for thread-safe connection management
+- Min connections (2): Kept warm and ready for immediate use
+- Max connections (10): Upper limit to prevent resource exhaustion
+- Automatic connection lifecycle: get → use → return to pool
+- Health checks verify pool connectivity
+
+
 
 ## Technology Stack
 

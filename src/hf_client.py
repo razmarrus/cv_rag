@@ -1,6 +1,8 @@
 """
 HuggingFaceClient: Embeddings generation, LLM inference
 """
+import gc
+from contextlib import contextmanager
 from typing import List
 from huggingface_hub import InferenceClient
 import logging
@@ -78,6 +80,37 @@ class HuggingFaceClient:
             logger.error(f"Embedding generation failed: {e}")
             raise RuntimeError(f"Failed to generate embeddings: {e}") from e
 
+    @contextmanager
+    def embedding_context(self, text: str):
+        """
+        Context manager for embedding generation with automatic cleanup.
+        
+        Args:
+            text: Single text to embed
+            
+        Yields:
+            Single embedding vector (as Python list)
+            
+        Example:
+            with hf_client.embedding_context(question) as query_embedding:
+                chunks = db.search(query_embedding)
+        """
+        embedding_list = None
+        query_embedding = None
+        
+        try:
+            embedding_list = self.get_embeddings([text])
+            query_embedding = embedding_list[0]
+            
+            if not isinstance(query_embedding, list):
+                query_embedding = query_embedding.tolist()
+            
+            yield query_embedding
+            
+        finally:
+            del query_embedding
+            del embedding_list
+            gc.collect()
 
     def build_prompt(self, question: str, context: str) -> str:
         """
@@ -123,6 +156,14 @@ Answer based only on the context provided. If the answer is not in the context, 
         prompt = self.build_prompt(question, context)
         
         try:
+            # response = self.llm_client.text_generation(
+            #     prompt,
+            #     max_new_tokens=max_new_tokens,
+            #     temperature=temperature,
+            #     do_sample=True,
+            #     top_p=0.9,
+            #     return_full_text=False
+            # )
             messages = [
             {
                 "role": "user",

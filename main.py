@@ -81,22 +81,21 @@ def query_rag(question: str) -> dict:
     start_time = time.time()
     
     try:
-        # Step 1: Generate embedding
+        # Step 1: Generate embedding with automatic memory cleanup
         logger.info(f"Step 1: Generating embedding for question: '{question}'")
-        query_embedding = hf_client.get_embeddings([question])[0]
-        if not isinstance(query_embedding, list):
-            query_embedding = query_embedding.tolist()
-        logger.info(f"Embedding generated: dimension={len(query_embedding)}")
         
-        # Step 2: Search database
-        logger.info(f"Step 2: Searching database (k={Config.TOP_K_CHUNKS}, threshold={Config.SIMILARITY_THRESHOLD})")
-        chunks = db_client.search(
-            query_embedding,
-            k=Config.TOP_K_CHUNKS,
-            similarity_threshold=Config.SIMILARITY_THRESHOLD
-        )
-        logger.info(f"Search returned {len(chunks)} chunks")
-        
+        with hf_client.embedding_context(question) as query_embedding:
+            logger.info(f"Embedding generated: dimension={len(query_embedding)}")
+            
+            # Step 2: Search database
+            logger.info(f"Step 2: Searching database (k={Config.TOP_K_CHUNKS}, threshold={Config.SIMILARITY_THRESHOLD})")
+            chunks = db_client.search(
+                query_embedding,
+                k=Config.TOP_K_CHUNKS,
+                similarity_threshold=Config.SIMILARITY_THRESHOLD
+            )
+            logger.info(f"Search returned {len(chunks)} chunks")
+
         if chunks:
             for i, chunk in enumerate(chunks):
                 logger.info(f"Chunk {i+1}: similarity={chunk.get('similarity', 0):.3f}, source={chunk.get('source', 'unknown')}")
@@ -190,11 +189,25 @@ async def ask_question(request: Request, question: str = Form(...)):
 
 @app.get("/health")
 async def health_check():
-    """Health check endpoint."""
-    return {
+    """Health check endpoint with connection pool verification."""
+    health_status = {
         "status": "healthy",
-        "database": "connected" if db_client and db_client.conn else "disconnected"
+        "database": "disconnected"
     }
+    
+    if db_client and db_client.pool:
+        try:
+            # Test connection pool by executing simple query
+            with db_client.get_connection() as conn:
+                with conn.cursor() as cur:
+                    cur.execute("SELECT 1")
+            health_status["database"] = "connected"
+        except Exception as e:
+            logger.warning(f"Database health check failed: {e}")
+            health_status["database"] = "error"
+            health_status["status"] = "degraded"
+    
+    return health_status
 
 
 @app.on_event("shutdown")
