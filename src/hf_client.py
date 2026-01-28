@@ -90,7 +90,7 @@ class HuggingFaceClient:
         Returns:
             Formatted prompt string
         """
-        prompt = f"""<s>[INST] You are a helpful assistant. Answer the question based on the provided context. Answer in human written style. Keep friendly and easy to read tone. 
+        prompt = f"""<s>[INST] You are a helpful assistant. Answer the question based on the provided context. Answer in human written style. Keep friendly and easy to read tone.
 
 Context:
 {context}
@@ -100,7 +100,6 @@ Question: {question}
 Answer based only on the context provided. If the answer is not in the context, say so. [/INST]
 """
         return prompt
-    
 
     def generate_answer(
         self,
