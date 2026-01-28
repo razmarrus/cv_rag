@@ -99,3 +99,22 @@ Restart
 
 `ssh razmarrus@192.168.0.180`
 `sudo shutdown -h now` or `sudo poweroff`
+
+ingest data
+`docker compose exec app python ingest_documents.py`
+
+Clean up db
+`docker compose exec postgres psql -U raguser -d ragdb -c "TRUNCATE TABLE documents;"`
+
+# Health check
+curl http://192.168.0.180:8000/health
+
+# Ask a question via API
+curl -X POST http://192.168.0.180:8000/ask \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "question=What is your experience with Python?"
+
+restart conatiner
+`docker compose restart app`
+`docker compose up -d --build app`
+  

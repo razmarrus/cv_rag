@@ -45,7 +45,6 @@ class HuggingFaceClient:
         self.llm_client = InferenceClient(
             model=llm_model,
             token=hf_token
-
         )
         
         logger.info(f"Initialized embedding model: {embedding_model}")
@@ -124,20 +123,11 @@ Answer based only on the context provided. If the answer is not in the context, 
         prompt = self.build_prompt(question, context)
         
         try:
-            # response = self.llm_client.text_generation(
-            #     prompt,
-            #     max_new_tokens=max_new_tokens,
-            #     temperature=temperature,
-            #     do_sample=True,
-            #     top_p=0.9,
-            #     return_full_text=False
-            # )
             messages = [
-                {
-                    "role": "user",
-                    "content": prompt
-                }
-            ]
+            {
+                "role": "user",
+                "content": prompt
+            }]
 
             response = self.llm_client.chat_completion(
                 messages=messages,

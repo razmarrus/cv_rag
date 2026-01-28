@@ -90,38 +90,29 @@ def extract_documents(text_processor: TextProcessor,
 
 
 def generate_embeddings(hf_client: HuggingFaceClient,
-                       chunks: List[Dict],
-                       batch_size: int = 32) -> List[Dict]:
+                       chunks: List[Dict]) -> List[Dict]:
     """
-    Generate embeddings for document chunks with batching.
+    Generate embeddings for document chunks.
 
     Args:
         hf_client: HuggingFaceClient instance for embedding generation.
         chunks: List of chunk dictionaries.
-        batch_size: Number of chunks to process per API call.
 
     Returns:
         List of chunks with embeddings added.
     """
-    logger.info(f"Generating embeddings for {len(chunks)} chunks in batches of {batch_size}...")
+    logger.info("Generating embeddings...")
 
-    all_embeddings = []
-    
-    for i in range(0, len(chunks), batch_size):
-        batch = chunks[i:i + batch_size]
-        texts = [chunk['content'] for chunk in batch]
-        
-        logger.info(f"Processing batch {i//batch_size + 1}/{(len(chunks)-1)//batch_size + 1} ({len(texts)} chunks)")
-        batch_embeddings = hf_client.get_embeddings(texts)
-        all_embeddings.extend(batch_embeddings)
+    texts = [chunk['content'] for chunk in chunks]
+    embeddings = hf_client.get_embeddings(texts)
 
     for i, chunk in enumerate(chunks):
-        embedding = all_embeddings[i]
+        embedding = embeddings[i]
         if hasattr(embedding, 'tolist'):
             embedding = embedding.tolist()
         chunk['embedding'] = embedding
 
-    logger.info(f"Generated {len(all_embeddings)} embeddings successfully")
+    logger.info(f"Generated {len(embeddings)} embeddings")
     return chunks
 
 
