@@ -3,7 +3,7 @@ HuggingFaceClient: Embeddings generation, LLM inference
 """
 import gc
 from contextlib import contextmanager
-from typing import List
+from typing import List, Optional
 from huggingface_hub import InferenceClient
 import logging
 
@@ -17,7 +17,8 @@ class HuggingFaceClient:
         self,
         hf_token: str,
         embedding_model: str = "sentence-transformers/all-MiniLM-L6-v2",
-        llm_model: str = "mistralai/Mistral-7B-Instruct-v0.2"
+        llm_model: str = "mistralai/Mistral-7B-Instruct-v0.2",
+        use_local_embeddings: bool = False
     ):
         """
         Initialize Hugging Face client.
@@ -26,36 +27,34 @@ class HuggingFaceClient:
             hf_token: Hugging Face API token
             embedding_model: Model for embeddings
             llm_model: Model for text generation
+            use_local_embeddings: Use local sentence-transformers model instead of API
         """
         self.hf_token = hf_token
         self.embedding_model = embedding_model
         self.llm_model = llm_model
+        self.use_local_embeddings = use_local_embeddings
+        self.local_embedding_model = None
         
-        self.embedding_client = InferenceClient(
-            model=embedding_model,
-            token=hf_token
-            # base_url="https://router.huggingface.co"
-            # provider="hf-inference"
-        )
-
-        # llm_client=InferenceClient(
-        #             model="mistralai/Mistral-7B-Instruct-v0.2",
-        #             token=HF_TOKEN
-        #         )
-
+        # Load local embedding model if requested
+        if use_local_embeddings:
+            try:
+                from sentence_transformers import SentenceTransformer
+                self.local_embedding_model = SentenceTransformer(embedding_model)
+            except (ImportError, Exception) as e:
+                logger.warning(f"Local embeddings unavailable ({type(e).__name__}), using remote API")
+                self.use_local_embeddings = False
         
-        self.llm_client = InferenceClient(
-            model=llm_model,
-            token=hf_token
-        )
+        # Initialize remote clients
+        self.embedding_client = InferenceClient(model=embedding_model, token=hf_token)
+        self.llm_client = InferenceClient(model=llm_model, token=hf_token)
         
-        logger.info(f"Initialized embedding model: {embedding_model}")
-        logger.info(f"Initialized LLM: {llm_model}")
+        embedding_mode = "LOCAL" if self.use_local_embeddings else "REMOTE"
+        logger.info(f"Embeddings: {embedding_mode} | LLM: {llm_model}")
 
 
     def get_embeddings(self, texts: List[str]) -> List[List[float]]:
         """
-        Generate embeddings for texts.
+        Generate embeddings for texts using local model or remote API.
         
         Args:
             texts: List of texts to embed
@@ -63,7 +62,30 @@ class HuggingFaceClient:
         Returns:
             List of embedding vectors (as Python lists)
         """
+        # Try local model first if enabled
+        if self.use_local_embeddings and self.local_embedding_model is not None:
+            try:
+                logger.debug(f"Generating {len(texts)} embeddings using LOCAL model")
+                embeddings = self.local_embedding_model.encode(
+                    texts,
+                    convert_to_numpy=True,
+                    show_progress_bar=False
+                )
+                
+                # Convert numpy arrays to Python lists
+                if hasattr(embeddings, 'tolist'):
+                    embeddings = embeddings.tolist()
+                
+                logger.info(f"Generated {len(embeddings)} embeddings (LOCAL)")
+                return embeddings
+                
+            except Exception as e:
+                logger.warning(f"Local embedding generation failed: {e}")
+                logger.info("Falling back to remote API")
+        
+        # Use remote API (either by default or as fallback)
         try:
+            logger.debug(f"Generating {len(texts)} embeddings using REMOTE API")
             embeddings = self.embedding_client.feature_extraction(texts)
             
             # Convert numpy arrays to Python lists
@@ -73,11 +95,11 @@ class HuggingFaceClient:
                 if hasattr(embeddings[0], 'tolist'):
                     embeddings = [emb.tolist() for emb in embeddings]
             
-            logger.info(f"Generated {len(embeddings)} embeddings")
+            logger.info(f"Generated {len(embeddings)} embeddings (REMOTE)")
             return embeddings
             
         except Exception as e:
-            logger.error(f"Embedding generation failed: {e}")
+            logger.error(f"Remote embedding generation failed: {e}")
             raise RuntimeError(f"Failed to generate embeddings: {e}") from e
 
     @contextmanager

@@ -13,7 +13,7 @@ class Config:
     EMBEDDING_MODEL = os.getenv(
         "EMBEDDING_MODEL", 
         "BAAI/bge-small-en-v1.5"
-        
+        if USE_LOCAL_EMBEDDINGS else "sentence-transformers/all-MiniLM-L6-v2"
     )
     LLM_MODEL = os.getenv(
         "LLM_MODEL", 
@@ -33,14 +33,26 @@ class Config:
     # RAG Settings
     CHUNK_SIZE = 750
     CHUNK_OVERLAP = 125
-    MAX_CONTEXT_TOKENS = 3500
-    TOP_K_CHUNKS = 6
+
+
     SIMILARITY_THRESHOLD = 0.5
+
+    # more context
+    # TOP_K_CHUNKS = 6
+    # MAX_CONTEXT_TOKENS = 3500
+
+    # Optimized 
+    TOP_K_CHUNKS = 4             
+    MAX_CONTEXT_TOKENS = 2500    
+
 
     TEMPERATURE = 0.2
     MAX_NEW_TOKENS = 500
 
     RATE_LIMIT = "10/hour"
+    
+    # Local embeddings (faster, uses ~200MB more RAM)
+    USE_LOCAL_EMBEDDINGS = os.getenv("USE_LOCAL_EMBEDDINGS", "false").lower() == "true"
 
     @classmethod
     def validate(cls):

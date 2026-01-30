@@ -36,6 +36,7 @@ services:
       EMBEDDING_MODEL: ${EMBEDDING_MODEL:-BAAI/bge-small-en-v1.5}
       LLM_MODEL: ${LLM_MODEL:-mistralai/Mistral-7B-Instruct-v0.2}
       DATABASE_URL: postgresql://raguser:ragpass@postgres:5432/ragdb
+      USE_LOCAL_EMBEDDINGS: ${USE_LOCAL_EMBEDDINGS:-true}
     depends_on:
       postgres:
         condition: service_healthy
@@ -44,6 +45,8 @@ services:
       - ./src:/app/src
       - ./templates:/app/templates
       - ./static:/app/static
+      - huggingface_cache:/root/.cache/huggingface
 
 volumes:
   pgvector_data:
+  huggingface_cache:

@@ -48,7 +48,8 @@ async def startup_event():
         hf_client = HuggingFaceClient(
             hf_token=Config.HF_TOKEN,
             embedding_model=Config.EMBEDDING_MODEL,
-            llm_model=Config.LLM_MODEL
+            llm_model=Config.LLM_MODEL,
+            use_local_embeddings=Config.USE_LOCAL_EMBEDDINGS  
         )
         
         db_client = PgVectorClient(
