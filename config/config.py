@@ -10,19 +10,15 @@ class Config:
     # API Keys
     HF_TOKEN = os.getenv("HF_TOKEN")
 
-    EMBEDDING_MODEL = os.getenv(
-        "EMBEDDING_MODEL", 
-        "BAAI/bge-small-en-v1.5"
-        
-    )
-    LLM_MODEL = os.getenv(
-        "LLM_MODEL", 
-        "mistralai/Mistral-7B-Instruct-v0.2"
-    )
-    
     # Database
     DATABASE_URL = os.getenv("DATABASE_URL")
     EMBEDDING_DIM = 384
+    
+    # Model Configuration 
+    USE_LOCAL_EMBEDDINGS = os.getenv("USE_LOCAL_EMBEDDINGS", "false").lower() == "true"
+    EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "BAAI/bge-small-en-v1.5")
+    # LLM_MODEL = os.getenv("LLM_MODEL", "mistralai/Mistral-7B-Instruct-v0.2")
+    LLM_MODEL = os.getenv("LLM_MODEL", "Qwen/Qwen2.5-7B-Instruct")
     
     # CHUNK_SIZE = 512
     # CHUNK_OVERLAP = 50
@@ -33,9 +29,18 @@ class Config:
     # RAG Settings
     CHUNK_SIZE = 750
     CHUNK_OVERLAP = 125
-    MAX_CONTEXT_TOKENS = 3500
-    TOP_K_CHUNKS = 6
+
+
     SIMILARITY_THRESHOLD = 0.5
+
+    # more context
+    # TOP_K_CHUNKS = 6
+    # MAX_CONTEXT_TOKENS = 3500
+
+    # Optimized 
+    TOP_K_CHUNKS = 4             
+    MAX_CONTEXT_TOKENS = 2500    
+
 
     TEMPERATURE = 0.2
     MAX_NEW_TOKENS = 500

@@ -73,3 +73,4 @@ dmypy.json
 # Project specific
 documents/docks_backup/
 wheels/
+set_up.md

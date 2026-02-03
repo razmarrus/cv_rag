@@ -1,39 +1,82 @@
 """
-Class PgVectorClient:: Database CRUD, vector search, schema management
+Class PgVectorClient:: Database CRUD, vector search, schema management with connection pooling
 """
 import json
 import logging
+from contextlib import contextmanager
 from typing import List, Dict, Optional, Any
 
 import numpy as np
 import psycopg2
+from psycopg2 import pool
 from psycopg2.extras import execute_values
 
 logger = logging.getLogger(__name__)
 
 
 class PgVectorClient:
-    """PostgreSQL database with pgvector for embeddings."""
+    """PostgreSQL database with pgvector for embeddings and connection pooling."""
     
-    def __init__(self, connection_string: str, embedding_dim: int = 384):
+    def __init__(
+        self, 
+        connection_string: str, 
+        embedding_dim: int = 384,
+        min_connections: int = 2,
+        max_connections: int = 10
+    ):
+        """
+        Initialize database client with connection pooling.
+        
+        Args:
+            connection_string: PostgreSQL connection string
+            embedding_dim: Dimension of embedding vectors
+            min_connections: Minimum connections to keep in pool
+            max_connections: Maximum connections allowed in pool
+        """
         self.embedding_dim = embedding_dim
+        self.connection_string = connection_string
         
         try:
-            self.conn = psycopg2.connect(connection_string)
-            self.conn.autocommit = True
-            logger.info("Database connected")
+            # Create threaded connection pool
+            self.pool = pool.ThreadedConnectionPool(
+                minconn=min_connections,
+                maxconn=max_connections,
+                dsn=connection_string
+            )
+            logger.info(f"Database pool created: {min_connections}-{max_connections} connections")
         except Exception as e:
-            raise RuntimeError(f"Database connection failed: {e}") from e
+            raise RuntimeError(f"Database pool creation failed: {e}") from e
         
         self._create_extension()
         self._create_table()
+    
+    @contextmanager
+    def get_connection(self):
+        """
+        Context manager to get connection from pool.
+        
+        Yields:
+            Database connection
+            
+        Example:
+            with client.get_connection() as conn:
+                with conn.cursor() as cur:
+                    cur.execute("SELECT * FROM documents")
+        """
+        conn = self.pool.getconn()
+        try:
+            conn.autocommit = True
+            yield conn
+        finally:
+            self.pool.putconn(conn)
     
     
     def _create_extension(self):
         """Enable pgvector extension."""
         try:
-            with self.conn.cursor() as cur:
-                cur.execute("CREATE EXTENSION IF NOT EXISTS vector;")
+            with self.get_connection() as conn:
+                with conn.cursor() as cur:
+                    cur.execute("CREATE EXTENSION IF NOT EXISTS vector;")
             logger.info("pgvector extension enabled")
         except Exception as e:
             logger.error(f"Failed to create extension: {e}")
@@ -64,8 +107,9 @@ class PgVectorClient:
         """
         
         try:
-            with self.conn.cursor() as cur:
-                cur.execute(sql)
+            with self.get_connection() as conn:
+                with conn.cursor() as cur:
+                    cur.execute(sql)
             logger.info("Database schema created")
         except Exception as e:
             logger.error(f"Failed to create table: {e}")
@@ -74,28 +118,29 @@ class PgVectorClient:
     
     def insert_chunks(self, chunks: List[Dict]):
         """Insert chunks with embeddings (matches schema: source, chunk_id)."""
-        with self.conn.cursor() as cur:
-            for chunk in chunks:
-                embedding = chunk['embedding']
-                
-                if isinstance(embedding, np.ndarray):
-                    embedding = embedding.tolist()
-                
-                embedding_str = f"[{','.join(map(str, embedding))}]"
-                
-                cur.execute("""
-                    INSERT INTO documents 
-                    (content, embedding, source, chunk_id, start_token, end_token, token_count)
-                    VALUES (%s, %s::vector, %s, %s, %s, %s, %s)
-                """, (
-                    chunk['content'],
-                    embedding_str,
-                    chunk.get('source', 'unknown'),
-                    chunk.get('chunk_id', 0),
-                    chunk.get('start_token', 0),
-                    chunk.get('end_token', 0),
-                    chunk.get('token_count', 0)
-                ))
+        with self.get_connection() as conn:
+            with conn.cursor() as cur:
+                for chunk in chunks:
+                    embedding = chunk['embedding']
+                    
+                    if isinstance(embedding, np.ndarray):
+                        embedding = embedding.tolist()
+                    
+                    embedding_str = f"[{','.join(map(str, embedding))}]"
+                    
+                    cur.execute("""
+                        INSERT INTO documents 
+                        (content, embedding, source, chunk_id, start_token, end_token, token_count)
+                        VALUES (%s, %s::vector, %s, %s, %s, %s, %s)
+                    """, (
+                        chunk['content'],
+                        embedding_str,
+                        chunk.get('source', 'unknown'),
+                        chunk.get('chunk_id', 0),
+                        chunk.get('start_token', 0),
+                        chunk.get('end_token', 0),
+                        chunk.get('token_count', 0)
+                    ))
         
         logger.info(f"Inserted {len(chunks)} chunks")
 
@@ -120,55 +165,56 @@ class PgVectorClient:
         query_embedding_str = f"[{','.join(map(str, query_embedding))}]"
 
         try:
-            with self.conn.cursor() as cur:
-                cur.execute("""
-                    SELECT
-                        id,
-                        content,
-                        source,
-                        chunk_id,
-                        start_token,
-                        end_token,
-                        token_count,
-                        1 - (embedding <=> %s::vector) AS similarity
-                    FROM documents
-                    WHERE 1 - (embedding <=> %s::vector) > %s
-                    ORDER BY similarity DESC
-                    LIMIT %s
-                """, (query_embedding_str, query_embedding_str, similarity_threshold, k))
-
-                results = cur.fetchall()
-                logger.info(f"Found {len(results)} results above threshold {similarity_threshold}")
-                
-                # If no results, check top matches without threshold
-                if not results:
-                    logger.info("Checking top 3 matches without threshold...")
+            with self.get_connection() as conn:
+                with conn.cursor() as cur:
                     cur.execute("""
                         SELECT
+                            id,
+                            content,
                             source,
                             chunk_id,
+                            start_token,
+                            end_token,
+                            token_count,
                             1 - (embedding <=> %s::vector) AS similarity
                         FROM documents
+                        WHERE 1 - (embedding <=> %s::vector) > %s
                         ORDER BY similarity DESC
-                        LIMIT 3
-                    """, (query_embedding_str,))
-                    top_matches = cur.fetchall()
-                    for i, match in enumerate(top_matches):
-                        logger.info(f"Top {i+1}: source={match[0]}, chunk={match[1]}, similarity={match[2]:.3f}")
+                        LIMIT %s
+                    """, (query_embedding_str, query_embedding_str, similarity_threshold, k))
 
-                return [
-                    {
-                        "id": row[0],
-                        "content": row[1],
-                        "source": row[2],
-                        "chunk_id": row[3],
-                        "start_token": row[4],
-                        "end_token": row[5],
-                        "token_count": row[6],
-                        "similarity": float(row[7]),
-                    }
-                    for row in results
-                ]
+                    results = cur.fetchall()
+                    logger.info(f"Found {len(results)} results above threshold {similarity_threshold}")
+                    
+                    # If no results, check top matches without threshold
+                    if not results:
+                        logger.info("Checking top 3 matches without threshold...")
+                        cur.execute("""
+                            SELECT
+                                source,
+                                chunk_id,
+                                1 - (embedding <=> %s::vector) AS similarity
+                            FROM documents
+                            ORDER BY similarity DESC
+                            LIMIT 3
+                        """, (query_embedding_str,))
+                        top_matches = cur.fetchall()
+                        for i, match in enumerate(top_matches):
+                            logger.info(f"Top {i+1}: source={match[0]}, chunk={match[1]}, similarity={match[2]:.3f}")
+
+                    return [
+                        {
+                            "id": row[0],
+                            "content": row[1],
+                            "source": row[2],
+                            "chunk_id": row[3],
+                            "start_token": row[4],
+                            "end_token": row[5],
+                            "token_count": row[6],
+                            "similarity": float(row[7]),
+                        }
+                        for row in results
+                    ]
         except Exception as e:
             logger.error(f"Search failed: {e}")
             return []
@@ -206,8 +252,17 @@ class PgVectorClient:
     #         raise RuntimeError(f"Clear failed: {e}") from e
     
     def close(self):
-        """Close database connection."""
-        if self.conn:
-            self.conn.close()
-        logger.info("Database connection closed")
+        """Close all connections in the pool."""
+        if self.pool:
+            self.pool.closeall()
+        logger.info("Database connection pool closed")
+    
+    @property
+    def conn(self):
+        """
+        Deprecated property for backward compatibility.
+        Returns a connection from the pool (should be used with caution).
+        """
+        logger.warning("Direct conn access is deprecated, use get_connection() context manager")
+        return self.pool.getconn()
 
