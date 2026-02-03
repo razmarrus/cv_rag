@@ -10,19 +10,15 @@ class Config:
     # API Keys
     HF_TOKEN = os.getenv("HF_TOKEN")
 
-    EMBEDDING_MODEL = os.getenv(
-        "EMBEDDING_MODEL", 
-        "BAAI/bge-small-en-v1.5"
-        if USE_LOCAL_EMBEDDINGS else "sentence-transformers/all-MiniLM-L6-v2"
-    )
-    LLM_MODEL = os.getenv(
-        "LLM_MODEL", 
-        "mistralai/Mistral-7B-Instruct-v0.2"
-    )
-    
     # Database
     DATABASE_URL = os.getenv("DATABASE_URL")
     EMBEDDING_DIM = 384
+    
+    # Model Configuration 
+    USE_LOCAL_EMBEDDINGS = os.getenv("USE_LOCAL_EMBEDDINGS", "false").lower() == "true"
+    EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "BAAI/bge-small-en-v1.5")
+    # LLM_MODEL = os.getenv("LLM_MODEL", "mistralai/Mistral-7B-Instruct-v0.2")
+    LLM_MODEL = os.getenv("LLM_MODEL", "Qwen/Qwen2.5-7B-Instruct")
     
     # CHUNK_SIZE = 512
     # CHUNK_OVERLAP = 50
@@ -50,9 +46,6 @@ class Config:
     MAX_NEW_TOKENS = 500
 
     RATE_LIMIT = "10/hour"
-    
-    # Local embeddings (faster, uses ~200MB more RAM)
-    USE_LOCAL_EMBEDDINGS = os.getenv("USE_LOCAL_EMBEDDINGS", "false").lower() == "true"
 
     @classmethod
     def validate(cls):

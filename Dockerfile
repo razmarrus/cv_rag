@@ -18,13 +18,14 @@ COPY requirements-backend.txt .
 # - put pre-downloaded wheels into ./wheels (see README below)
 COPY wheels/ /wheels/
 
-# Install Python dependencies (prefers local wheels; falls back to PyPI)
-RUN python -m pip install --no-cache-dir --upgrade pip setuptools wheel && \
+# Install Python dependencies with BuildKit cache mount for faster rebuilds
+RUN --mount=type=cache,target=/root/.cache/pip \
+    python -m pip install --upgrade pip setuptools wheel && \
     if ls /wheels/*.whl >/dev/null 2>&1; then \
-        python -m pip install --no-cache-dir --find-links=/wheels -r requirements-backend.txt || \
-        python -m pip install --no-cache-dir -r requirements-backend.txt; \
+        python -m pip install --find-links=/wheels -r requirements-backend.txt || \
+        python -m pip install -r requirements-backend.txt; \
     else \
-        python -m pip install --no-cache-dir -r requirements-backend.txt; \
+        python -m pip install -r requirements-backend.txt; \
     fi
 
 # Copy application code

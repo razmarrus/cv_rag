@@ -45,8 +45,15 @@ class HuggingFaceClient:
                 self.use_local_embeddings = False
         
         # Initialize remote clients
-        self.embedding_client = InferenceClient(model=embedding_model, token=hf_token)
-        self.llm_client = InferenceClient(model=llm_model, token=hf_token)
+        # Note: Modern huggingface-hub versions auto-route to correct endpoint
+        self.embedding_client = InferenceClient(
+            model=embedding_model, 
+            token=hf_token
+        )
+        self.llm_client = InferenceClient(
+            model=llm_model, 
+            token=hf_token
+        )
         
         embedding_mode = "LOCAL" if self.use_local_embeddings else "REMOTE"
         logger.info(f"Embeddings: {embedding_mode} | LLM: {llm_model}")
@@ -178,14 +185,7 @@ Answer based only on the context provided. If the answer is not in the context, 
         prompt = self.build_prompt(question, context)
         
         try:
-            # response = self.llm_client.text_generation(
-            #     prompt,
-            #     max_new_tokens=max_new_tokens,
-            #     temperature=temperature,
-            #     do_sample=True,
-            #     top_p=0.9,
-            #     return_full_text=False
-            # )
+            # Use chat_completion for new router endpoint
             messages = [
             {
                 "role": "user",
