@@ -1,0 +1,477 @@
+================================================================================
+PROFESSIONAL_PROFILE_MARGOT_RAZUMEYEVA
+================================================================================
+
+Margot Razumeyeva is a Machine Learning Engineer with a strong foundation in data engineering, passionate about building end-to-end machine learning solutions that deliver real business impact.
+
+She takes full ownership of the ML lifecycle - from raw data extraction and dataset creation to model training, tuning, automation, and seamless integration into production environments. She is experienced with designing and developing both sophisticated models and the robust infrastructure needed to support them.
+
+Her approach is collaborative and hands-on: Margot works closely with stakeholders to make sure the systems she builds actually deliver real value. Communicative and goal-oriented, she believes that for every problem, there's a solution to be found. Challenges make tasks interesting for her, and she enjoys tackling them head-on.
+
+Margot has experience across various domains, including client analytics with profit prediction and recommendation systems, and industrial applications including rail and water management. She has experience building various LLM solutions, including RAG systems.
+
+In her free time, Margot maintains an active lifestyle through running and playing squash.
+
+Common Questions:
+Q: Who is Margot?
+Q: What does Margot do?
+Q: What is Margot's experience?
+Q: Tell me about Margot's approach to work
+Q: What domains has Margot worked in?
+
+================================================================================
+TECHNICAL_SKILLS_MACHINE_LEARNING
+================================================================================
+
+Margot's machine learning expertise includes:
+- Time-series prediction for forecasting sales and financial metrics
+- Statistical modeling and analysis for data-driven decisions
+- Clustering algorithms for customer segmentation
+- Regression analysis for predictive modeling
+- Gradient Boosting methods including CatBoost, LightGBM, XGBoost
+- Large Language Models including RAG systems and document processing
+
+Programming Skills:
+- Python (primary language for ML and data engineering)
+- Pandas and NumPy for data manipulation
+- SQL for complex queries and data extraction
+- PySpark for distributed computing
+- PyTorch and TensorFlow for deep learning
+- Scikit-learn for classical ML algorithms
+- MatPlotLib for visualization
+
+Common Questions:
+Q: What machine learning skills does Margot have?
+Q: What programming languages does Margot know?
+Q: Does Margot work with Python?
+Q: What ML frameworks does Margot use?
+Q: Can Margot do time series forecasting?
+
+================================================================================
+TECHNICAL_SKILLS_INFRASTRUCTURE_CLOUD
+================================================================================
+
+Infrastructure and Cloud Expertise:
+
+Azure Services:
+- Azure AI for LLM integration
+- Azure Event Hub for real-time data streaming
+- Azure Function Apps for serverless computing
+- Azure Blob Storage for data lakes
+- Azure DevOps for CI/CD pipelines
+- Microsoft Fabric for data orchestration
+
+AWS Services:
+- AWS infrastructure for ML deployment
+- Amazon Bedrock for LLM services
+- Airflow for workflow orchestration
+
+DevOps and Infrastructure:
+- Terraform for infrastructure as code
+- Docker for containerization
+- CI/CD pipelines with Azure DevOps and GitHub
+- Git for version control
+- Apache Spark for big data processing
+- Kafka and Hadoop for data engineering
+
+GenAI Technologies:
+- Retrieval-Augmented Generation (RAG) frameworks
+- Custom benchmark creation for LLM evaluation
+- Hugging Face API for model deployment
+- Amazon Bedrock for enterprise LLM
+- LangChain for LLM applications
+- Azure AI services
+- Pgvector for vector databases
+
+Common Questions:
+Q: What cloud platforms does Margot use?
+Q: Does Margot have Azure experience?
+Q: Can Margot work with Terraform?
+Q: What GenAI technologies does Margot know?
+Q: Does Margot have experience with RAG systems?
+
+================================================================================
+LANGUAGE_PROFICIENCY
+================================================================================
+
+Languages:
+- English: C1 professional proficiency
+- Dutch: B2 fluent business proficiency
+- Russian: Native speaker
+
+Margot has worked with major Dutch clients including ProRail and Waterschap bedrijf, conducting business communications in Dutch for rail and water management projects.
+
+Common Questions:
+Q: What languages does Margot speak?
+Q: Does Margot speak Dutch?
+Q: Can Margot work with Dutch clients?
+
+================================================================================
+CURRENT_ROLE_XOMNIA
+================================================================================
+
+Position: Machine Learning Engineer at Xomnia
+Duration: January 2026 to present
+Location: Amsterdam, Netherlands
+
+As a Machine Learning Engineer at Xomnia, Margot helps clients unlock the full potential of their data by building machine learning systems that deliver real value. She works on cutting-edge ML projects across various industries, focusing on production-grade implementations that solve real business problems.
+
+Common Questions:
+Q: Where does Margot work now?
+Q: What is Margot's current role?
+Q: What does Margot do at Xomnia?
+
+================================================================================
+PREVIOUS_ROLE_HASKONING_DATA_ENGINEER
+================================================================================
+
+Position: Data Engineer at Haskoning (Royal HaskoningDHV)
+Duration: July 2024 to January 2026
+Location: Amsterdam, Netherlands
+
+What Margot Did:
+Designed and developed robust data pipelines and cloud-based infrastructure for production-grade machine learning and analytics workflows. Delivered solutions for major industrial clients across the Netherlands, including rail transportation with ProRail, water utilities (waterbedrijf), and water management authorities (waterboards).
+
+How She Did It:
+Specialized in combining Apache Spark, Azure services, Terraform, and CI/CD pipelines to enable scalable big data processing and analytics at enterprise scale. Worked closely with Dutch-speaking stakeholders and engineering teams.
+
+Technologies Used:
+Spark, Azure (Event Hub, Function Apps, Blob Storage, AI Services), Terraform, Docker, CI/CD pipelines, Python, SQL, PySpark, GPT models, RAG frameworks, Pgvector
+
+Common Questions:
+Q: Where did Margot work before?
+Q: What projects did Margot do at Haskoning?
+Q: Has Margot worked with ProRail?
+Q: Does Margot have experience with water management projects?
+
+================================================================================
+PREVIOUS_ROLE_RUBBLES_DATA_SCIENTIST
+================================================================================
+
+Position: Data Scientist at Rubbles
+Duration: August 2021 to April 2024 (2 years 9 months)
+Location: Remote
+
+What Margot Did:
+End-to-end machine learning model development from data collection and preparation to model creation, deployment, and update automation. Collaborated with clients and colleagues at every step, delivering regular presentations. Specialized in customer analytics for the world's largest pharmaceutical companies, translating complex data patterns into actionable business strategies.
+
+Key Responsibilities:
+- Data collection, cleaning, and preparation
+- Feature engineering and model development
+- Model deployment and automation
+- Sales forecasting and prediction
+- Customer segmentation and clustering
+- Recommendation system development
+- Regular client presentations
+
+Technologies Used:
+Scikit-learn, CatBoost, LightGBM, Python, Pandas, NumPy, SQL, AWS, Apache Airflow, Mistral 8b fine-tuning
+
+Industry Focus:
+Pharmaceutical customer analytics for major UK and India-based companies including Top 3 global pharmaceutical companies.
+
+Common Questions:
+Q: Has Margot worked with pharmaceutical companies?
+Q: What did Margot do at Rubbles?
+Q: Does Margot have customer analytics experience?
+
+================================================================================
+PROJECT_LLM_DOCUMENT_CHATBOT_PLATFORM
+================================================================================
+
+Project: LLM-Powered Document Chatbot Platform
+Company: Haskoning
+Client: Major industrial clients in the Netherlands
+Duration: July 2024 to January 2026
+Scale: 30+ isolated domains with 300 weekly users
+
+The Problem:
+Engineers were spending hours manually searching through SharePoint libraries containing 100 to 3,000 documents per domain to find specific information. Critical knowledge was buried in lengthy technical documents, making information retrieval painfully slow and inefficient.
+
+What Margot Built:
+Built a GPT-based knowledge retrieval system enabling instant queries across SharePoint libraries. Created an internal QA system with 30+ isolated RAG flows, each serving a specific domain with appropriate security controls. Automated complete document ingestion pipeline from SharePoint to vector database, supporting daily updates across multiple data domains.
+
+How She Did It:
+- Automated SharePoint document extraction
+- Implemented document parsing and chunking optimization
+- Set up embedding generation and storage in Pgvector database
+- Integrated GPT models for query understanding and response generation
+- Built Terraform infrastructure for rapid provisioning of new domains
+- Implemented daily automated updates
+- Created multi-tenant architecture for domain isolation
+
+The Impact:
+Reduced information retrieval from hours to seconds (100x improvement). Eliminated manual searches through entire document repositories. 300 weekly users demonstrate strong adoption and value. Engineers now find what they need in seconds instead of spending hours searching.
+
+Technologies Used:
+RAG frameworks, GPT models, Azure AI, Azure Blob Storage, Terraform, Pgvector database, SharePoint API, Python
+
+Common Questions:
+Q: What LLM projects has Margot worked on?
+Q: Has Margot built RAG systems?
+Q: What is Margot's experience with document processing?
+Q: Can Margot build chatbots?
+Q: Does Margot have experience with GPT models?
+Q: What scale has Margot worked at?
+
+================================================================================
+PROJECT_HR_DATA_LAYER_PRORAIL
+================================================================================
+
+Project: Business Data Layer Development for HR Analytics
+Company: Haskoning
+Client: ProRail (Dutch national rail infrastructure company)
+Duration: July 2024 to January 2026
+
+The Problem:
+ProRail maintained employee data across 28 raw operational tables with complex relationships. HR teams needed workforce insights for critical decisions but couldn't directly access interpretable data. Data analysts were spending significant time responding to ad-hoc HR requests instead of doing strategic analysis.
+
+What Margot Built:
+Designed a business-ready HR data layer in Microsoft Fabric supporting analytics on aggregated employee history profiles, leave management, and contract tracking. Enabled HR teams to access workforce insights directly through 6 analytics-ready dashboards without navigating complex raw data structures.
+
+How She Did It:
+- Collaborated closely with Dutch-speaking data analysts and HR stakeholders
+- Used Apache Spark for large-scale data transformation
+- Implemented SQL stored procedures for complex business logic
+- Built scheduled pipelines converting 28 raw tables into 6 analytics tables
+- Set up daily automated updates
+- Implemented data quality checks and validation
+
+The Impact:
+HR teams gained direct access to workforce insights without analyst intervention. Reduced time for HR queries from days to minutes. Enabled self-service analytics for employee history, leave management, and contract tracking. Freed data analysts for strategic work instead of ad-hoc reporting.
+
+Technologies Used:
+Apache Spark (PySpark), SQL, Microsoft Fabric (Pipelines, Spark Notebooks), CI/CD pipelines, Python
+
+Common Questions:
+Q: Has Margot worked with ProRail?
+Q: Does Margot have HR analytics experience?
+Q: Can Margot build data pipelines?
+Q: What is Margot's Spark experience?
+Q: Has Margot worked with Microsoft Fabric?
+
+================================================================================
+PROJECT_IOT_TELEMETRY_PLATFORM
+================================================================================
+
+Project: Real-Time IoT Data Ingestion and Processing Platform
+Company: Haskoning
+Client: Waterschap bedrijf (Dutch water management authority)
+Duration: July 2024 to January 2026
+
+The Problem:
+Dutch water management authorities operate critical infrastructure monitoring water levels, pump stations, and sewage systems. Their existing systems couldn't handle variable IoT message rates, had no real-time alerting for emergencies, and data quality issues went undetected causing false readings. System failures could lead to flooding or environmental damage.
+
+What Margot Built:
+Developed an enterprise-grade scalable pipeline handling IoT telemetry data via Azure Event Hub and Function Apps. Built Terraform-managed infrastructure optimized for traffic bursts up to 1,000 messages per minute. Implemented comprehensive data quality management checks with automated alerts on anomalies or system failures.
+
+How She Did It:
+- Set up Azure Event Hub for high-throughput message ingestion
+- Developed Azure Function Apps for serverless real-time processing
+- Implemented data quality validation on all incoming messages
+- Built real-time anomaly detection
+- Created immediate alerting on critical events
+- Used Terraform for infrastructure as code
+- Dockerized the entire solution for consistent deployment
+- Built CI/CD pipelines for continuous deployment
+
+The Impact:
+Enabled real-time system monitoring and proactive issue detection for critical water management infrastructure. Successfully handles bursts up to 1,000 messages per minute. Immediate notifications allow rapid response to emergencies. Automated data quality management catches issues preventing false alerts. Reduced emergency response time from hours to minutes.
+
+Technologies Used:
+Python, Azure Event Hub, Azure Function Apps, Docker, CI/CD pipelines, Terraform
+
+Common Questions:
+Q: Has Margot worked with IoT systems?
+Q: Does Margot have real-time processing experience?
+Q: Can Margot handle high-throughput systems?
+Q: What is Margot's experience with water management projects?
+Q: Has Margot worked with Azure Event Hub?
+
+================================================================================
+PROJECT_LLM_DOCUMENT_SUMMARIZATION
+================================================================================
+
+Project: LLM Integration for Document Summarization
+Company: Rubbles
+Client: Insurance company
+Duration: August 2021 to April 2024
+
+The Problem:
+Insurance professionals needed to extract specific insights from lengthy domain-specific documents (60+ pages), which took hours of manual review.
+
+What Margot Built:
+Integrated and tuned document parsing with Mistral 8b model for document summarization and contextual question answering. Enabled users to extract specific insights from lengthy documents in seconds rather than hours.
+
+How She Did It:
+- Fine-tuned Mistral 8b model for insurance domain
+- Implemented document parsing for 60+ page documents
+- Built contextual Q&A system
+- Optimized for speed and accuracy
+
+The Impact:
+Reduced document analysis time from hours to seconds. Enabled rapid extraction of specific insights from lengthy domain-specific insurance documents, eliminating hours of manual review.
+
+Technologies Used:
+Mistral 8b, document parsing, LLM integration, fine-tuning
+
+Common Questions:
+Q: Has Margot fine-tuned LLMs?
+Q: Does Margot have experience with document summarization?
+Q: Can Margot work with Mistral models?
+
+================================================================================
+PROJECT_SALES_PREDICTION_PHARMA
+================================================================================
+
+Project: Sales Prediction Model with 3% Error
+Company: Rubbles
+Client: UK-based Big Pharma Company
+Duration: August 2021 to April 2024
+
+The Problem:
+Pharmaceutical company needed accurate sales forecasting to make data-driven decisions on resource allocation and understand which factors influenced sales most.
+
+What Margot Built:
+Developed a linear model to forecast sales 4 months ahead with only 3% error (WAPE = 0.03, R-squared = 0.96). Identified and quantified key sales drivers including seasonality, historical sales patterns, and marketing campaigns. The model allowed comparison of different factors that influenced sales.
+
+How She Did It:
+- Focused on data preprocessing and feature engineering
+- Iterative experimentation with model architectures
+- Identified most and least valuable factors affecting sales
+- Built automated training and update pipelines using Airflow
+
+The Impact:
+Achieved 3% error rate with excellent model performance (R-squared = 0.96). Enabled pharmaceutical company to compare different factors influencing sales and make data-driven decisions on resource allocation. Clear identification of most and least valuable sales drivers.
+
+Technologies Used:
+Time series prediction, Linear model tuning, Scikit-learn, AWS, Apache Airflow
+
+Common Questions:
+Q: Has Margot done sales forecasting?
+Q: What is Margot's experience with time series prediction?
+Q: Can Margot identify key business drivers?
+Q: Does Margot have pharmaceutical industry experience?
+
+================================================================================
+PROJECT_CUSTOMER_CLUSTERING_PHARMA
+================================================================================
+
+Project: Customer Clustering Based on Loyalty and Engagement
+Company: Rubbles
+Client: UK-based Big Pharma Company
+Duration: August 2021 to April 2024
+
+The Problem:
+Pharmaceutical company needed to understand customer segments to implement personalized engagement strategies, but lacked clear customer groupings based on behavior and engagement patterns.
+
+What Margot Built:
+Developed and integrated customer clustering solution from scratch. Obtained 8 distinct customer clusters with clear development strategies for each. Enabled personalized engagement strategies tailored to each cluster's unique characteristics.
+
+How She Did It:
+- Combined clustering ML algorithms (K-means, Birch) with marketing analyses (ABC, RFM)
+- Created business-interpretable clusters
+- Implemented statistical testing to validate clusters
+- Integrated solution into client's infrastructure
+
+The Impact:
+Obtained 8 clusters with clear development strategy and personalized engagement approach for each cluster. Enabled pharmaceutical company to implement personalized engagement strategies tailored to each customer segment based on loyalty and engagement patterns.
+
+Technologies Used:
+Clustering (Birch algorithm, K-means), Statistical testing, Scikit-learn, ABC analysis, RFM analysis
+
+Common Questions:
+Q: Does Margot have customer segmentation experience?
+Q: Can Margot do clustering analysis?
+Q: Has Margot worked with customer analytics?
+
+================================================================================
+PROJECT_RECOMMENDATION_SYSTEM_PHARMA
+================================================================================
+
+Project: Multi-Channel Recommendation System
+Company: Rubbles
+Client: Top 3 India Pharma Company
+Duration: August 2021 to April 2024
+
+The Problem:
+Pharmaceutical company needed to optimize content selection across multiple communication channels (email, call center, offline) to improve customer engagement, but lacked personalized recommendations at scale.
+
+What Margot Built:
+Developed Gradient Boosting models for personalized content selection across email, call center, and offline channels. Enabled strategic planning across multiple communication channels through unified content optimization. Delivered personalized content plans at scale, ensuring relevant messaging for each individual user.
+
+How She Did It:
+- Built separate Gradient Boosting (CatBoost) models for each channel
+- Automated training pipelines per channel with custom-tailored datasets
+- Implemented regular automated updates
+- Scaled to handle recommendations for large user base
+
+The Impact:
+Increased open rate by 7%. Enabled pharmaceutical company to deliver personalized content at scale across multiple communication channels, improving customer engagement. Unified content optimization across email, call center, and offline channels with automated pipeline updates.
+
+Technologies Used:
+Gradient Boosting (CatBoost), SQL, Pandas, AWS, Apache Airflow
+
+Common Questions:
+Q: Has Margot built recommendation systems?
+Q: Does Margot have experience with CatBoost?
+Q: Can Margot optimize multi-channel campaigns?
+Q: What marketing analytics has Margot done?
+
+================================================================================
+PERSONAL_PROJECT_FOREX_FORECASTING
+================================================================================
+
+Project: EUR/USD Exchange Rate Forecasting
+Type: Personal Pet Project
+Year: 2021
+
+What Margot Built:
+Predicting financial time series with several supervised learning models such as Gradient Boosting, Random Forest, SVM, and Linear regression. Project made from scratch with Pandas and Scikit-learn for EUR/USD exchange rate prediction with potential 3% profit.
+
+The Learning Value:
+Demonstrated end-to-end ML pipeline development for financial time series from scratch. Explored multiple modeling approaches and compared their performance on financial forecasting.
+
+Technologies Used:
+Gradient Boosting, Random Forest, SVM, Linear regression, Pandas, Scikit-learn
+
+Common Questions:
+Q: Has Margot worked with financial forecasting?
+Q: Does Margot have experience with different ML algorithms?
+
+================================================================================
+EDUCATION_AND_CERTIFICATIONS
+================================================================================
+
+Education:
+Bachelor of Computer Science
+Belarusian State University of Informatics and Radioelectronics
+
+Certifications:
+Microsoft Certified: Azure Data Engineer Associate (DP-203)
+Date: October 2024
+Demonstrates expertise in designing and implementing data solutions on Microsoft Azure including cloud infrastructure deployment and management.
+
+Common Questions:
+Q: What is Margot's education?
+Q: Does Margot have Azure certifications?
+Q: Is Margot certified in Azure?
+Q: What certifications does Margot have?
+
+================================================================================
+CONTACT_INFORMATION
+================================================================================
+
+Name: Margot Razumeyeva (also known as Marharyta Razumeyeva)
+Role: Machine Learning Engineer
+Location: Amsterdam, Netherlands
+Email: margo.razumeyeva@gmail.com
+GitHub: github.com/razmarrus
+LinkedIn: linkedin.com/in/razmarrus
+Work Authorization: Authorized to work in the Netherlands (no work permit required)
+
+Common Questions:
+Q: How to contact Margot?
+Q: What is Margot's email?
+Q: Where is Margot located?
+Q: Is Margot authorized to work in Netherlands?

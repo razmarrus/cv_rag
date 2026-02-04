@@ -28,7 +28,7 @@ class Config:
 
     # RAG Settings
     CHUNK_SIZE = 750
-    CHUNK_OVERLAP = 125
+    CHUNK_OVERLAP = 50
 
 
     SIMILARITY_THRESHOLD = 0.5
