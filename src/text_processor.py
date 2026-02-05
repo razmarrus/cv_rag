@@ -84,9 +84,88 @@ class TextProcessor:
 
         return chunks
 
+    def chunk_by_separator(
+        self,
+        text: str,
+        source: str = "unknown",
+        separator: str = "=" * 80
+    ) -> List[Dict]:
+        """Split text into semantic chunks using separator boundaries.
+
+        Args:
+            text: Input text to chunk
+            source: Source identifier for provenance tracking
+            separator: Separator pattern to split on (default: 80 equals signs)
+
+        Returns:
+            List of chunk dictionaries with content and metadata
+        """
+        if not text or not text.strip():
+            return []
+
+        # Split by separator
+        sections = text.split(separator)
+        
+        chunks = []
+        chunk_id = 0
+        i = 0
+
+        while i < len(sections):
+            section = sections[i].strip()
+            
+            # Skip empty sections
+            if not section:
+                i += 1
+                continue
+            
+            # Check if this looks like a header (short, uppercase, no paragraphs)
+            # and there's a next section with content
+            if i + 1 < len(sections) and len(section) < 100 and '\n\n' not in section:
+                # This is likely a header, combine with next section
+                next_section = sections[i + 1].strip()
+                if next_section:
+                    # Combine header with content
+                    combined_content = f"{separator}\n{section}\n{separator}\n\n{next_section}"
+                    i += 2  # Skip both sections
+                else:
+                    # Next section is empty, just use header
+                    combined_content = section
+                    i += 1
+            else:
+                # This is standalone content
+                combined_content = section
+                i += 1
+            
+            # Count tokens for this chunk
+            token_count = self.count_tokens(combined_content)
+            # Warn if chunk exceeds configured size
+            if token_count > self.chunk_size:
+                logger.warning(
+                    f"Semantic chunk {chunk_id} in {source} has {token_count} tokens "
+                    f"(exceeds configured size of {self.chunk_size})"
+                )
+            
+            chunks.append({
+                "content": combined_content,
+                "chunk_id": chunk_id,
+                "token_count": token_count,
+                "start_token": 0,  # Not applicable for semantic chunks
+                "end_token": token_count,
+                "source": source
+            })
+            
+            chunk_id += 1
+
+        logger.info(
+            f"Created {len(chunks)} semantic chunks from {source} "
+            f"(avg {sum(c['token_count'] for c in chunks) // len(chunks) if chunks else 0} tokens/chunk)"
+        )
+        
+        return chunks
+
 
     def chunk_file(self, file_path: str) -> List[Dict]:
-        """Read and chunk a single text file.
+        """Read and chunk a single text file using semantic boundaries.
 
         Args:
             file_path: Path to text file
@@ -103,10 +182,15 @@ class TextProcessor:
             raise FileNotFoundError(f"File not found: {file_path}")
 
         with open(path, 'r', encoding='utf-8') as f:
-            text = f.read()
+            #         """Read and chunk a single text file.
+            # text = f.read()
+            content = f.read()
 
-        chunks = self.chunk_text(text, source=path.name)
-        logger.info(f"Chunked {path.name}: {len(chunks)} chunks")
+        # chunks = self.chunk_text(text, source=path.name)
+        # logger.info(f"Chunked {path.name}: {len(chunks)} chunks")
+        # Use semantic chunking by separator
+        chunks = self.chunk_by_separator(content, source=path.name)
+        logger.info(f"Chunked {path.name}: {len(chunks)} semantic chunks")
 
         return chunks
 
