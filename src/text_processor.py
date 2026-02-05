@@ -138,7 +138,6 @@ class TextProcessor:
             
             # Count tokens for this chunk
             token_count = self.count_tokens(combined_content)
-            
             # Warn if chunk exceeds configured size
             if token_count > self.chunk_size:
                 logger.warning(
