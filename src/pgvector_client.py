@@ -104,6 +104,21 @@ class PgVectorClient:
         
         CREATE INDEX IF NOT EXISTS idx_source_chunk
         ON documents(source, chunk_id);
+
+        CREATE TABLE IF NOT EXISTS query_logs (
+            id SERIAL PRIMARY KEY,
+            user_ip VARCHAR(45) NOT NULL,
+            question TEXT NOT NULL,
+            answer TEXT,
+            execution_time FLOAT,
+            num_chunks INTEGER,
+            sources TEXT[],
+            created_at TIMESTAMP DEFAULT NOW(),
+            status VARCHAR(20) DEFAULT 'success'
+        );
+
+        CREATE INDEX IF NOT EXISTS idx_user_ip_date 
+        ON query_logs(user_ip, DATE(created_at));
         """
         
         try:
@@ -266,3 +281,88 @@ class PgVectorClient:
         logger.warning("Direct conn access is deprecated, use get_connection() context manager")
         return self.pool.getconn()
 
+    
+    def log_query(
+        self, 
+        user_ip: str, 
+        question: str, 
+        answer: str,
+        execution_time: float,
+        num_chunks: int,
+        sources: List[str],
+        status: str = "success"
+    ):
+        """Log query to database."""
+        with self.get_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute("""
+                    INSERT INTO query_logs 
+                    (user_ip, question, answer, execution_time, num_chunks, sources, status)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s)
+                """, (user_ip, question, answer, execution_time, num_chunks, sources, status))
+
+
+    def get_daily_query_count(self, user_ip: str) -> int:
+        """Get number of queries from IP today."""
+        with self.get_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute("""
+                    SELECT COUNT(*) 
+                    FROM query_logs 
+                    WHERE user_ip = %s 
+                    AND DATE(created_at) = CURRENT_DATE
+                """, (user_ip,))
+                return cur.fetchone()[0]
+
+
+    def cleanup_old_logs(self, retention_days: int = 90):
+        """Delete query logs older than retention period."""
+        with self.get_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute("""
+                    DELETE FROM query_logs 
+                    WHERE created_at < NOW() - INTERVAL '%s days'
+                """, (retention_days,))
+                deleted = cur.rowcount
+        logger.info(f"Deleted {deleted} old query logs")
+        return deleted
+
+
+    def get_user_data(self, user_ip: str) -> List[Dict]:
+        """Retrieve all data for a specific IP (GDPR access request)."""
+        with self.get_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute("""
+                    SELECT id, question, answer, execution_time, num_chunks, 
+                        sources, created_at, status
+                    FROM query_logs 
+                    WHERE user_ip = %s
+                    ORDER BY created_at DESC
+                """, (user_ip,))
+                
+                results = cur.fetchall()
+                return [
+                    {
+                        "id": row[0],
+                        "question": row[1],
+                        "answer": row[2],
+                        "execution_time": row[3],
+                        "num_chunks": row[4],
+                        "sources": row[5],
+                        "created_at": row[6].isoformat(),
+                        "status": row[7]
+                    }
+                    for row in results
+                ]
+
+    def delete_user_data(self, user_ip: str) -> int:
+        """Delete all data for a specific IP (GDPR erasure request)."""
+        with self.get_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute("""
+                    DELETE FROM query_logs 
+                    WHERE user_ip = %s
+                """, (user_ip,))
+                deleted = cur.rowcount
+        logger.info(f"Deleted {deleted} records for IP {user_ip} (GDPR erasure)")
+        return deleted
