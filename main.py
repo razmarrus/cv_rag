@@ -4,6 +4,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
 import logging
 import time
+from datetime import datetime
 
 from config.config import Config
 from src.hf_client import HuggingFaceClient
@@ -188,17 +189,41 @@ async def ask_question(request: Request, question: str = Form(...)):
         })
 
 
+# @app.get("/health")
+# async def health_check():
+#     """Health check endpoint with connection pool verification."""
+#     health_status = {
+#         "status": "healthy",
+#         "database": "disconnected"
+#     }
+    
+#     if db_client and db_client.pool:
+#         try:
+#             # Test connection pool by executing simple query
+#             with db_client.get_connection() as conn:
+#                 with conn.cursor() as cur:
+#                     cur.execute("SELECT 1")
+#             health_status["database"] = "connected"
+#         except Exception as e:
+#             logger.warning(f"Database health check failed: {e}")
+#             health_status["database"] = "error"
+#             health_status["status"] = "degraded"
+    
+#     return health_status
+
 @app.get("/health")
 async def health_check():
-    """Health check endpoint with connection pool verification."""
+    """Health check endpoint for reverse proxy and monitoring."""
     health_status = {
         "status": "healthy",
+        "service": "rag-system",
+        "timestamp": datetime.utcnow().isoformat(),
         "database": "disconnected"
     }
     
+    # Verify database connection pool
     if db_client and db_client.pool:
         try:
-            # Test connection pool by executing simple query
             with db_client.get_connection() as conn:
                 with conn.cursor() as cur:
                     cur.execute("SELECT 1")
@@ -209,6 +234,7 @@ async def health_check():
             health_status["status"] = "degraded"
     
     return health_status
+
 
 
 @app.on_event("shutdown")
