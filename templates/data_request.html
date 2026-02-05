@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Rights Request - RAG System</title>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <link href="{{ url_for('static', path='/css/custom.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div class="lightning-bg"></div>
+    
+    <main class="container">
+        <header>
+            <h1>Your Data Rights Request</h1>
+            <p><a href="/">&larr; Back to main page</a></p>
+        </header>
+
+        <section class="main-card">
+            {% if success %}
+            <article style="background-color: #d4edda; border: 1px solid #28a745; padding: 1rem; border-radius: 4px;">
+                <h2 style="margin-top: 0; color: #155724;">Request Submitted Successfully</h2>
+                <p>{{ message }}</p>
+                <p>You will receive a response at the email address you provided within 30 days.</p>
+                <p><a href="/">Return to main page</a></p>
+            </article>
+            {% else %}
+            <article>
+                <h2>Exercise Your GDPR Rights</h2>
+                <p>Use this form to request access to your data, request deletion, or exercise other GDPR rights.</p>
+                
+                <form method="POST" action="/data-request" style="margin-top: 1.5rem;">
+                    <label for="requestType">
+                        Type of Request
+                        <select name="request_type" id="requestType" required>
+                            <option value="">Select a request type...</option>
+                            <option value="access">Access - View all my data</option>
+                            <option value="deletion">Deletion - Delete all my data</option>
+                            <option value="rectification">Rectification - Correct my data</option>
+                            <option value="restriction">Restriction - Limit data processing</option>
+                            <option value="objection">Objection - Object to processing</option>
+                            <option value="portability">Portability - Export my data</option>
+                            <option value="other">Other - General inquiry</option>
+                        </select>
+                    </label>
+
+                    <label for="userIp">
+                        Your IP Address
+                        <input 
+                            type="text" 
+                            name="user_ip" 
+                            id="userIp"
+                            placeholder="e.g., 192.168.1.100"
+                            required
+                            pattern="^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$|^([0-9a-fA-F]{0,4}:){2,7}[0-9a-fA-F]{0,4}$"
+                        >
+                        <small>Enter the IP address you used to access this service. Not sure? Check <a href="https://whatismyipaddress.com" target="_blank" rel="noopener">whatismyipaddress.com</a></small>
+                    </label>
+
+                    <label for="email">
+                        Your Email Address
+                        <input 
+                            type="email" 
+                            name="email" 
+                            id="email"
+                            placeholder="your.email@example.com"
+                            required
+                        >
+                        <small>We will send our response to this email</small>
+                    </label>
+
+                    <label for="details">
+                        Additional Details (Optional)
+                        <textarea 
+                            name="details" 
+                            id="details"
+                            rows="4" 
+                            placeholder="Provide any additional information about your request..."
+                        ></textarea>
+                    </label>
+
+                    <button type="submit" class="submit-btn">
+                        Submit Request
+                    </button>
+                </form>
+            </article>
+
+            <article style="background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 1rem; margin-top: 1rem;">
+                <h3 style="margin-top: 0;">Important Information</h3>
+                <p><strong>Response Time:</strong> We will respond within 30 days as required by GDPR.</p>
+                <p><strong>Identity Verification:</strong> We may contact you to verify your identity before fulfilling your request.</p>
+                <p><strong>Free of Charge:</strong> The first request is free. Excessive or repetitive requests may incur a reasonable fee.</p>
+                <p><strong>Automatic Deletion:</strong> All data is automatically deleted after 90 days, so you may not need to request deletion.</p>
+            </article>
+
+            <article>
+                <h3>Common Requests Explained</h3>
+                
+                <h4>Access Request</h4>
+                <p>We will provide you with all questions and answers associated with your IP address, including timestamps and metadata.</p>
+                
+                <h4>Deletion Request</h4>
+                <p>We will delete all data associated with your IP address from our systems. This action is irreversible.</p>
+                
+                <h4>Objection</h4>
+                <p>If you object to our data processing, we will stop processing your data. However, this means you won't be able to use the service (rate limiting requires logging).</p>
+            </article>
+
+            <article>
+                <h3>Complaints</h3>
+                <p>If you're not satisfied with how we handle your data or your request, you have the right to lodge a complaint with the supervisory authority:</p>
+                <p><strong>Netherlands:</strong> Autoriteit Persoonsgegevens</p>
+                <p>Website: <a href="https://autoriteitpersoonsgegevens.nl" target="_blank" rel="noopener">autoriteitpersoonsgegevens.nl</a></p>
+            </article>
+        </section>
+
+        <footer class="site-footer">
+            <small>
+                <a href="/">Back to main page</a> | 
+                <a href="/privacy">Privacy Policy</a>
+            </small>
+        </footer>
+    </main>
+</body>
+</html>

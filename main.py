@@ -153,6 +153,52 @@ def query_rag(question: str) -> dict:
 #         "title": "Ask Me Anything"
 #     })
 
+#
+# @app.post("/ask", response_class=HTMLResponse)
+# async def ask_question(request: Request, question: str = Form(...)):
+#     """
+#     Handle question submission.
+    
+#     TODO: Add rate limiting here
+#     """
+#     if not question or len(question.strip()) < 3:
+#         return templates.TemplateResponse("index.html", {
+#             "request": request,
+#             "error": "Please enter a valid question (at least 3 characters).",
+#             "question": question
+#         })
+    
+#     try:
+#         logger.info(f"Processing question: {question[:100]}...")
+#         result = query_rag(question)
+        
+#         return templates.TemplateResponse("index.html", {
+#             "request": request,
+#             "question": question,
+#             "answer": result["answer"],
+#             "sources": result["sources"],
+#             "num_chunks": result["num_chunks"],
+#             "execution_time": f"{result['execution_time']:.2f}"
+#         })
+        
+#     except Exception as e:
+#         logger.error(f"Error processing question: {e}")
+#         return templates.TemplateResponse("index.html", {
+#             "request": request,
+#             "question": question,
+#             "error": "Sorry, something went wrong. Please try again."
+#         })
+
+
+# @app.get("/health")
+# async def health_check():
+#     """Health check endpoint with connection pool verification."""
+#     health_status = {
+#         "status": "healthy",
+#         "database": "disconnected"
+#     }
+
+
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
     # Extract IP and get current usage
@@ -262,64 +308,41 @@ async def ask_question(
             "remaining_requests": remaining,
             "daily_limit": Config.DAILY_QUERY_LIMIT
         })
-
-# @app.post("/ask", response_class=HTMLResponse)
-# async def ask_question(request: Request, question: str = Form(...)):
-#     """
-#     Handle question submission.
-    
-#     TODO: Add rate limiting here
-#     """
-#     if not question or len(question.strip()) < 3:
-#         return templates.TemplateResponse("index.html", {
-#             "request": request,
-#             "error": "Please enter a valid question (at least 3 characters).",
-#             "question": question
-#         })
-    
-#     try:
-#         logger.info(f"Processing question: {question[:100]}...")
-#         result = query_rag(question)
-        
-#         return templates.TemplateResponse("index.html", {
-#             "request": request,
-#             "question": question,
-#             "answer": result["answer"],
-#             "sources": result["sources"],
-#             "num_chunks": result["num_chunks"],
-#             "execution_time": f"{result['execution_time']:.2f}"
-#         })
-        
-#     except Exception as e:
-#         logger.error(f"Error processing question: {e}")
-#         return templates.TemplateResponse("index.html", {
-#             "request": request,
-#             "question": question,
-#             "error": "Sorry, something went wrong. Please try again."
-#         })
+@app.get("/privacy", response_class=HTMLResponse)
+async def privacy_policy(request: Request):
+    """Serve privacy policy page."""
+    return templates.TemplateResponse("privacy.html", {
+        "request": request,
+        "title": "Privacy Policy"
+    })
 
 
-# @app.get("/health")
-# async def health_check():
-#     """Health check endpoint with connection pool verification."""
-#     health_status = {
-#         "status": "healthy",
-#         "database": "disconnected"
-#     }
+@app.get("/data-request", response_class=HTMLResponse)
+async def data_request_form(request: Request):
+    """Serve data subject rights request form."""
+    return templates.TemplateResponse("data_request.html", {
+        "request": request,
+        "title": "Data Subject Rights Request"
+    })
+
+
+@app.post("/data-request", response_class=HTMLResponse)
+async def submit_data_request(
+    request: Request,
+    request_type: str = Form(...),
+    user_ip: str = Form(...),
+    email: str = Form(...),
+    details: str = Form(...)
+):
+    """Handle data subject rights requests."""
+    logger.info(f"GDPR request received: {request_type} from IP {user_ip}, contact: {email}")
     
-#     if db_client and db_client.pool:
-#         try:
-#             # Test connection pool by executing simple query
-#             with db_client.get_connection() as conn:
-#                 with conn.cursor() as cur:
-#                     cur.execute("SELECT 1")
-#             health_status["database"] = "connected"
-#         except Exception as e:
-#             logger.warning(f"Database health check failed: {e}")
-#             health_status["database"] = "error"
-#             health_status["status"] = "degraded"
-    
-#     return health_status
+    return templates.TemplateResponse("data_request.html", {
+        "request": request,
+        "success": True,
+        "message": "Your request has been received. We will respond within 30 days as required by GDPR."
+    })
+
 
 @app.get("/health")
 async def health_check():
