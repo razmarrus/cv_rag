@@ -185,20 +185,30 @@ Answer based only on the context provided. If the answer is not in the context, 
         prompt = self.build_prompt(question, context)
         
         try:
-            # Use chat_completion for new router endpoint
-            messages = [
-            {
-                "role": "user",
-                "content": prompt
-            }]
-
-            response = self.llm_client.chat_completion(
-                messages=messages,
-                max_tokens=max_new_tokens,
-                temperature=temperature
+            response = self.llm_client.text_generation(
+                prompt,
+                max_new_tokens=max_new_tokens,
+                temperature=temperature,
+                do_sample=True,
+                top_p=0.9,
+                return_full_text=False
             )
+
+            #             # Use chat_completion for new router endpoint
+            # messages = [
+            # {
+            #     "role": "user",
+            #     "content": prompt
+            # }]
+
+            # response = self.llm_client.chat_completion(
+            #     messages=messages,
+            #     max_tokens=max_new_tokens,
+            #     temperature=temperature
+            # )
                         
-            answer = response.choices[0].message.content.strip()
+            answer = response.strip()
+            # answer = response.choices[0].message.content.strip()
             logger.info(f"Generated answer ({len(answer)} chars)")
             return answer
             

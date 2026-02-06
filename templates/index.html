@@ -17,6 +17,54 @@
             <p>I'm a data scientist with experience in machine learning and software engineering. Ask me anything about my background, skills, or projects.</p>
         </header>
 
+        <!-- Always visible quota counter -->
+        <article class="quota-banner">
+            <p>
+                <strong>Questions remaining today:</strong> 
+                <span class="quota-number">{{ remaining_requests }}/{{ daily_limit }}</span>
+            </p>
+        </article>
+
+        <!-- Prominent GDPR Notice -->
+        <article class="gdpr-notice" style="background-color: #e7f3ff; border: 1px solid #0066cc; padding: 1rem; margin-bottom: 1rem; border-radius: 4px;">
+            <h3 style="margin-top: 0; font-size: 1.1rem;">Privacy Notice - Data Collection</h3>
+            <p style="margin: 0.5rem 0;"><strong>What data we collect:</strong> Your IP address, questions you ask, and answers provided.</p>
+            <p style="margin: 0.5rem 0;"><strong>Why:</strong> To prevent abuse and ensure fair access (rate limiting: {{ daily_limit }} questions/day).</p>
+            <p style="margin: 0.5rem 0;"><strong>Legal basis:</strong> Legitimate interest in service protection.</p>
+            <p style="margin: 0.5rem 0;"><strong>Retention:</strong> 90 days, then automatically deleted.</p>
+            <p style="margin: 0.5rem 0;"><strong>Your rights:</strong> Access, deletion, or objection - contact <a href="mailto:margo.razumeyeva@gmail.com">margo.razumeyeva@gmail.com</a></p>
+            <p style="margin: 0.5rem 0; font-size: 0.9rem;"><strong>Third-party processing:</strong> Questions are sent to HuggingFace for LLM inference. See <a href="https://huggingface.co/privacy" target="_blank" rel="noopener">HuggingFace privacy policy</a>.</p>
+            <details style="margin-top: 0.5rem;">
+                <summary style="cursor: pointer;"><small>View full privacy information</small></summary>
+                <div style="padding: 0.5rem 0; font-size: 0.9rem;">
+                    <p><small><strong>Data Controller:</strong> Margot Razumeyeva, Amsterdam, Netherlands</small></p>
+                    <p><small><strong>Purpose Limitation:</strong> Data is used solely for rate limiting and service improvement. Not shared with third parties except HuggingFace for processing.</small></p>
+                    <p><small><strong>Your GDPR Rights:</strong></small></p>
+                    <ul style="font-size: 0.85rem; margin-left: 1.5rem;">
+                        <li>Right to access your data</li>
+                        <li>Right to rectification (correction)</li>
+                        <li>Right to erasure (deletion)</li>
+                        <li>Right to restrict processing</li>
+                        <li>Right to object to processing</li>
+                        <li>Right to data portability</li>
+                        <li>Right to lodge complaint with supervisory authority (Autoriteit Persoonsgegevens in Netherlands)</li>
+                    </ul>
+                    <p><small><strong>Automated Decision Making:</strong> Rate limiting is automated based on IP address. No profiling occurs.</small></p>
+                    <p><small><strong>Data Security:</strong> Data stored in EU (Netherlands). Database encryption, TLS/HTTPS, automated deletion after 90 days.</small></p>
+                    <p><small>For detailed privacy policy and to exercise your rights, see links in footer below.</small></p>
+                </div>
+            </details>
+        </article>
+
+        <!-- Quota exceeded message (only shown when quota reached) -->
+        {% if quota_exceeded %}
+        <article class="quota-message" style="background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 1rem; margin-bottom: 1rem;">
+            <h3>Daily Quota Reached</h3>
+            <p>You've used all {{ daily_limit }} questions for today. Your quota will reset tomorrow. Thank you for your interest in my work!</p>
+            <p><small>Need to ask more questions? Feel free to contact me directly at margo.razumeyeva@gmail.com</small></p>
+        </article>
+        {% endif %}
+
         <section class="main-card">
             <form method="POST" action="/ask" id="questionForm" enctype="application/x-www-form-urlencoded">
                 <label for="questionInput">
@@ -59,7 +107,11 @@
         </section>
 
         <footer class="site-footer">
-            <small>Powered by FastAPI + HuggingFace + pgvector</small>
+            <small>
+                Powered by FastAPI + HuggingFace + pgvector | 
+                <a href="/privacy">Privacy Policy</a> | 
+                <a href="/data-request">Your Data Rights</a>
+            </small>
         </footer>
     </main>
 

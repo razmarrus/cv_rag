@@ -48,6 +48,12 @@ class Config:
 
     RATE_LIMIT = "10/hour"
 
+    # Rate Limiting
+    DAILY_QUERY_LIMIT = int(os.getenv("DAILY_QUERY_LIMIT", "10"))
+
+    # Data Retention
+    QUERY_LOG_RETENTION_DAYS = int(os.getenv("QUERY_LOG_RETENTION_DAYS", "90"))
+
     @classmethod
     def validate(cls):
         """Validate required configuration."""
