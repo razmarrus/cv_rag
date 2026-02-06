@@ -80,6 +80,27 @@ EOF
 docker compose up --build
 ```
 
+## Hosting Options
+
+The system supports flexible deployment configurations via Docker Compose port bindings:
+
+**Local Hosting** (default):
+```yaml
+ports:
+  - "127.0.0.1:8000:8000"  # Bind to localhost only
+```
+Access restricted to the host machine. Suitable for development and single-machine deployments.
+
+**Remote Access via WireGuard**:
+```yaml
+ports:
+  - "127.0.0.1:8000:8000"        # Local access
+  - "10.0.0.x:8000:8000"         # WireGuard tunnel interface
+```
+Enables secure remote access through an encrypted WireGuard VPN tunnel. Services bind to the WireGuard interface IP, allowing authorized peers to connect while maintaining network-level encryption. Requires active WireGuard tunnel (`wg-quick up wg0`) before container startup.
+
+**Multi-interface binding**: Both local and remote bindings can coexist, providing simultaneous localhost and VPN access without exposing services to the public internet.
+
 ## Technical Features
 
 - **FastAPI**: Async REST API with automatic OpenAPI documentation
@@ -134,7 +155,7 @@ docker compose logs -f app
 docker compose restart app
 
 # Access database
-docker compose exec postgres psql -U raguser -d ragdb
+docker compose exec postgres psql -U <db_user> -d <db_name>
 ```
 
 ## Running Without Docker
