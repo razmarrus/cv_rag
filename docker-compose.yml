@@ -14,7 +14,7 @@ services:
     cpus: "1.5"
     ports:
       - "127.0.0.1:5432:5432"       # Local access
-      - "10.0.0.2:5432:5432"      # WireGuard access (uncomment when WireGuard is running)
+      - <IP_OF_WG_INTERFACE>:5432:5432      # WireGuard access (uncomment when WireGuard is running)
     volumes:
       - pgvector_data:/var/lib/postgresql/data
     healthcheck:
@@ -32,7 +32,7 @@ services:
     cpus: "2"
     ports:
       - "127.0.0.1:8000:8000"       # Local access
-      - "10.0.0.2:8000:8000"      # WireGuard access (uncomment when WireGuard is running)
+    - <IP_OF_WG_INTERFACE>:8000:8000          # WireGuard access (uncomment when WireGuard is running)
     environment:
       HF_TOKEN: ${HF_TOKEN}
       EMBEDDING_MODEL: ${EMBEDDING_MODEL:-BAAI/bge-small-en-v1.5}

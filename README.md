@@ -95,7 +95,7 @@ Access restricted to the host machine. Suitable for development and single-machi
 ```yaml
 ports:
   - "127.0.0.1:8000:8000"        # Local access
-  - "10.0.0.x:8000:8000"         # WireGuard tunnel interface
+  - "x.x.x.x:8000:8000"         # WireGuard tunnel interface
 ```
 Enables secure remote access through an encrypted WireGuard VPN tunnel. Services bind to the WireGuard interface IP, allowing authorized peers to connect while maintaining network-level encryption. Requires active WireGuard tunnel (`wg-quick up wg0`) before container startup.
 
