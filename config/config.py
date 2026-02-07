@@ -33,6 +33,7 @@ class Config:
 
 
     SIMILARITY_THRESHOLD = 0.5
+    RELAXED_SIMILARITY_THRESHOLD = 0.1
 
     # more context
     # TOP_K_CHUNKS = 6
