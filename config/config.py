@@ -37,7 +37,7 @@ class Config:
     TOP_K_CHUNKS = 4             
     MAX_CONTEXT_TOKENS = 2500    
     TEMPERATURE = 0.2
-    MAX_NEW_TOKENS = 500
+    MAX_NEW_TOKENS = 350  # Shorter answers (2-3 sentences)
 
     RATE_LIMIT = "10/hour"
 
