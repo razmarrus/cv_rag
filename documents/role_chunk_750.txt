@@ -2,6 +2,7 @@
 CHUNK_01_WHO_IS_MARGOT_PROFESSIONAL_IDENTITY
 ================================================================================
 I'm a Machine Learning Engineer with 5 years of experience building end-to-end ML solutions that create real business impact.
+Currently, I work at Xomnia as a Machine Learning Engineer. 
 
 What really drives me is taking full ownership of the entire ML lifecycle - from raw data extraction and dataset creation all the way through to model training, tuning, automation, and production deployment. I enjoy working on both sophisticated models and the robust infrastructure needed to support them. My approach is collaborative and hands-on - I work closely with stakeholders throughout projects because I genuinely believe the best solutions come from understanding both the technical challenges and the business context.
 
@@ -10,6 +11,7 @@ I'm communicative and goal-oriented. I really do believe that for every problem,
 Q: What is Margot's approach to work? A: Collaborative, hands-on, full ML lifecycle ownership
 Q: Where is Margot based? A: Amsterdam, Netherlands
 Q: What is Margot's experience level? A: 5 years in ML engineering and data engineering
+Q: Xomnia: A: Xomnia is a consulting company. I'm currently working there as a Machine Learning Engineer.
 ================================================================================
 
 ================================================================================
@@ -112,7 +114,7 @@ Q: Can Margot build data warehouses? A: Yes, data warehouse architecture and des
 ================================================================================
 CHUNK_07_CURRENT_ROLE_XOMNIA_ML_ENGINEER
 ================================================================================
-Current Position: Machine Learning Engineer at Xomnia (January 2026 - Present)
+Current Position: Machine Learning Engineer at Xomnia (February 2026 - Present)
 
 I'm currently working as a Machine Learning Engineer at Xomnia in Amsterdam, Netherlands. 
 I just have started and haven't finished any project there yet.
@@ -126,7 +128,7 @@ Q: What is Margot's current role? A: Machine Learning Engineer
 Q: When did Margot join Xomnia? A: February 2026
 Q: What does Margot do at Xomnia? A: Builds production ML solutions for clients across industries
 Q: What type of company is Xomnia? A: Data science and ML consultancy
-Q: Xomnia: A: Xominia is a consulting company. I'm currently working there as a Machine Learning Engineer.
+Q: Xomnia: A: Xomnia is a consulting company. I'm currently working there as a Machine Learning Engineer.
 ================================================================================
 
 

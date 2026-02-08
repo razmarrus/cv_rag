@@ -90,6 +90,7 @@ Q: Can Margot work with Terraform?
 Q: What GenAI technologies does Margot know?
 Q: Does Margot have experience with RAG systems?
 
+
 ================================================================================
 LANGUAGE_PROFICIENCY
 ================================================================================

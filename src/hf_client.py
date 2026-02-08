@@ -141,6 +141,7 @@ class HuggingFaceClient:
             del embedding_list
             gc.collect()
 
+    # Don't mention company names.
     def build_prompt(self, question: str, context: str, is_tangential: bool = False) -> str:
         """
         Build prompt for LLM.
@@ -155,7 +156,7 @@ class HuggingFaceClient:
         """
         if is_tangential:
             #prompt = f"""<s>[INST] You are a helpful assistant. The retrieved context may be tangentially related to the question. Use it if helpful, but also apply your general knowledge to provide a useful answer. Answer in human written style. Keep friendly and easy to read tone.
-            prompt = f"""<s>[INST] You are a helpful assistant. Use the context if relevant, otherwise use your knowledge. Answer in 2-6 sentences using plain text only (no markdown or formatting). Be concise, friendly, and human. Don't mention company names.
+            prompt = f"""<s>[INST] You are a helpful assistant. Use the context if relevant, otherwise use your knowledge. Answer in 2-6 sentences using plain text only (no markdown or formatting). Be concise, friendly, and human. 
 
 
 Context (may be loosely related):
@@ -164,7 +165,7 @@ Context (may be loosely related):
 Question: {question}. [/INST]
 """
         else:
-            prompt = f"""<s>[INST] You are a helpful assistant. Answer in 2-6 sentences using plain text only (no markdown or formatting). Be concise, friendly, and human. Don't mention company names.
+            prompt = f"""<s>[INST] You are a helpful assistant. Answer in 2-6 sentences using plain text only (no markdown or formatting). Be concise, friendly, and human. 
 
 Context:
 {context}
