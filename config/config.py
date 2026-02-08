@@ -34,16 +34,8 @@ class Config:
 
     SIMILARITY_THRESHOLD = 0.5
     RELAXED_SIMILARITY_THRESHOLD = 0.1
-
-    # more context
-    # TOP_K_CHUNKS = 6
-    # MAX_CONTEXT_TOKENS = 3500
-
-    # Optimized 
     TOP_K_CHUNKS = 4             
     MAX_CONTEXT_TOKENS = 2500    
-
-
     TEMPERATURE = 0.2
     MAX_NEW_TOKENS = 500
 
@@ -54,6 +46,9 @@ class Config:
 
     # Data Retention
     QUERY_LOG_RETENTION_DAYS = int(os.getenv("QUERY_LOG_RETENTION_DAYS", "90"))
+
+    # Network Configuration
+    WIREGUARD_IP = os.getenv("WIREGUARD_IP")
 
     @classmethod
     def validate(cls):

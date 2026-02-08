@@ -92,11 +92,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function togglePortfolioAccordion(accordionId) {
     const accordion = document.getElementById(accordionId);
     if (accordion) {
-        const isActive = accordion.classList.contains('active');
         accordion.classList.toggle('active');
-        console.log('Toggle accordion:', accordionId, 'Active:', !isActive);
-    } else {
-        console.error('Accordion not found:', accordionId);
     }
 }
 
@@ -111,10 +107,6 @@ function fillQuestion(question) {
 function toggleAccordion(accordionId) {
     const accordion = document.getElementById(accordionId);
     if (accordion) {
-        const isActive = accordion.classList.contains('active');
         accordion.classList.toggle('active');
-        console.log('Toggle accordion:', accordionId, 'Active:', !isActive);
-    } else {
-        console.error('Accordion not found:', accordionId);
     }
 }

@@ -33,16 +33,6 @@ app = FastAPI(
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
-# Add middleware to disable caching for static files
-@app.middleware("http")
-async def add_no_cache_headers(request: Request, call_next):
-    response = await call_next(request)
-    if request.url.path.startswith("/static"):
-        response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate, max-age=0"
-        response.headers["Pragma"] = "no-cache"
-        response.headers["Expires"] = "0"
-    return response
-
 # Global instances (initialized on startup)
 hf_client = None
 db_client = None
@@ -179,62 +169,6 @@ def query_rag(question: str) -> dict:
     except Exception as e:
         logger.error(f"RAG query failed: {e}", exc_info=True)
         raise
-
-
-# Routes
-
-# @app.get("/", response_class=HTMLResponse)
-# async def home(request: Request):
-#     """Serve main page."""
-#     return templates.TemplateResponse("index.html", {
-#         "request": request,
-#         "title": "Ask Me Anything"
-#     })
-
-#
-# @app.post("/ask", response_class=HTMLResponse)
-# async def ask_question(request: Request, question: str = Form(...)):
-#     """
-#     Handle question submission.
-    
-#     TODO: Add rate limiting here
-#     """
-#     if not question or len(question.strip()) < 3:
-#         return templates.TemplateResponse("index.html", {
-#             "request": request,
-#             "error": "Please enter a valid question (at least 3 characters).",
-#             "question": question
-#         })
-    
-#     try:
-#         logger.info(f"Processing question: {question[:100]}...")
-#         result = query_rag(question)
-        
-#         return templates.TemplateResponse("index.html", {
-#             "request": request,
-#             "question": question,
-#             "answer": result["answer"],
-#             "sources": result["sources"],
-#             "num_chunks": result["num_chunks"],
-#             "execution_time": f"{result['execution_time']:.2f}"
-#         })
-        
-#     except Exception as e:
-#         logger.error(f"Error processing question: {e}")
-#         return templates.TemplateResponse("index.html", {
-#             "request": request,
-#             "question": question,
-#             "error": "Sorry, something went wrong. Please try again."
-#         })
-
-
-# @app.get("/health")
-# async def health_check():
-#     """Health check endpoint with connection pool verification."""
-#     health_status = {
-#         "status": "healthy",
-#         "database": "disconnected"
-#     }
 
 
 @app.get("/", response_class=HTMLResponse)

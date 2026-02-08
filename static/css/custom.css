@@ -131,7 +131,8 @@ main.container {
     color: #6B6B6B !important;
     margin: -1rem 0 1.5rem 0 !important;
     line-height: 1.5 !important;
-    max-width: 600px;
+    max-width: 700px;
+    text-align: left !important;
 }
 
 /* Suggestion Pills */
