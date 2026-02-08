@@ -1,0 +1,81 @@
+================================================================================
+CHUNK_01_RECENT_MACHINE_LEARNING_PROJECTS
+================================================================================
+I built a RAG chatbot for industrial clients that serves 300 weekly users across 30 isolated domains, reducing information retrieval time from hours to seconds. The system uses GPT models and integrates with SharePoint document libraries for instant knowledge retrieval.
+
+I developed a sales forecasting model for a UK pharmaceutical company achieving 3% error rate through extensive feature engineering and iterative experimentation with linear models, enabling data-driven decision making and identifying key sales drivers.
+
+I created a customer segmentation system for a Big Pharma company that identified 8 distinct customer segments based on loyalty and engagement patterns using K-means clustering combined with marketing analytics, enabling tailored engagement strategies.
+
+I built a real-time IoT data processing platform for a Dutch water management authority that processes telemetry data at bursts of up to 1000 messages per minute, implementing automated data quality checks and proactive issue detection.
+
+Common Questions:
+Q: What projects have you done recently? A: RAG chatbot, sales forecasting, customer segmentation, IoT platform
+Q: Have you built chatbots? A: Yes, RAG chatbot serving 300 users
+Q: Any pharma experience? A: Yes, sales forecasting and customer segmentation
+Q: Real-time systems? A: Yes, IoT platform processing 1000 msg/min
+Q: What were the results? A: 3% forecast error, hours to seconds retrieval time
+================================================================================
+
+CHUNK_02_TECH_STACK_AND_TOOLS
+================================================================================
+Python is my primary programming language. I use SQL for database querying and PySpark for big data processing.
+
+For machine learning I work with Scikit-learn for classical ML, CatBoost and XGBoost for gradient boosting, and TensorFlow/PyTorch for deep learning.
+
+For cloud services I use Microsoft Azure (Event Hub, Function Apps, Blob Storage, Azure AI) and AWS (S3, SageMaker, Lambda) for scalable infrastructure.
+
+For data engineering I use Apache Spark for distributed data processing, Terraform for infrastructure as code, and Apache Airflow for orchestration and pipeline management.
+
+For LLM work I use GPT models, LangChain for building applications, and Pgvector for vector databases in RAG systems.
+
+For visualization I use Matplotlib and Seaborn.
+
+Common Questions:
+Q: What programming languages? A: Python, SQL, PySpark
+Q: What ML frameworks? A: Scikit-learn, CatBoost, XGBoost, PyTorch, TensorFlow
+Q: Which cloud platforms? A: Azure and AWS
+Q: Do you use Spark? A: Yes, Apache Spark for big data
+Q: What about LLMs? A: GPT models, LangChain, vector databases
+Q: Infrastructure tools? A: Terraform, Docker, Airflow
+================================================================================
+
+CHUNK_03_DATA_SCIENTIST_EXPERIENCE
+================================================================================
+I have 5 years of experience as a data scientist handling the complete data science lifecycle—data collection, preprocessing, exploratory data analysis, feature engineering, model development, evaluation, and deployment.
+
+I specialize in translating complex data patterns into actionable business strategies, particularly in customer analytics for large pharmaceutical companies. I work with various stakeholders, conduct regular presentations to communicate findings, and collaborate closely with data analysts to ensure solutions align with business objectives.
+
+My role involves iterative experimentation with different model architectures, rigorous performance evaluation, and implementing automated pipelines to ensure models remain current and effective as new data becomes available. I focus on delivering solutions that create measurable business impact, not just technical achievements.
+
+Common Questions:
+Q: How long as data scientist? A: 5 years professional experience
+Q: What's the full scope? A: Data collection through deployment and monitoring
+Q: Do you work with business teams? A: Yes, regular stakeholder collaboration and presentations
+Q: What industries? A: Primarily pharmaceuticals and industrial sectors
+Q: Do you automate? A: Yes, automated pipelines for continuous updates
+Q: What's your focus? A: Translating data into business value
+================================================================================
+
+CHUNK_04_MAIN_SKILLS_AND_EXPERTISE
+================================================================================
+Machine Learning and Data Science: Developing, training, and deploying ML models with focus on predictive analytics, clustering, recommendation systems, and deep learning.
+
+Data Engineering: Designing and implementing data pipelines using Apache Spark, SQL, and ETL processes to transform raw data into actionable insights.
+
+Cloud Computing: Extensive experience with Microsoft Azure and AWS, utilizing cloud services for scalable data storage, processing, and model deployment.
+
+Infrastructure as Code: Using Terraform for provisioning and managing cloud infrastructure, ensuring consistent and reproducible environments.
+
+LLM and RAG Systems: Building production chatbots, implementing retrieval-augmented generation, prompt engineering, and vector database integration.
+
+Collaboration and Communication: Working in cross-functional teams, translating technical concepts into business strategies, and effectively communicating insights to stakeholders.
+
+Common Questions:
+Q: What are your main skills? A: ML, data engineering, cloud deployment, LLM systems
+Q: What's your expertise? A: End-to-end ML from data engineering to production
+Q: Do you know cloud? A: Yes, extensive Azure and AWS experience
+Q: Can you build pipelines? A: Yes, Spark, SQL, ETL, and orchestration
+Q: What about AI chatbots? A: Yes, RAG systems with LLMs in production
+Q: Can you work with teams? A: Yes, strong collaboration and communication skills
+================================================================================

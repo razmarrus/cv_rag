@@ -11,15 +11,16 @@
         /* Project-specific nested accordion styles */
         .project-item {
             margin-bottom: 1rem;
-            border: 1px solid var(--pico-muted-border-color);
+            border: 1px solid #ddd;
             border-radius: 0.5rem;
             overflow: hidden;
+            background: #fff;
         }
         
         .project-header {
             width: 100%;
             padding: 1rem;
-            background: var(--pico-card-background-color);
+            background: #f8f8f8;
             border: none;
             text-align: left;
             cursor: pointer;
@@ -31,26 +32,28 @@
         }
         
         .project-header:hover {
-            background: var(--pico-secondary-background);
+            background: #fffbea;
         }
         
         .project-number {
             display: inline-block;
             width: 2rem;
             height: 2rem;
-            background: var(--pico-primary);
-            color: white;
+            background: #fbbf24;
+            color: #000;
             border-radius: 50%;
             text-align: center;
             line-height: 2rem;
             font-size: 0.875rem;
             margin-right: 0.75rem;
             flex-shrink: 0;
+            font-weight: 700;
         }
         
         .project-title {
             flex: 1;
             font-size: 1rem;
+            color: #1f2937;
         }
         
         .project-chevron {
@@ -58,6 +61,7 @@
             height: 1.25rem;
             transition: transform 0.3s ease;
             flex-shrink: 0;
+            stroke: #1f2937;
         }
         
         .project-item.active .project-chevron {
@@ -76,24 +80,25 @@
         
         .project-content-inner {
             padding: 1.5rem;
-            background: var(--pico-background-color);
+            background: #fff;
         }
         
         .project-description {
             margin-bottom: 1rem;
             line-height: 1.6;
+            color: #374151;
         }
         
         .project-tech {
             padding: 0.75rem;
-            background: var(--pico-secondary-background);
-            border-left: 3px solid var(--pico-primary);
+            background: #fffbea;
+            border-left: 3px solid #fbbf24;
             border-radius: 0.25rem;
             font-size: 0.9rem;
         }
         
         .project-tech strong {
-            color: var(--pico-primary);
+            color: #d97706;
         }
     </style>
 </head>
