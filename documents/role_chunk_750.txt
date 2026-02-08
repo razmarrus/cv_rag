@@ -7,7 +7,6 @@ What really drives me is taking full ownership of the entire ML lifecycle - from
 
 I'm communicative and goal-oriented. I really do believe that for every problem, there's a solution to be found. Challenges make the work interesting for me rather than frustrating, and I enjoy tackling them head-on.
 
-Q: Who is Margot ? A: ML Engineer with 5 years experience, currently at Xomnia Amsterdam
 Q: What is Margot's approach to work? A: Collaborative, hands-on, full ML lifecycle ownership
 Q: Where is Margot based? A: Amsterdam, Netherlands
 Q: What is Margot's experience level? A: 5 years in ML engineering and data engineering
