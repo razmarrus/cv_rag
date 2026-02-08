@@ -14,7 +14,6 @@ services:
     cpus: "1.5"
     ports:
       - "127.0.0.1:5432:5432"
-      - "${WIREGUARD_IP:-10.0.0.2}:5432:5432"
     volumes:
       - pgvector_data:/var/lib/postgresql/data
     healthcheck:
@@ -51,6 +50,3 @@ services:
 volumes:
   pgvector_data:
   huggingface_cache:
-    # ports:
-    #   - "127.0.0.1:8000:8000"       # Local access
-    #   - "${WIREGUARD_IP}:8000:8000"  # WireGuard access
