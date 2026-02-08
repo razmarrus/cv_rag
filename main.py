@@ -200,26 +200,16 @@ async def ask_question(
     if request.headers.get("X-Forwarded-For"):
         user_ip = request.headers.get("X-Forwarded-For").split(",")[0].strip()
     
-    # Check if this is an AJAX request
-    is_ajax = request.headers.get("X-Requested-With") == "XMLHttpRequest" or \
-              "application/json" in request.headers.get("Accept", "")
+    # Always return JSON for POST requests (only used via AJAX)
+    is_ajax = True
     
     # Check rate limit BEFORE validation (fast indexed query)
     query_count = db_client.get_daily_query_count(user_ip)
     remaining = Config.DAILY_QUERY_LIMIT - query_count
     
     if query_count >= Config.DAILY_QUERY_LIMIT:
-        if is_ajax:
-            return JSONResponse({
-                "error": "Daily quota reached. You've used all questions for today.",
-                "quota_exceeded": True,
-                "remaining_requests": 0,
-                "daily_limit": Config.DAILY_QUERY_LIMIT
-            })
-        # Friendly quota message (NOT an error)
-        return templates.TemplateResponse("index.html", {
-            "request": request,
-            "question": question,
+        return JSONResponse({
+            "error": "Daily quota reached. You've used all questions for today.",
             "quota_exceeded": True,
             "remaining_requests": 0,
             "daily_limit": Config.DAILY_QUERY_LIMIT
@@ -227,16 +217,8 @@ async def ask_question(
     
     # Validation...
     if not question or len(question.strip()) < 3:
-        if is_ajax:
-            return JSONResponse({
-                "error": "Please enter a valid question (at least 3 characters).",
-                "remaining_requests": remaining,
-                "daily_limit": Config.DAILY_QUERY_LIMIT
-            })
-        return templates.TemplateResponse("index.html", {
-            "request": request,
+        return JSONResponse({
             "error": "Please enter a valid question (at least 3 characters).",
-            "question": question,
             "remaining_requests": remaining,
             "daily_limit": Config.DAILY_QUERY_LIMIT
         })
@@ -260,29 +242,15 @@ async def ask_question(
             status="success"
         )
         
-        # Return JSON for AJAX requests
-        if is_ajax:
-            return JSONResponse({
-                "answer": result["answer"],
-                "sources": result["sources"],
-                "num_chunks": result["num_chunks"],
-                "execution_time": f"{result['execution_time']:.2f}",
-                "remaining_requests": remaining,
-                "daily_limit": Config.DAILY_QUERY_LIMIT
-            })
-        
-        # Return HTML template for regular form submission
-        response_data = {
-            "request": request,
-            "question": question,
+        # Return JSON response
+        return JSONResponse({
             "answer": result["answer"],
             "sources": result["sources"],
             "num_chunks": result["num_chunks"],
             "execution_time": f"{result['execution_time']:.2f}",
             "remaining_requests": remaining,
             "daily_limit": Config.DAILY_QUERY_LIMIT
-        }
-        return templates.TemplateResponse("index.html", response_data)
+        })
         
     except Exception as e:
         logger.error(f"Error processing question: {e}")
@@ -299,20 +267,11 @@ async def ask_question(
             status="error"
         )
         
-        if is_ajax:
-            return JSONResponse({
-                "error": "Sorry, something went wrong. Please try again.",
-                "remaining_requests": remaining,
-                "daily_limit": Config.DAILY_QUERY_LIMIT
-            }, status_code=500)
-        
-        return templates.TemplateResponse("index.html", {
-            "request": request,
-            "question": question,
+        return JSONResponse({
             "error": "Sorry, something went wrong. Please try again.",
             "remaining_requests": remaining,
             "daily_limit": Config.DAILY_QUERY_LIMIT
-        })
+        }, status_code=500)
 @app.get("/privacy", response_class=HTMLResponse)
 async def privacy_policy(request: Request):
     """Serve privacy policy page."""
