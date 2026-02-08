@@ -170,5 +170,55 @@ def ingest_documents() -> None:
         logger.info("Database connection closed")
 
 
+def ingest_single_document(file_path: str) -> None:
+    """
+    Ingest a single document into the RAG system.
+
+    Args:
+        file_path: Path to the document file.
+    """
+    logger.info(f"Starting single document ingestion: {file_path}")
+    
+    Config.validate()
+    text_processor, db_client, hf_client = initialize_components()
+
+    try:
+        file_path_obj = Path(file_path)
+        if not file_path_obj.exists():
+            raise FileNotFoundError(f"File not found: {file_path}")
+
+        # Process single file
+        logger.info(f"Processing {file_path_obj.name}...")
+        chunks = text_processor.chunk_file(str(file_path_obj))
+        logger.info(f"{len(chunks)} chunks created")
+
+        if not chunks:
+            logger.warning("No chunks created")
+            return
+
+        # Generate embeddings
+        chunks = generate_embeddings(hf_client, chunks)
+
+        # Load to database
+        load_to_database(db_client, chunks)
+
+        logger.info("Single document ingestion completed successfully")
+
+    finally:
+        db_client.close()
+        logger.info("Database connection closed")
+
+
 if __name__ == "__main__":
-    ingest_documents()
+    import sys
+    
+    if len(sys.argv) > 1:
+        # Single file mode
+        ingest_single_document(sys.argv[1])
+    else:
+        # Batch mode
+        ingest_documents()
+
+
+# if __name__ == "__main__":
+#     ingest_documents()
