@@ -13,8 +13,8 @@ services:
     mem_limit: 256m
     cpus: "1.5"
     ports:
-      - "127.0.0.1:5432:5432"       # Local access
-      - "${WIREGUARD_IP}:5432:5432"  # WireGuard access
+      - "127.0.0.1:5432:5432"
+      - "${WIREGUARD_IP:-10.0.0.2}:5432:5432"
     volumes:
       - pgvector_data:/var/lib/postgresql/data
     healthcheck:
@@ -31,8 +31,7 @@ services:
     mem_limit: 512m
     cpus: "2"
     ports:
-      - "127.0.0.1:8000:8000"       # Local access
-      - "${WIREGUARD_IP}:8000:8000"  # WireGuard access
+      - "0.0.0.0:8000:8000"
     environment:
       HF_TOKEN: ${HF_TOKEN}
       EMBEDDING_MODEL: ${EMBEDDING_MODEL:-BAAI/bge-small-en-v1.5}
@@ -52,3 +51,6 @@ services:
 volumes:
   pgvector_data:
   huggingface_cache:
+    # ports:
+    #   - "127.0.0.1:8000:8000"       # Local access
+    #   - "${WIREGUARD_IP}:8000:8000"  # WireGuard access
