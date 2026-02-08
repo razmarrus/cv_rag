@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Request, Form
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi import BackgroundTasks
 import logging
 import time
@@ -87,6 +87,8 @@ def query_rag(question: str) -> dict:
         # Step 1: Generate embedding with automatic memory cleanup
         logger.info(f"Step 1: Generating embedding for question: '{question}'")
         
+        is_relaxed_search = False
+        
         with hf_client.embedding_context(question) as query_embedding:
             logger.info(f"Embedding generated: dimension={len(query_embedding)}")
             
@@ -97,19 +99,41 @@ def query_rag(question: str) -> dict:
                 k=Config.TOP_K_CHUNKS,
                 similarity_threshold=Config.SIMILARITY_THRESHOLD
             )
-            logger.info(f"Search returned {len(chunks)} chunks")
+            logger.info(f"Normal search returned {len(chunks)} chunks")
+            
+            # Step 2b: Relaxed search if no results
+            if not chunks:
+                logger.info(f"No results from normal search. Trying relaxed search (threshold={Config.RELAXED_SIMILARITY_THRESHOLD})")
+                chunks = db_client.search(
+                    query_embedding,
+                    k=Config.TOP_K_CHUNKS,
+                    similarity_threshold=Config.RELAXED_SIMILARITY_THRESHOLD
+                )
+                if chunks:
+                    is_relaxed_search = True
+                    logger.info(f"Relaxed search returned {len(chunks)} chunks")
 
         if chunks:
             for i, chunk in enumerate(chunks):
                 logger.info(f"Chunk {i+1}: similarity={chunk.get('similarity', 0):.3f}, source={chunk.get('source', 'unknown')}")
         
         if not chunks:
-            logger.warning("No chunks found matching similarity threshold")
+            logger.warning("No chunks found matching similarity threshold - generating fallback answer")
+            # Generate answer without context (fallback mode)
+            fallback_context = "You are a helpful AI assistant. Answer the user's question to the best of your ability based on general knowledge."
+            answer = hf_client.generate_answer(
+                question=question,
+                context=fallback_context,
+                max_new_tokens=Config.MAX_NEW_TOKENS,
+                temperature=Config.TEMPERATURE
+            )
+            execution_time = time.time() - start_time
+            logger.info(f"Generic answer generated ({len(answer)} chars)")
             return {
-                "answer": "I couldn't find relevant information to answer your question.",
-                "sources": [],
+                "answer": answer,
+                "sources": ["general_knowledge"],
                 "num_chunks": 0,
-                "execution_time": time.time() - start_time
+                "execution_time": execution_time
             }
         
         # Step 3: Assemble context
@@ -118,12 +142,16 @@ def query_rag(question: str) -> dict:
         logger.info(f"Context assembled: {len(context)} characters")
         
         # Step 4: Generate answer
-        logger.info("Step 4: Generating answer with LLM")
+        if is_relaxed_search:
+            logger.info("Step 4: Generating answer with LLM (relaxed search - tangential context)")
+        else:
+            logger.info("Step 4: Generating answer with LLM")
         answer = hf_client.generate_answer(
             question=question,
             context=context,
             max_new_tokens=Config.MAX_NEW_TOKENS,
-            temperature=Config.TEMPERATURE
+            temperature=Config.TEMPERATURE,
+            is_tangential=is_relaxed_search
         )
         logger.info(f"Answer generated: {len(answer)} characters")
         
@@ -141,62 +169,6 @@ def query_rag(question: str) -> dict:
     except Exception as e:
         logger.error(f"RAG query failed: {e}", exc_info=True)
         raise
-
-
-# Routes
-
-# @app.get("/", response_class=HTMLResponse)
-# async def home(request: Request):
-#     """Serve main page."""
-#     return templates.TemplateResponse("index.html", {
-#         "request": request,
-#         "title": "Ask Me Anything"
-#     })
-
-#
-# @app.post("/ask", response_class=HTMLResponse)
-# async def ask_question(request: Request, question: str = Form(...)):
-#     """
-#     Handle question submission.
-    
-#     TODO: Add rate limiting here
-#     """
-#     if not question or len(question.strip()) < 3:
-#         return templates.TemplateResponse("index.html", {
-#             "request": request,
-#             "error": "Please enter a valid question (at least 3 characters).",
-#             "question": question
-#         })
-    
-#     try:
-#         logger.info(f"Processing question: {question[:100]}...")
-#         result = query_rag(question)
-        
-#         return templates.TemplateResponse("index.html", {
-#             "request": request,
-#             "question": question,
-#             "answer": result["answer"],
-#             "sources": result["sources"],
-#             "num_chunks": result["num_chunks"],
-#             "execution_time": f"{result['execution_time']:.2f}"
-#         })
-        
-#     except Exception as e:
-#         logger.error(f"Error processing question: {e}")
-#         return templates.TemplateResponse("index.html", {
-#             "request": request,
-#             "question": question,
-#             "error": "Sorry, something went wrong. Please try again."
-#         })
-
-
-# @app.get("/health")
-# async def health_check():
-#     """Health check endpoint with connection pool verification."""
-#     health_status = {
-#         "status": "healthy",
-#         "database": "disconnected"
-#     }
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -217,7 +189,7 @@ async def home(request: Request):
     })
 
 
-@app.post("/ask", response_class=HTMLResponse)
+@app.post("/ask")
 async def ask_question(
     request: Request, 
     background_tasks: BackgroundTasks,
@@ -228,11 +200,22 @@ async def ask_question(
     if request.headers.get("X-Forwarded-For"):
         user_ip = request.headers.get("X-Forwarded-For").split(",")[0].strip()
     
+    # Check if this is an AJAX request
+    is_ajax = request.headers.get("X-Requested-With") == "XMLHttpRequest" or \
+              "application/json" in request.headers.get("Accept", "")
+    
     # Check rate limit BEFORE validation (fast indexed query)
     query_count = db_client.get_daily_query_count(user_ip)
     remaining = Config.DAILY_QUERY_LIMIT - query_count
     
     if query_count >= Config.DAILY_QUERY_LIMIT:
+        if is_ajax:
+            return JSONResponse({
+                "error": "Daily quota reached. You've used all questions for today.",
+                "quota_exceeded": True,
+                "remaining_requests": 0,
+                "daily_limit": Config.DAILY_QUERY_LIMIT
+            })
         # Friendly quota message (NOT an error)
         return templates.TemplateResponse("index.html", {
             "request": request,
@@ -244,6 +227,12 @@ async def ask_question(
     
     # Validation...
     if not question or len(question.strip()) < 3:
+        if is_ajax:
+            return JSONResponse({
+                "error": "Please enter a valid question (at least 3 characters).",
+                "remaining_requests": remaining,
+                "daily_limit": Config.DAILY_QUERY_LIMIT
+            })
         return templates.TemplateResponse("index.html", {
             "request": request,
             "error": "Please enter a valid question (at least 3 characters).",
@@ -259,18 +248,6 @@ async def ask_question(
         # Calculate remaining BEFORE logging
         remaining = Config.DAILY_QUERY_LIMIT - (query_count + 1)
         
-        # Prepare response data
-        response_data = {
-            "request": request,
-            "question": question,
-            "answer": result["answer"],
-            "sources": result["sources"],
-            "num_chunks": result["num_chunks"],
-            "execution_time": f"{result['execution_time']:.2f}",
-            "remaining_requests": remaining,
-            "daily_limit": Config.DAILY_QUERY_LIMIT
-        }
-        
         # Schedule logging in background (doesn't block response)
         background_tasks.add_task(
             db_client.log_query,
@@ -283,7 +260,28 @@ async def ask_question(
             status="success"
         )
         
-        # Return response IMMEDIATELY (user doesn't wait for logging)
+        # Return JSON for AJAX requests
+        if is_ajax:
+            return JSONResponse({
+                "answer": result["answer"],
+                "sources": result["sources"],
+                "num_chunks": result["num_chunks"],
+                "execution_time": f"{result['execution_time']:.2f}",
+                "remaining_requests": remaining,
+                "daily_limit": Config.DAILY_QUERY_LIMIT
+            })
+        
+        # Return HTML template for regular form submission
+        response_data = {
+            "request": request,
+            "question": question,
+            "answer": result["answer"],
+            "sources": result["sources"],
+            "num_chunks": result["num_chunks"],
+            "execution_time": f"{result['execution_time']:.2f}",
+            "remaining_requests": remaining,
+            "daily_limit": Config.DAILY_QUERY_LIMIT
+        }
         return templates.TemplateResponse("index.html", response_data)
         
     except Exception as e:
@@ -300,6 +298,13 @@ async def ask_question(
             sources=[],
             status="error"
         )
+        
+        if is_ajax:
+            return JSONResponse({
+                "error": "Sorry, something went wrong. Please try again.",
+                "remaining_requests": remaining,
+                "daily_limit": Config.DAILY_QUERY_LIMIT
+            }, status_code=500)
         
         return templates.TemplateResponse("index.html", {
             "request": request,

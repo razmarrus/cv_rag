@@ -141,18 +141,30 @@ class HuggingFaceClient:
             del embedding_list
             gc.collect()
 
-    def build_prompt(self, question: str, context: str) -> str:
+    def build_prompt(self, question: str, context: str, is_tangential: bool = False) -> str:
         """
         Build prompt for LLM.
         
         Args:
             question: User question
             context: Retrieved context
+            is_tangential: Whether results are from relaxed search
         
         Returns:
             Formatted prompt string
         """
-        prompt = f"""<s>[INST] You are a helpful assistant. Answer the question based on the provided context. Answer in human written style. Keep friendly and easy to read tone.
+        if is_tangential:
+            prompt = f"""<s>[INST] You are a helpful assistant. The retrieved context may be tangentially related to the question. Use it if helpful, but also apply your general knowledge to provide a useful answer. Answer in human written style. Keep friendly and easy to read tone.
+
+Context (may be loosely related):
+{context}
+
+Question: {question}
+
+Provide a helpful answer using both the context and your general knowledge. [/INST]
+"""
+        else:
+            prompt = f"""<s>[INST] You are a helpful assistant. Answer the question based on the provided context. Answer in human written style. Keep friendly and easy to read tone.
 
 Context:
 {context}
@@ -168,7 +180,8 @@ Answer based only on the context provided. If the answer is not in the context, 
         question: str,
         context: str,
         max_new_tokens: int = 500,
-        temperature: float = 0.2
+        temperature: float = 0.2,
+        is_tangential: bool = False
     ) -> str:
         """
         Generate answer using LLM.
@@ -178,37 +191,36 @@ Answer based only on the context provided. If the answer is not in the context, 
             context: Context string
             max_new_tokens: Maximum tokens to generate
             temperature: Sampling temperature
+            is_tangential: Whether context is from relaxed search
         
         Returns:
             Generated answer text
         """
-        prompt = self.build_prompt(question, context)
+        prompt = self.build_prompt(question, context, is_tangential)
+
+        # response = self.llm_client.text_generation(
+        #         prompt,
+        #         max_new_tokens=max_new_tokens,
+        #         temperature=temperature,
+        #         do_sample=True,
+        #         top_p=0.9,
+        #         return_full_text=False
         
         try:
-            response = self.llm_client.text_generation(
-                prompt,
-                max_new_tokens=max_new_tokens,
-                temperature=temperature,
-                do_sample=True,
-                top_p=0.9,
-                return_full_text=False
+            messages = [
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ]
+
+            response = self.llm_client.chat_completion(
+                messages=messages,
+                max_tokens=max_new_tokens,
+                temperature=temperature
             )
-
-            #             # Use chat_completion for new router endpoint
-            # messages = [
-            # {
-            #     "role": "user",
-            #     "content": prompt
-            # }]
-
-            # response = self.llm_client.chat_completion(
-            #     messages=messages,
-            #     max_tokens=max_new_tokens,
-            #     temperature=temperature
-            # )
                         
-            answer = response.strip()
-            # answer = response.choices[0].message.content.strip()
+            answer = response.choices[0].message.content.strip()
             logger.info(f"Generated answer ({len(answer)} chars)")
             return answer
             
