@@ -45,7 +45,7 @@ This language proficiency has been critical for technical discussions with Dutch
 It's not just about speaking the language - it's about understanding the Dutch business culture and being able to communicate complex technical concepts clearly to Dutch stakeholders.
 
 Q: Does Margot speak Dutch? A: Yes, fluent B2 level, conducts all business in Dutch
-Q: What languages does Margot speak? A: English (C1), Dutch (B2 fluent), Russian (native)
+Q: What languages does Margot speak? A: English (C1), Dutch (B2 fluent), Russian (native), Belarusian (native)
 Q: Has Margot worked with Dutch companies? A: Yes, ProRail, Waterschap, Haskoning - all in Dutch
 Q: Can Margot present in Dutch? A: Yes, all presentations and documentation in Dutch
 ================================================================================
