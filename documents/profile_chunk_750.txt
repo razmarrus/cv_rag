@@ -90,6 +90,7 @@ Q: Can Margot work with Terraform?
 Q: What GenAI technologies does Margot know?
 Q: Does Margot have experience with RAG systems?
 
+
 ================================================================================
 LANGUAGE_PROFICIENCY
 ================================================================================
@@ -98,6 +99,7 @@ Languages:
 - English: C1 professional proficiency
 - Dutch: B2 fluent business proficiency
 - Russian: Native speaker
+- Belarusian: Native speaker
 
 Margot has worked with major Dutch clients including ProRail and Waterschap bedrijf, conducting business communications in Dutch for rail and water management projects.
 
@@ -106,20 +108,7 @@ Q: What languages does Margot speak?
 Q: Does Margot speak Dutch?
 Q: Can Margot work with Dutch clients?
 
-================================================================================
-CURRENT_ROLE_XOMNIA
-================================================================================
 
-Position: Machine Learning Engineer at Xomnia
-Duration: January 2026 to present
-Location: Amsterdam, Netherlands
-
-As a Machine Learning Engineer at Xomnia, Margot helps clients unlock the full potential of their data by building machine learning systems that deliver real value. She works on cutting-edge ML projects across various industries, focusing on production-grade implementations that solve real business problems.
-
-Common Questions:
-Q: Where does Margot work now?
-Q: What is Margot's current role?
-Q: What does Margot do at Xomnia?
 
 ================================================================================
 PREVIOUS_ROLE_HASKONING_DATA_ENGINEER
@@ -141,39 +130,8 @@ Spark, Azure (Event Hub, Function Apps, Blob Storage, AI Services), Terraform, D
 Common Questions:
 Q: Where did Margot work before?
 Q: What projects did Margot do at Haskoning?
-Q: Has Margot worked with ProRail?
 Q: Does Margot have experience with water management projects?
 
-================================================================================
-PREVIOUS_ROLE_RUBBLES_DATA_SCIENTIST
-================================================================================
-
-Position: Data Scientist at Rubbles
-Duration: August 2021 to April 2024 (2 years 9 months)
-Location: Remote
-
-What Margot Did:
-End-to-end machine learning model development from data collection and preparation to model creation, deployment, and update automation. Collaborated with clients and colleagues at every step, delivering regular presentations. Specialized in customer analytics for the world's largest pharmaceutical companies, translating complex data patterns into actionable business strategies.
-
-Key Responsibilities:
-- Data collection, cleaning, and preparation
-- Feature engineering and model development
-- Model deployment and automation
-- Sales forecasting and prediction
-- Customer segmentation and clustering
-- Recommendation system development
-- Regular client presentations
-
-Technologies Used:
-Scikit-learn, CatBoost, LightGBM, Python, Pandas, NumPy, SQL, AWS, Apache Airflow, Mistral 8b fine-tuning
-
-Industry Focus:
-Pharmaceutical customer analytics for major UK and India-based companies including Top 3 global pharmaceutical companies.
-
-Common Questions:
-Q: Has Margot worked with pharmaceutical companies?
-Q: What did Margot do at Rubbles?
-Q: Does Margot have customer analytics experience?
 
 ================================================================================
 PROJECT_LLM_DOCUMENT_CHATBOT_PLATFORM
@@ -215,16 +173,15 @@ Q: Does Margot have experience with GPT models?
 Q: What scale has Margot worked at?
 
 ================================================================================
-PROJECT_HR_DATA_LAYER_PRORAIL
+PROJECT_HR_DATA_LAYER
 ================================================================================
 
 Project: Business Data Layer Development for HR Analytics
 Company: Haskoning
-Client: ProRail (Dutch national rail infrastructure company)
 Duration: July 2024 to January 2026
 
 The Problem:
-ProRail maintained employee data across 28 raw operational tables with complex relationships. HR teams needed workforce insights for critical decisions but couldn't directly access interpretable data. Data analysts were spending significant time responding to ad-hoc HR requests instead of doing strategic analysis.
+A client maintained employee data across 28 raw operational tables with complex relationships. HR teams needed workforce insights for critical decisions but couldn't directly access interpretable data. Data analysts were spending significant time responding to ad-hoc HR requests instead of doing strategic analysis.
 
 What Margot Built:
 Designed a business-ready HR data layer in Microsoft Fabric supporting analytics on aggregated employee history profiles, leave management, and contract tracking. Enabled HR teams to access workforce insights directly through 6 analytics-ready dashboards without navigating complex raw data structures.
@@ -244,7 +201,6 @@ Technologies Used:
 Apache Spark (PySpark), SQL, Microsoft Fabric (Pipelines, Spark Notebooks), CI/CD pipelines, Python
 
 Common Questions:
-Q: Has Margot worked with ProRail?
 Q: Does Margot have HR analytics experience?
 Q: Can Margot build data pipelines?
 Q: What is Margot's Spark experience?

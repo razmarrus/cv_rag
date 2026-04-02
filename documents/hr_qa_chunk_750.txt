@@ -136,6 +136,31 @@ Q: Has Margot worked in healthcare? A: Yes, pharmaceutical and life sciences
 Q: Can Margot work with stakeholders? A: Yes, collaborative approach with strong communication
 Q: Does Margot focus on business value? A: Yes, delivers measurable business impact not just technical solutions
 Q: What makes Margot different? A: Business-focused ML with end-to-end production expertise
+============================================================================
+
+================================================================================
+CHUNK_08_PERSONAL_INTERESTS_AND_ACTIVITIES
+================================================================================
+Personal Interests and Activities - Beyond the Professional
+
+I’m passionate about staying active and enjoy both running and playing squash. In 2025, I participated in the Amsterdam and Utrecht half marathons, which were incredible experiences that pushed my limits and reinforced my love for endurance sports. I find that running helps me clear my mind and stay energized, while squash keeps me sharp and competitive.
+
+Beyond sports, I’m a big cinema enthusiast. I love exploring different genres and styles, but my all-time favorite director is Francis Ford Coppola. His storytelling and cinematic vision have had a lasting impact on me, and I try to catch both classic and contemporary films whenever I can.
+
+Q: What are Margot’s hobbies?
+A: Running, squash, and going to the cinema.
+
+Q: Has Margot participated in any marathons?
+A: Yes, I completed the Amsterdam and Utrecht half marathons in 2025.
+
+Q: Who is Margot’s favorite director?
+A: Francis Ford Coppola.
+
+Q: Does Margot enjoy sports?
+A: Absolutely, especially running and squash.
+
+Q: What does Dino do for fun?
+A: I stay active with sports and enjoy watching films, especially those directed by Francis Ford Coppola.
 ================================================================================
 
 ================================================================================

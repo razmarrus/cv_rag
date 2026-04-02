@@ -7,6 +7,100 @@
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
     <link href="/static/css/custom.css?v=8" rel="stylesheet">
+    <style>
+        /* Project-specific nested accordion styles */
+        .project-item {
+            margin-bottom: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            background: #fff;
+        }
+        
+        .project-header {
+            width: 100%;
+            padding: 1rem;
+            background: #f8f8f8;
+            border: none;
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            transition: background-color 0.2s;
+        }
+        
+        .project-header:hover {
+            background: #fffbea;
+        }
+        
+        .project-number {
+            display: inline-block;
+            width: 2rem;
+            height: 2rem;
+            background: #fbbf24;
+            color: #000;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 2rem;
+            font-size: 0.875rem;
+            margin-right: 0.75rem;
+            flex-shrink: 0;
+            font-weight: 700;
+        }
+        
+        .project-title {
+            flex: 1;
+            font-size: 1rem;
+            color: #1f2937;
+        }
+        
+        .project-chevron {
+            width: 1.25rem;
+            height: 1.25rem;
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
+            stroke: #1f2937;
+        }
+        
+        .project-item.active .project-chevron {
+            transform: rotate(180deg);
+        }
+        
+        .project-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .project-item.active .project-content {
+            max-height: 1000px;
+        }
+        
+        .project-content-inner {
+            padding: 1.5rem;
+            background: #fff;
+        }
+        
+        .project-description {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+            color: #374151;
+        }
+        
+        .project-tech {
+            padding: 0.75rem;
+            background: #fffbea;
+            border-left: 3px solid #fbbf24;
+            border-radius: 0.25rem;
+            font-size: 0.9rem;
+        }
+        
+        .project-tech strong {
+            color: #d97706;
+        }
+    </style>
 </head>
 <body>
     <main class="container">
@@ -15,8 +109,8 @@
             <div class="hero-line-1">Nice to meet you</div>
             <div class="hero-line-2">My name is Margot</div>
             
-            <p class="hero-subtitle">Dedicated Data Scientist with a strong foundation in both machine learning and data engineering. </p>
-            <!-- Focused on answering business questions by building robust data flows and ML-powered systems.--> 
+            <p class="hero-subtitle">I'm a Data Scientist with a strong foundation in both machine learning and data engineering.</p>
+            
             <!-- Contact Information -->
             <div class="contact-info">
                 <a href="mailto:margo.razumeyeva@gmail.com" class="contact-link">
@@ -124,8 +218,13 @@
                     </button>
                     <div class="portfolio-accordion-content">
                         <div class="portfolio-accordion-content-inner">
-                            <p>My work often results in regularly updated ML models or dashboards that drive action across business teams. I am based in Amsterdam and authorized to work in the Netherlands. I bring end-to-end ownership of model development: from raw data extraction and dataset creation to model training, tuning, automation, and integration into production environments.</p>
-                            <p class="content-placeholder"><em>Additional details about professional background can be added here...</em></p>
+                            <p>Hi, my name is Margot, I'm a Data Scientist with a strong foundation in both machine learning and data engineering. Currently, I work at Xomnia as a Machine Learning Engineer. I'm focused on building scalable, robust solutions that answer business questions. My work often results in regularly updated ML-models or dashboards that drive action across business teams.</p>
+                            
+                            <p>Experienced in working closely with clients and cross-functional teams. I translate complex requirements into production-ready systems. I've also worked on NLP applications, including LLM-powered solutions for document summarization and question answering.</p>
+                            
+                            <p>I bring end-to-end ownership of model development: from raw data extraction and dataset creation to model training, tuning, automation, and integration into production environments. Skilled in modern ML ops practices, I build and maintain infrastructure with tools like Terraform, and manage deployment and updates through CI/CD pipelines to ensure reliability and traceability.</p>
+                            
+                            <p>I am based in Amsterdam and authorized to work in the Netherlands.</p>
                         </div>
                     </div>
                 </div>
@@ -144,7 +243,7 @@
                             <p class="tools-category"><strong>Programming:</strong> Python, Pandas, SQL, Spark, Pytorch, Tensorflow, Scikit-learn, NumPy, MatPlotLib, LightGBM, Catboost.</p>
                             <p class="tools-category"><strong>Infrastructure:</strong> Azure, AWS, Databricks, Terraform, Airflow, Spark, Kafka, Hadoop, Docker, Git, CI/CD (Azure DevOps, GitHub).</p>
                             <p class="tools-category"><strong>GenAI:</strong> Retrieval-Augmented Generation frameworks, Custom Benchmark Creation, Hugging Face API, Amazon Bedrock, LangChain, Azure AI.</p>
-                            <p class="tools-category"><strong>Languages:</strong> English (C1), Dutch (B2), Russian (Native).</p>
+                            <p class="tools-category"><strong>Languages:</strong> English (C1), Dutch (B2), Russian (Native), Belarusian (Native).</p>
                         </div>
                     </div>
                 </div>
@@ -159,7 +258,180 @@
                     </button>
                     <div class="portfolio-accordion-content">
                         <div class="portfolio-accordion-content-inner">
-                            <p class="content-placeholder"><em>Placeholder: Add detailed information about your projects here. Include project descriptions, technologies used, outcomes, and impact.</em></p>
+                            
+                            <!-- Project 1: LLM-Powered Document Chatbot Platform -->
+                            <div class="project-item" id="project1">
+                                <button class="project-header" type="button" onclick="toggleProject('project1')">
+                                    <div style="display: flex; align-items: center; flex: 1;">
+                                        <span class="project-number">1</span>
+                                        <span class="project-title">LLM-Powered Document Chatbot Platform</span>
+                                    </div>
+                                    <svg class="project-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </button>
+                                <div class="project-content">
+                                    <div class="project-content-inner">
+                                        <p class="project-description">
+                                            Built a GPT-based knowledge retrieval system enabling instant queries across SharePoint libraries (100-3,000 documents per domain). Reduced information retrieval from hours to seconds, eliminating manual searches through entire document repositories.
+                                        </p>
+                                        <p class="project-description">
+                                            Built a GPT-based internal QA system with 30+ RAG flows. Automated document ingestion and infrastructure creation using Terraform, supporting daily updates across multiple data domains.
+                                        </p>
+                                        <div class="project-tech">
+                                            <strong>Technology:</strong> RAG, Azure AI, Azure Blob Storage, Terraform, Pgvector db
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Project 2: Sales Forecasting Model (was #5) -->
+                            <div class="project-item" id="project2">
+                                <button class="project-header" type="button" onclick="toggleProject('project2')">
+                                    <div style="display: flex; align-items: center; flex: 1;">
+                                        <span class="project-number">2</span>
+                                        <span class="project-title">Sales Forecasting Model</span>
+                                    </div>
+                                    <svg class="project-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </button>
+                                <div class="project-content">
+                                    <div class="project-content-inner">
+                                        <p class="project-description">
+                                            Developed a linear model to forecast sales for 4 months ahead. Identified and quantified key sales drivers including seasonality, historical sales patterns, and marketing campaigns. The model allowed to compare different factors that influenced sales.
+                                        </p>
+                                        <p class="project-description">
+                                            Focused on data preprocessing, feature engineering, and iterative experimentation with model architectures.
+                                        </p>
+                                        <div class="project-tech">
+                                            <strong>Technology:</strong> Time series prediction - Linear model tuning, Scikit learn, AWS, Airflow
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Project 3: Customer Segmentation System (was #6) -->
+                            <div class="project-item" id="project3">
+                                <button class="project-header" type="button" onclick="toggleProject('project3')">
+                                    <div style="display: flex; align-items: center; flex: 1;">
+                                        <span class="project-number">3</span>
+                                        <span class="project-title">Customer Segmentation System</span>
+                                    </div>
+                                    <svg class="project-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </button>
+                                <div class="project-content">
+                                    <div class="project-content-inner">
+                                        <p class="project-description">
+                                            Development and integration into the client's infrastructure from scratch. Enabled personalized engagement strategies tailored to each cluster's unique characteristics.
+                                        </p>
+                                        <p class="project-description">
+                                            Within a combination of clustering ML algorithms (K-means, Birch) and marketing analyses (ABC, RFM) business-interpretable clusters were identified.
+                                        </p>
+                                        <div class="project-tech">
+                                            <strong>Technology:</strong> Clustering - Birch, Statistical testing, Scikit learn
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Project 4: Multi-Channel Recommendation System (was #7) -->
+                            <div class="project-item" id="project4">
+                                <button class="project-header" type="button" onclick="toggleProject('project4')">
+                                    <div style="display: flex; align-items: center; flex: 1;">
+                                        <span class="project-number">4</span>
+                                        <span class="project-title">Multi-Channel Recommendation System</span>
+                                    </div>
+                                    <svg class="project-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </button>
+                                <div class="project-content">
+                                    <div class="project-content-inner">
+                                        <p class="project-description">
+                                            Enabled strategic planning across multiple communication channels through unified content optimization. Delivered personalized content plans at scale, ensuring relevant messaging for each individual user.
+                                        </p>
+                                        <p class="project-description">
+                                            Developed Gradient Boosting models for personalized content selection across email, call center, and offline channels. Automated training pipelines per channel with custom-tailored datasets and regular updates.
+                                        </p>
+                                        <div class="project-tech">
+                                            <strong>Technology:</strong> Boosting - Catboost, SQL, Pandas, AWS, Airflow
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Project 5: Business Data Layer Development (was #2) -->
+                            <div class="project-item" id="project5">
+                                <button class="project-header" type="button" onclick="toggleProject('project5')">
+                                    <div style="display: flex; align-items: center; flex: 1;">
+                                        <span class="project-number">5</span>
+                                        <span class="project-title">Business Data Layer Development</span>
+                                    </div>
+                                    <svg class="project-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </button>
+                                <div class="project-content">
+                                    <div class="project-content-inner">
+                                        <p class="project-description">
+                                            Designed a business-ready HR data layer in MS Fabric, supporting analytics on aggregated employee history profiles, leave management and contract tracking. Enabled HR teams to access workforce insights directly, without navigating raw data structures.
+                                        </p>
+                                        <p class="project-description">
+                                            Collaborated closely with data analysts to transform raw data using Spark and stored procedures. Built scheduled pipelines that converted 28 raw tables into 6 analytics-ready tables with daily updates.
+                                        </p>
+                                        <div class="project-tech">
+                                            <strong>Technology:</strong> Spark, SQL, Microsoft Fabric (Pipelines, Spark Notebooks), CI/CD Pipelines
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Project 6: Real-Time IoT Data Ingestion & Processing Platform (was #3) -->
+                            <div class="project-item" id="project6">
+                                <button class="project-header" type="button" onclick="toggleProject('project6')">
+                                    <div style="display: flex; align-items: center; flex: 1;">
+                                        <span class="project-number">6</span>
+                                        <span class="project-title">Real-Time IoT Data Ingestion & Processing Platform</span>
+                                    </div>
+                                    <svg class="project-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </button>
+                                <div class="project-content">
+                                    <div class="project-content-inner">
+                                        <p class="project-description">
+                                            Enabled real-time system monitoring and proactive issue detection through immediate alerts on potential emergencies and system failures. Developed scalable pipelines, handling IOT telemetry data via Azure Event Hub and function apps. Built Terraform-managed infrastructure optimized for bursts up to 1k messages/min. Implemented DQM checks and alerts on failure.
+                                        </p>
+                                        <div class="project-tech">
+                                            <strong>Technology:</strong> Python, Azure, Docker, CI/CD, Terraform
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Project 7: LLM Document Summarization & Querying (was #4) -->
+                            <div class="project-item" id="project7">
+                                <button class="project-header" type="button" onclick="toggleProject('project7')">
+                                    <div style="display: flex; align-items: center; flex: 1;">
+                                        <span class="project-number">7</span>
+                                        <span class="project-title">LLM Document Summarization & Querying</span>
+                                    </div>
+                                    <svg class="project-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </button>
+                                <div class="project-content">
+                                    <div class="project-content-inner">
+                                        <p class="project-description">
+                                            Integrated and tuned document parsing with Mistral 8b for document summarization and contextual Q&A, enabling users to extract specific insights from lengthy domain-specific documents (60+ pages) in seconds rather than hours.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -194,5 +466,12 @@
     </main>
 
     <script src="/static/js/app.js?v=6"></script>
+    <script>
+        // Function to toggle individual project items
+        function toggleProject(projectId) {
+            const project = document.getElementById(projectId);
+            project.classList.toggle('active');
+        }
+    </script>
 </body>
 </html>
