@@ -93,6 +93,20 @@ function togglePortfolioAccordion(accordionId) {
     const accordion = document.getElementById(accordionId);
     if (accordion) {
         accordion.classList.toggle('active');
+        
+        // Animate skill bars when experience section is opened
+        if (accordionId === 'experience' && accordion.classList.contains('active')) {
+            setTimeout(() => {
+                const skillBars = accordion.querySelectorAll('.skill-bar-fill');
+                skillBars.forEach(bar => {
+                    const width = bar.style.width;
+                    bar.style.width = '0%';
+                    setTimeout(() => {
+                        bar.style.width = width;
+                    }, 100);
+                });
+            }, 100);
+        }
     }
 }
 
