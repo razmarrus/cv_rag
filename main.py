@@ -308,6 +308,13 @@ async def submit_data_request(
     })
 
 
+@app.get("/robots.txt")
+async def robots_txt():
+    """Serve robots.txt to prevent crawling."""
+    from fastapi.responses import FileResponse
+    return FileResponse("static/robots.txt", media_type="text/plain")
+
+
 @app.get("/health")
 async def health_check():
     """Health check endpoint for reverse proxy and monitoring."""
