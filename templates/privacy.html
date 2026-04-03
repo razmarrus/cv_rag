@@ -3,251 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Privacy Policy - RAG System</title>
+    <title>Privacy Policy</title>
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
-    <link href="/static/css/custom.css?v=8" rel="stylesheet">
+    <link href="/static/css/custom.css?v=24" rel="stylesheet">
 </head>
 <body>
+    <!-- Geometric Background -->
+    <div class="geometric-background">
+        <div class="geo-splash geo-splash-1"></div>
+        <div class="geo-splash geo-splash-2"></div>
+        <div class="geo-splash geo-splash-3"></div>
+        <div class="geo-splash geo-splash-4"></div>
+        <svg class="geo-grid" viewBox="0 0 160 160" fill="none">
+            <line x1="0" y1="0" x2="160" y2="0" stroke="#0A0A0A" stroke-width="1" />
+            <line x1="0" y1="40" x2="160" y2="40" stroke="#0A0A0A" stroke-width="1" />
+            <line x1="0" y1="80" x2="160" y2="80" stroke="#0A0A0A" stroke-width="1" />
+            <line x1="0" y1="120" x2="160" y2="120" stroke="#0A0A0A" stroke-width="1" />
+            <line x1="0" y1="160" x2="160" y2="160" stroke="#0A0A0A" stroke-width="1" />
+            <line x1="0" y1="0" x2="0" y2="160" stroke="#0A0A0A" stroke-width="1" />
+            <line x1="40" y1="0" x2="40" y2="160" stroke="#0A0A0A" stroke-width="1" />
+            <line x1="80" y1="0" x2="80" y2="160" stroke="#0A0A0A" stroke-width="1" />
+            <line x1="120" y1="0" x2="120" y2="160" stroke="#0A0A0A" stroke-width="1" />
+            <line x1="160" y1="0" x2="160" y2="160" stroke="#0A0A0A" stroke-width="1" />
+        </svg>
+        <div class="geo-rect geo-rect-1"></div>
+        <div class="geo-rect geo-rect-2"></div>
+        <div class="geo-rect geo-rect-3"></div>
+        <svg class="geo-brackets geo-brackets-1" viewBox="0 0 70 70" fill="none">
+            <path d="M0 12 L0 0 L12 0" stroke="#FFE55C" stroke-width="2" />
+            <path d="M58 0 L70 0 L70 12" stroke="#FFE55C" stroke-width="2" />
+            <path d="M70 58 L70 70 L58 70" stroke="#FFE55C" stroke-width="2" />
+            <path d="M12 70 L0 70 L0 58" stroke="#FFE55C" stroke-width="2" />
+        </svg>
+        <svg class="geo-brackets geo-brackets-2" viewBox="0 0 85 85" fill="none">
+            <path d="M0 15 L0 0 L15 0" stroke="#0A0A0A" stroke-width="1.5" />
+            <path d="M70 0 L85 0 L85 15" stroke="#0A0A0A" stroke-width="1.5" />
+            <path d="M85 70 L85 85 L70 85" stroke="#0A0A0A" stroke-width="1.5" />
+            <path d="M15 85 L0 85 L0 70" stroke="#0A0A0A" stroke-width="1.5" />
+        </svg>
+        <div class="geo-line geo-line-1"></div>
+        <div class="geo-line geo-line-2"></div>
+        <div class="geo-line geo-line-3"></div>
+        <div class="geo-triangle geo-triangle-1"></div>
+        <div class="geo-triangle geo-triangle-2"></div>
+        <div class="geo-dot geo-dot-1"></div>
+        <div class="geo-dot geo-dot-2"></div>
+        <div class="geo-dot geo-dot-3"></div>
+    </div>
+
     <main class="container">
-        <!-- Hero Section -->
-        <div class="hero-section" style="margin-bottom: 3rem;">
-            <div class="hero-line-1">Privacy</div>
-            <div class="hero-line-2">Policy</div>
-            <p class="hero-subtitle"><a href="/" style="color: var(--color-text); text-decoration: underline;">&larr; Back to main page</a></p>
+        <!-- Header -->
+        <div class="privacy-header">
+            <h1>Privacy Policy</h1>
+            <a href="/" class="back-link">← Back</a>
         </div>
 
-        <section class="accordion-section">
-            <div class="accordion-item active">
-                <button class="accordion-header" type="button" onclick="toggleAccordion('dataController')">
-                    <span>Data Controller Information</span>
-                    <svg class="accordion-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                </button>
-                <div class="accordion-content">
-                    <div class="accordion-content-inner">
-                        <p><strong>Name:</strong> Margot Razumeyeva</p>
-                        <p><strong>Location:</strong> Amsterdam, Netherlands</p>
-                        <p><strong>Contact:</strong> <a href="mailto:margo.razumeyeva@gmail.com">margo.razumeyeva@gmail.com</a></p>
-                    </div>
-                </div>
+        <!-- Content -->
+        <section class="privacy-content">
+            <div class="privacy-section">
+                <h2>Data Controller</h2>
+                <p><strong>Margot Razumeyeva</strong><br>
+                Amsterdam, Netherlands<br>
+                <a href="mailto:margo.razumeyeva@gmail.com">margo.razumeyeva@gmail.com</a></p>
             </div>
 
-            <div class="accordion-item" id="dataController">
-                <button class="accordion-header" type="button" onclick="toggleAccordion('dataCollect')">
-                    <span>What Data We Collect</span>
-                    <svg class="accordion-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                </button>
-                <div class="accordion-content">
-                    <div class="accordion-content-inner">
-                        <p>When you use this CV question-answering system, we collect:</p>
-                        <ul>
-                            <li><strong>IP Address:</strong> Your device's internet protocol address</li>
-                            <li><strong>Questions:</strong> The questions you submit to the system</li>
-                            <li><strong>Answers:</strong> The responses generated by our AI system</li>
-                            <li><strong>Metadata:</strong> Timestamp, response time, number of document chunks used</li>
-                        </ul>
-                    </div>
-                </div>
+            <div class="privacy-section">
+                <h2>Data Collection</h2>
+                <p>We collect:</p>
+                <ul>
+                    <li>IP address for rate limiting</li>
+                    <li>Questions submitted to the system</li>
+                    <li>Generated answers and metadata</li>
+                </ul>
             </div>
 
-            <div class="accordion-item" id="dataCollect">
-                <button class="accordion-header" type="button" onclick="toggleAccordion('whyCollect')">
-                    <span>Why We Collect This Data</span>
-                    <svg class="accordion-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                </button>
-                <div class="accordion-content">
-                    <div class="accordion-content-inner">
-                        <p>We process your personal data for the following purposes:</p>
-                        <ul>
-                            <li><strong>Rate Limiting:</strong> To prevent abuse and ensure fair access to the service (10 questions per day per IP)</li>
-                            <li><strong>Service Improvement:</strong> To understand usage patterns and improve system quality</li>
-                            <li><strong>Debugging:</strong> To identify and fix technical issues</li>
-                            <li><strong>Security:</strong> To detect and prevent malicious activity</li>
-                        </ul>
-                    </div>
-                </div>
+            <div class="privacy-section">
+                <h2>Purpose & Legal Basis</h2>
+                <p><strong>Purpose:</strong> Rate limiting (12 questions/day per IP) to prevent abuse.</p>
+                <p><strong>Legal Basis:</strong> Legitimate interest (GDPR Article 6(1)(f)) - ensuring fair service access for all users.</p>
             </div>
 
-            <div class="accordion-item" id="whyCollect">
-                <button class="accordion-header" type="button" onclick="toggleAccordion('legalBasis')">
-                    <span>Legal Basis for Processing</span>
-                    <svg class="accordion-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                </button>
-                <div class="accordion-content">
-                    <div class="accordion-content-inner">
-                        <p>We process your data based on <strong>legitimate interest</strong> (GDPR Article 6(1)(f)).</p>
-                        <p><strong>Our legitimate interest:</strong> Protecting the service from abuse and ensuring availability for all users.</p>
-                        <p><strong>Balancing test:</strong> We collect minimal data (only what's necessary for rate limiting), use short retention periods (90 days), and provide transparent information about our processing.</p>
-                        <p>You have the right to object to this processing. However, objecting may prevent you from using the service as rate limiting is essential for fair access.</p>
-                    </div>
-                </div>
+            <div class="privacy-section">
+                <h2>Data Retention</h2>
+                <p>Data is automatically deleted after <strong>90 days</strong>.</p>
             </div>
 
-            <div class="accordion-item" id="legalBasis">
-                <button class="accordion-header" type="button" onclick="toggleAccordion('dataRetention')">
-                    <span>Data Retention</span>
-                    <svg class="accordion-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                </button>
-                <div class="accordion-content">
-                    <div class="accordion-content-inner">
-                        <p><strong>Retention period:</strong> 90 days from collection</p>
-                        <p><strong>Automatic deletion:</strong> Data older than 90 days is automatically deleted from our systems</p>
-                        <p><strong>Why this period:</strong> Sufficient for rate limiting (daily reset) and service improvement while minimizing data storage</p>
-                    </div>
-                </div>
+            <div class="privacy-section">
+                <h2>Third Parties</h2>
+                <p><strong>HuggingFace:</strong> Questions are processed through HuggingFace API for answer generation. See their <a href="https://huggingface.co/privacy" target="_blank" rel="noopener">privacy policy</a>.</p>
+                <p><strong>Data Location:</strong> Database hosted in the EU (Netherlands).</p>
             </div>
 
-            <div class="accordion-item" id="dataRetention">
-                <button class="accordion-header" type="button" onclick="toggleAccordion('thirdParty')">
-                    <span>Third-Party Data Processors</span>
-                    <svg class="accordion-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                </button>
-                <div class="accordion-content">
-                    <div class="accordion-content-inner">
-                        <p><strong>HuggingFace:</strong> Your questions and retrieved context are sent to HuggingFace's API for large language model inference to generate answers.</p>
-                        <p>HuggingFace processes this data according to their privacy policy: <a href="https://huggingface.co/privacy" target="_blank" rel="noopener">https://huggingface.co/privacy</a></p>
-                        <p><strong>Data location:</strong> Our database is hosted in the EU (Netherlands). HuggingFace processing location may vary - see their policy.</p>
-                    </div>
-                </div>
+            <div class="privacy-section">
+                <h2>Your GDPR Rights</h2>
+                <ul>
+                    <li><strong>Access:</strong> Request copy of your data</li>
+                    <li><strong>Erasure:</strong> Request deletion of your data</li>
+                    <li><strong>Rectification:</strong> Request correction of inaccurate data</li>
+                    <li><strong>Object:</strong> Object to data processing</li>
+                    <li><strong>Portability:</strong> Request data in machine-readable format</li>
+                </ul>
+                <p>To exercise rights, email <a href="mailto:margo.razumeyeva@gmail.com">margo.razumeyeva@gmail.com</a>. Response within 30 days.</p>
+                <p><strong>Lodge complaint:</strong> <a href="https://autoriteitpersoonsgegevens.nl" target="_blank" rel="noopener">Autoriteit Persoonsgegevens</a> (Netherlands)</p>
             </div>
 
-            <div class="accordion-item" id="thirdParty">
-                <button class="accordion-header" type="button" onclick="toggleAccordion('gdprRights')">
-                    <span>Your GDPR Rights</span>
-                    <svg class="accordion-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                </button>
-                <div class="accordion-content">
-                    <div class="accordion-content-inner">
-                        <p>Under GDPR, you have the following rights regarding your personal data:</p>
-                        
-                        <p><strong>Right to Access (Article 15):</strong> You can request a copy of all data we hold about you, including all questions and answers associated with your IP address.</p>
-                        
-                        <p><strong>Right to Rectification (Article 16):</strong> If any data we hold about you is inaccurate, you can request correction.</p>
-                        
-                        <p><strong>Right to Erasure (Article 17):</strong> You can request deletion of all your data from our systems. This will be processed within 30 days.</p>
-                        
-                        <p><strong>Right to Restrict Processing (Article 18):</strong> You can request that we limit how we use your data.</p>
-                        
-                        <p><strong>Right to Object (Article 21):</strong> You can object to our processing of your data. Note that this may prevent you from using the service.</p>
-                        
-                        <p><strong>Right to Data Portability (Article 20):</strong> You can request your data in a structured, machine-readable format (JSON).</p>
-                        
-                        <p><strong>Right to Lodge a Complaint:</strong> You have the right to lodge a complaint with a supervisory authority: <strong>Netherlands:</strong> Autoriteit Persoonsgegevens (<a href="https://autoriteitpersoonsgegevens.nl" target="_blank" rel="noopener">autoriteitpersoonsgegevens.nl</a>)</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="accordion-item" id="gdprRights">
-                <button class="accordion-header" type="button" onclick="toggleAccordion('exerciseRights')">
-                    <span>How to Exercise Your Rights</span>
-                    <svg class="accordion-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                </button>
-                <div class="accordion-content">
-                    <div class="accordion-content-inner">
-                        <p>To exercise any of your GDPR rights:</p>
-                        <ol>
-                            <li>Use our <a href="/data-request">Data Rights Request Form</a></li>
-                            <li>Or email directly: <a href="mailto:margo.razumeyeva@gmail.com">margo.razumeyeva@gmail.com</a></li>
-                        </ol>
-                        <p><strong>Response time:</strong> We will respond within 30 days as required by GDPR.</p>
-                        <p><strong>Identity verification:</strong> We may ask you to verify your identity before fulfilling requests to protect your data.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="accordion-item" id="exerciseRights">
-                <button class="accordion-header" type="button" onclick="toggleAccordion('dataSecurity')">
-                    <span>Data Security</span>
-                    <svg class="accordion-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                </button>
-                <div class="accordion-content">
-                    <div class="accordion-content-inner">
-                        <p>We implement appropriate technical and organizational measures to protect your data:</p>
-                        <ul>
-                            <li>Database encryption at rest</li>
-                            <li>TLS/HTTPS encryption for data in transit</li>
-                            <li>Access controls (only data controller has access)</li>
-                            <li>Automated deletion after retention period</li>
-                            <li>Regular security updates</li>
-                            <li>Connection pooling with secure configuration</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div class="accordion-item" id="dataSecurity">
-                <button class="accordion-header" type="button" onclick="toggleAccordion('automatedDecision')">
-                    <span>Automated Decision Making</span>
-                    <svg class="accordion-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                </button>
-                <div class="accordion-content">
-                    <div class="accordion-content-inner">
-                        <p>The only automated decision made by this system is <strong>rate limiting</strong> based on your IP address (10 questions per day).</p>
-                        <p>This is a simple threshold-based rule, not AI profiling or scoring. You are informed of this limit upfront and can contact us if you need exceptions.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="accordion-item" id="automatedDecision">
-                <button class="accordion-header" type="button" onclick="toggleAccordion('policyChanges')">
-                    <span>Changes to This Policy</span>
-                    <svg class="accordion-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                </button>
-                <div class="accordion-content">
-                    <div class="accordion-content-inner">
-                        <p>We may update this privacy policy from time to time. Material changes will be indicated on the main page.</p>
-                        <p><strong>Last updated:</strong> February 2026</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="accordion-item" id="policyChanges">
-                <button class="accordion-header" type="button" onclick="toggleAccordion('contactInfo')">
-                    <span>Contact Information</span>
-                    <svg class="accordion-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                </button>
-                <div class="accordion-content">
-                    <div class="accordion-content-inner">
-                        <p>For privacy questions, data subject requests, or concerns:</p>
-                        <p><strong>Email:</strong> <a href="mailto:margo.razumeyeva@gmail.com">margo.razumeyeva@gmail.com</a></p>
-                        <p><strong>Response time:</strong> Within 30 days (GDPR requirement)</p>
-                    </div>
-                </div>
+            <div class="privacy-section">
+                <p class="privacy-updated"><strong>Last updated:</strong> April 2026</p>
             </div>
         </section>
 
         <footer class="site-footer">
-            <small>
-                <a href="/">Back to main page</a> | 
-                <a href="/data-request">Your Data Rights</a>
+            <small class="footer-links">
+                <a href="/">← Back to main page</a>
             </small>
         </footer>
     </main>
 
-    <script src="/static/js/app.js?v=6"></script>
+    <script src="/static/js/app.js?v=8"></script>
 </body>
 </html>

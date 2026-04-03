@@ -1138,4 +1138,127 @@ main.container {
     .skill-bar-percent {
         font-size: 0.75rem !important;
     }
+
+    .privacy-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 1rem 0;
+    }
+
+    .privacy-header h1 {
+        font-size: 1.75rem;
+    }
+
+    .privacy-content {
+        padding: 0 1rem;
+    }
+
+    .privacy-section h2 {
+        font-size: 1rem;
+    }
+
+    .privacy-section {
+        margin-bottom: 1.5rem;
+        padding-bottom: 1.5rem;
+    }
+}
+
+/* Privacy Page */
+.privacy-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 3rem 2rem 2rem;
+    border-bottom: 2px solid rgba(10, 10, 10, 0.1);
+    margin-bottom: 3rem;
+}
+
+.privacy-header h1 {
+    font-size: 3rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin: 0;
+    color: var(--color-text);
+}
+
+.back-link {
+    color: var(--color-text);
+    text-decoration: none;
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid rgba(10, 10, 10, 0.2);
+    transition: all 0.2s;
+}
+
+.back-link:hover {
+    border-color: var(--color-yellow);
+    background: rgba(255, 229, 92, 0.1);
+}
+
+.privacy-content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.privacy-section {
+    margin-bottom: 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(10, 10, 10, 0.08);
+}
+
+.privacy-section:last-child {
+    border-bottom: none;
+}
+
+.privacy-section h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--color-text);
+    position: relative;
+    padding-left: 0.75rem;
+}
+
+.privacy-section h2::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--color-yellow);
+}
+
+.privacy-section p {
+    line-height: 1.7;
+    margin-bottom: 0.75rem;
+    color: var(--color-text);
+}
+
+.privacy-section ul {
+    margin: 0.5rem 0;
+    padding-left: 1.5rem;
+}
+
+.privacy-section li {
+    line-height: 1.7;
+    margin-bottom: 0.5rem;
+}
+
+.privacy-section a {
+    color: var(--color-text);
+    text-decoration: underline;
+    transition: color 0.2s;
+}
+
+.privacy-section a:hover {
+    color: var(--color-yellow);
+}
+
+.privacy-updated {
+    font-size: 0.9rem;
+    opacity: 0.7;
+    text-align: center;
 }
