@@ -18,7 +18,10 @@ class Config:
     USE_LOCAL_EMBEDDINGS = os.getenv("USE_LOCAL_EMBEDDINGS", "false").lower() == "true"
     EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "BAAI/bge-small-en-v1.5")
     # LLM_MODEL = os.getenv("LLM_MODEL", "mistralai/Mistral-7B-Instruct-v0.2")
-    LLM_MODEL = os.getenv("LLM_MODEL", "Qwen/Qwen2.5-7B-Instruct")
+    # LLM_MODEL = os.getenv("LLM_MODEL", "Qwen/Qwen2.5-7B-Instruct")
+    # LLM_MODEL = os.getenv("LLM_MODEL", "HuggingFaceH4/zephyr-7b-beta")
+
+    LLM_MODEL = os.getenv("LLM_MODEL", "mistralai/Mistral-7B-Instruct-v0.3")  # Updated to Mistral
     
     # CHUNK_SIZE = 512
     # CHUNK_OVERLAP = 50
@@ -28,7 +31,7 @@ class Config:
 
     # RAG Settings
     # CHUNK_SIZE = 750
-    CHUNK_SIZE = 400
+    CHUNK_SIZE = 430
     CHUNK_OVERLAP = 25
 
 
@@ -36,7 +39,7 @@ class Config:
     RELAXED_SIMILARITY_THRESHOLD = 0.1
     TOP_K_CHUNKS = 4             
     MAX_CONTEXT_TOKENS = 2500    
-    TEMPERATURE = 0.2
+    TEMPERATURE = 0.7
     MAX_NEW_TOKENS = 350  # Shorter answers (2-3 sentences)
 
     RATE_LIMIT = "10/hour"
