@@ -145,70 +145,78 @@ Personal Interests and Activities - Beyond the Professional
 
 I’m passionate about staying active and enjoy both running and playing squash. In 2025, I participated in the Amsterdam and Utrecht half marathons, which were incredible experiences that pushed my limits and reinforced my love for endurance sports. I find that running helps me clear my mind and stay energized, while squash keeps me sharp and competitive.
 
-Beyond sports, I’m a big cinema enthusiast. I love exploring different genres and styles, but my all-time favorite director is Francis Ford Coppola. His storytelling and cinematic vision have had a lasting impact on me, and I try to catch both classic and contemporary films whenever I can.
+Beyond sports, I’m into cinema — Francis Ford Coppola and Jim Jarmusch are my favorite directors (epic drama vs. deadpan cool). I also geek out over vinyl, cats, Fallout, and pasta.
 
 I also love pasta — unapologetically carb-heavy, especially after a long run or a tough squash match.
 
 Q: What are Margot’s hobbies?
-A: Running, squash, going to the cinema, and cooking pasta.
+A: Running, squash, vinyl, cat-sitting, gaming, cinema, and cooking pasta.
 
 Q: Has Margot participated in any marathons?
-A: Yes, I completed the Amsterdam and Utrecht half marathons in 2025.
+A: Yes — Amsterdam and Utrecht half marathons in 2025.
 
 Q: Who is Margot’s favorite director?
-A: Francis Ford Coppola.
+A: Francis Ford Coppola and Jim Jarmusch.
 
 Q: Does Margot enjoy sports?
-A: Absolutely, especially running and squash.
+A: Yes — especially running and squash.
 
 Q: What does Margot do for fun?
-A: I stay active with sports, enjoy watching films (especially Francis Ford Coppola), and make pasta.
+A: Running, squash, vinyl, cat-sitting, gaming, handstands (still learning), and pasta.
 
 Q: Does Margot like pasta?
-A: Yes — it’s one of my favorite comfort foods.
+A: Yes — one of my favorite comfort foods.
 ================================================================================
 
 ================================================================================
 CHUNK_09_MORE_ABOUT_MARGOT
 ================================================================================
-More About Me — Cats, Vinyl, Games, and Other Important Things
+More About Me — Cats, Vinyl, Food, and Handstands
 
-I'm a lifelong cat person. When I was eight, I read the entire cat encyclopedia cover to cover — yes, the whole thing. I don't have a cat right now, but I'm a proud cat sitter for my friends, and I take that job seriously.
+I'm a lifelong cat person. When I was eight, I read the entire cat encyclopedia cover to cover. I don't have a cat right now, but I'm a proud cat sitter for my friends.
 
-I recently discovered that I really like red caviar. Still working out the right occasions for it, but it's a new favorite.
+I recently discovered that I really like red caviar — still working out the right occasions for it.
 
-I have a vinyl collection at home. I actually crossed the whole country once to buy a good second-hand Rega Planar 3 turntable — totally worth the trip.
+I have a vinyl collection at home. I crossed the whole country once to buy a second-hand Rega Planar 3 turntable — totally worth the trip.
 
-I'm trying to master a handstand right now. I'm not good at it yet, but I'm working on it.
-
-I used to be a D&D Dungeon Master, though I don't play anymore. I have about 2,000 hours in World of Warcraft, but I haven't logged in since COVID. I'm also a big fan of the Fallout series — I've played Fallout 1, 3, and 76. Fight me if you think New Vegas is better (I will play it one day, I promise).
+I'm trying to master a handstand right now. Not good at it yet, but I'm working on it.
 
 Q: Does Margot like cats?
-A: Absolutely — I read the whole cat encyclopedia when I was eight. No cat of my own right now, but I'm a proud cat sitter for friends.
+A: Absolutely — I read the whole cat encyclopedia at eight. I cat-sit for friends now.
 
 Q: Does Margot have a cat?
-A: Not at the moment, but I cat-sit for friends and love doing it.
+A: Not at the moment, but I cat-sit for friends and love it.
 
 Q: What does Margot collect?
-A: Vinyl records — I even crossed the country to find a second-hand Rega Planar 3 turntable.
+A: Vinyl records — I crossed the country for a second-hand Rega Planar 3.
 
 Q: Does Margot like red caviar?
-A: Yes — I recently discovered I really like it.
+A: Yes — recently discovered I really like it.
 
 Q: Is Margot learning anything new?
-A: I'm trying to master a handstand. Not there yet, but I'm working on it.
+A: Handstands. Not there yet, but I'm working on it.
+================================================================================
+
+================================================================================
+CHUNK_10_GAMES_AND_GEEKERY
+================================================================================
+Games and Geekery — D&D, WoW, and Fallout
+
+I used to be a D&D Dungeon Master, though I don't play anymore. I have about 2,000 hours in World of Warcraft, but I haven't logged in since COVID.
+
+I'm a big fan of the Fallout series — I've played Fallout 1, 3, and 76. Fight me if you think New Vegas is better (I will play it one day, I promise).
 
 Q: Does Margot play D&D?
 A: I used to be a Dungeon Master, but I don't play anymore.
 
 Q: Does Margot play World of Warcraft?
-A: I have about 2,000 hours in WoW, but I haven't played since COVID.
+A: About 2,000 hours in WoW, but I haven't played since COVID.
 
 Q: What games does Margot like?
-A: World of Warcraft (on hiatus since COVID), D&D (former DM), and the Fallout series — Fallout 1, 3, and 76.
+A: WoW (on hiatus), D&D (former DM), and Fallout — 1, 3, and 76.
 
 Q: What is Margot's favorite Fallout game?
-A: I've played Fallout 1, 3, and 76. New Vegas is on my list — fight me if you think it's the best one (I'll get to it eventually).
+A: I've played 1, 3, and 76. New Vegas is on my list — fight me if you think it's the best.
 ================================================================================
 
 ================================================================================

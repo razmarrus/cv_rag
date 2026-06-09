@@ -99,15 +99,16 @@ function togglePortfolioAccordion(accordionId) {
 const OFF_SCRIPT_QUESTIONS = [
     'What are your hobbies?',
     'Have you participated in any half marathons?',
-    'Who is your favorite film director?',
     'Do you enjoy sports?',
     'What do you do for fun?',
-    'What is your favorite movie?',
     'Do you like pasta?',
     'Do you like cats?',
     'What games do you play?',
     'What is your favorite Fallout game?',
     'Do you collect vinyl records?',
+    'Are you learning a handstand?',
+    'Do you like red caviar?',
+    'Who is your favorite film director?',
 ];
 
 function fillQuestion(question) {
@@ -123,6 +124,11 @@ function fillOffScriptQuestion() {
         Math.floor(Math.random() * OFF_SCRIPT_QUESTIONS.length)
     ];
     fillQuestion(question);
+
+    const form = document.getElementById('questionForm');
+    if (form) {
+        form.requestSubmit();
+    }
 }
 
 function toggleAccordion(accordionId) {
