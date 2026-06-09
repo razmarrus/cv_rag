@@ -6,7 +6,7 @@
     <title>{{ title }} - RAG System</title>
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
-    <link href="/static/css/custom.css?v=8" rel="stylesheet">
+    <link href="/static/css/custom.css?v=9" rel="stylesheet">
     <style>
         /* Project-specific nested accordion styles */
         .project-item {
@@ -103,14 +103,95 @@
     </style>
 </head>
 <body>
+    <!-- Abstract geometric background -->
+    <div class="geometric-background" aria-hidden="true">
+        <svg class="geo-bolt geo-bolt--1" viewBox="0 0 550 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 90 L180 88 L180 92 L160 120 L190 120 L190 116 L420 115 L420 85 L360 85 L360 60 L480 60 L480 65 L550 64" fill="#FFE55C"/>
+            <path d="M100 140 L280 138 L280 142 L260 155 L350 155" stroke="#FFE55C" stroke-width="3" stroke-linecap="square"/>
+        </svg>
+        <svg class="geo-bolt geo-bolt--2" viewBox="0 0 420 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M420 70 L280 68 L280 75 L250 95 L280 95 L280 100 L120 98 L120 72 L0 70" fill="#FFE55C"/>
+        </svg>
+        <svg class="geo-grid geo-grid--1" viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <line x1="0" y1="0" x2="220" y2="0" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="0" y1="55" x2="220" y2="55" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="0" y1="110" x2="220" y2="110" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="0" y1="165" x2="220" y2="165" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="0" y1="220" x2="220" y2="220" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="0" y1="0" x2="0" y2="220" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="55" y1="0" x2="55" y2="220" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="110" y1="0" x2="110" y2="220" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="165" y1="0" x2="165" y2="220" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="220" y1="0" x2="220" y2="220" stroke="#FFE55C" stroke-width="1"/>
+        </svg>
+        <svg class="geo-grid geo-grid--2" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <line x1="0" y1="0" x2="180" y2="0" stroke="#0A0A0A" stroke-width="1"/>
+            <line x1="0" y1="45" x2="180" y2="45" stroke="#0A0A0A" stroke-width="1"/>
+            <line x1="0" y1="90" x2="180" y2="90" stroke="#0A0A0A" stroke-width="1"/>
+            <line x1="0" y1="135" x2="180" y2="135" stroke="#0A0A0A" stroke-width="1"/>
+            <line x1="0" y1="180" x2="180" y2="180" stroke="#0A0A0A" stroke-width="1"/>
+            <line x1="0" y1="0" x2="0" y2="180" stroke="#0A0A0A" stroke-width="1"/>
+            <line x1="45" y1="0" x2="45" y2="180" stroke="#0A0A0A" stroke-width="1"/>
+            <line x1="90" y1="0" x2="90" y2="180" stroke="#0A0A0A" stroke-width="1"/>
+            <line x1="135" y1="0" x2="135" y2="180" stroke="#0A0A0A" stroke-width="1"/>
+            <line x1="180" y1="0" x2="180" y2="180" stroke="#0A0A0A" stroke-width="1"/>
+        </svg>
+        <svg class="geo-bracket geo-bracket--1" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 15 L0 0 L15 0" stroke="#FFE55C" stroke-width="2"/>
+            <path d="M65 0 L80 0 L80 15" stroke="#FFE55C" stroke-width="2"/>
+            <path d="M80 65 L80 80 L65 80" stroke="#FFE55C" stroke-width="2"/>
+            <path d="M15 80 L0 80 L0 65" stroke="#FFE55C" stroke-width="2"/>
+        </svg>
+        <svg class="geo-bracket geo-bracket--2" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 18 L0 0 L18 0" stroke="#0A0A0A" stroke-width="2"/>
+            <path d="M82 0 L100 0 L100 18" stroke="#0A0A0A" stroke-width="2"/>
+            <path d="M100 82 L100 100 L82 100" stroke="#0A0A0A" stroke-width="2"/>
+            <path d="M18 100 L0 100 L0 82" stroke="#0A0A0A" stroke-width="2"/>
+        </svg>
+        <svg class="geo-bracket geo-bracket--3" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 12 L0 0 L12 0" stroke="#FFE55C" stroke-width="1.5"/>
+            <path d="M48 0 L60 0 L60 12" stroke="#FFE55C" stroke-width="1.5"/>
+            <path d="M60 48 L60 60 L48 60" stroke="#FFE55C" stroke-width="1.5"/>
+            <path d="M12 60 L0 60 L0 48" stroke="#FFE55C" stroke-width="1.5"/>
+        </svg>
+        <div class="geo-rect geo-rect--1"></div>
+        <div class="geo-rect geo-rect--2"></div>
+        <div class="geo-rect geo-rect--3"></div>
+        <div class="geo-rect geo-rect--4"></div>
+        <div class="geo-rect geo-rect--5"></div>
+        <div class="geo-rect geo-rect--6"></div>
+        <div class="geo-rect geo-rect--7"></div>
+        <div class="geo-rect geo-rect--8"></div>
+        <div class="geo-line geo-line--1"></div>
+        <div class="geo-line geo-line--2"></div>
+        <div class="geo-line geo-line--3"></div>
+        <div class="geo-dot geo-dot--1"></div>
+        <div class="geo-dot geo-dot--2"></div>
+        <div class="geo-dot geo-dot--3"></div>
+        <div class="geo-circle geo-circle--1"></div>
+        <div class="geo-circle geo-circle--2"></div>
+        <div class="geo-square geo-square--1"></div>
+        <div class="geo-square geo-square--2"></div>
+        <div class="geo-square geo-square--3"></div>
+        <div class="geo-streak geo-streak--1"></div>
+        <div class="geo-streak geo-streak--2"></div>
+        <div class="geo-streak geo-streak--3"></div>
+    </div>
+
     <main class="container">
         <!-- Hero Section -->
         <div class="hero-section">
-            <div class="hero-line-1">Nice to meet you</div>
-            <div class="hero-line-2">My name is Margot</div>
-            
-            <p class="hero-subtitle">I'm a Data Scientist with a strong foundation in both machine learning and data engineering.</p>
-            
+            <div class="hero-grid">
+                <div class="hero-name-col">
+                    <h1 class="hero-name">Margot</h1>
+                    <p class="hero-greeting">Nice to meet you</p>
+                </div>
+                <div class="hero-desc-col">
+                    <div class="hero-accent-line"></div>
+                    <p class="hero-subtitle">I'm a Data Scientist with a strong foundation in both machine learning and data engineering.</p>
+                </div>
+            </div>
+
             <!-- Contact Information -->
             <div class="contact-info">
                 <a href="mailto:margo.razumeyeva@gmail.com" class="contact-link">
@@ -147,62 +228,65 @@
 
         <!-- Search Section -->
         <section class="search-section">
-            <h2>Ask About My Work</h2>
-            <p class="search-subtitle">I have experience building RAG (Retrieval-Augmented Generation) systems. Check this out! Ask me anything about my background, skills, or projects.</p>
-            
-            <!-- Suggestion Pills -->
-            <div class="suggestion-pills">
-                <button type="button" class="pill-btn" onclick="fillQuestion('Tell me about your recent machine learning projects')">Recent Projects</button>
-                <button type="button" class="pill-btn" onclick="fillQuestion('What is your tech stack and tools you use?')">Tech Stack</button>
-                <button type="button" class="pill-btn" onclick="fillQuestion('Tell me about your experience as a data scientist')">Experience</button>
-                <button type="button" class="pill-btn" onclick="fillQuestion('What are your main skills and expertise?')">Skills</button>
-            </div>
+            <div class="search-grid">
+                <div class="search-heading-col">
+                    <h2>Ask About My Work</h2>
+                    <div class="search-accent-line"></div>
+                    <p class="search-subtitle">I have experience building RAG (Retrieval-Augmented Generation) systems. Ask me anything about my background, skills, or projects.</p>
+                </div>
 
-            <!-- Inline Search Form -->
-            <form method="POST" action="/ask" id="questionForm" class="inline-search-form" enctype="application/x-www-form-urlencoded">
-                <input 
-                    type="text" 
-                    name="question" 
-                    id="questionInput"
-                    class="inline-search-input"
-                    placeholder="What would you like to know about my work?"
-                    value="{% if question %}{{ question }}{% endif %}"
-                    required
-                    aria-label="Question input">
-                <button type="submit" id="submitBtn" class="inline-search-btn" aria-label="Submit question">
-                    <span id="btnText">→</span>
-                    <span id="btnSpinner" class="spinner" aria-hidden="true"></span>
-                </button>
-            </form>
+                <div class="search-interactive-col">
+                    <div class="suggestion-pills">
+                        <button type="button" class="pill-btn" onclick="fillQuestion('Tell me about your recent machine learning projects')">Projects</button>
+                        <button type="button" class="pill-btn" onclick="fillQuestion('What is your tech stack and tools you use?')">Stack</button>
+                        <button type="button" class="pill-btn" onclick="fillQuestion('Tell me about your experience as a data scientist')">Experience</button>
+                        <button type="button" class="pill-btn" onclick="fillQuestion('What are your main skills and expertise?')">Skills</button>
+                    </div>
 
-            <!-- Answer Display -->
-            <div class="answer-display">
-                {% if answer %}
-                    <p>{{ answer }}</p>
-                    {% if sources or num_chunks or execution_time %}
-                    <div class="metadata">
-                        {% if sources %}
-                        <span class="tag">Sources: {{ sources|join(', ') }}</span>
-                        {% endif %}
-                        {% if num_chunks %}
-                        <span class="tag">{{ num_chunks }} chunks</span>
-                        {% endif %}
-                        {% if execution_time %}
-                        <span class="tag">{{ execution_time }}s</span>
+                    <form method="POST" action="/ask" id="questionForm" class="inline-search-form" enctype="application/x-www-form-urlencoded">
+                        <input
+                            type="text"
+                            name="question"
+                            id="questionInput"
+                            class="inline-search-input"
+                            placeholder="Type your question"
+                            value="{% if question %}{{ question }}{% endif %}"
+                            required
+                            aria-label="Question input">
+                        <button type="submit" id="submitBtn" class="inline-search-btn" aria-label="Submit question">
+                            <span id="btnText">→</span>
+                            <span id="btnSpinner" class="spinner" aria-hidden="true"></span>
+                        </button>
+                    </form>
+
+                    <div class="answer-display">
+                        {% if answer %}
+                            <p>{{ answer }}</p>
+                            {% if sources or num_chunks or execution_time %}
+                            <div class="metadata">
+                                {% if sources %}
+                                <span class="tag">Sources: {{ sources|join(', ') }}</span>
+                                {% endif %}
+                                {% if num_chunks %}
+                                <span class="tag">{{ num_chunks }} chunks</span>
+                                {% endif %}
+                                {% if execution_time %}
+                                <span class="tag">{{ execution_time }}s</span>
+                                {% endif %}
+                            </div>
+                            {% endif %}
+                        {% else %}
+                            <p class="answer-placeholder">Your answer will appear here...</p>
                         {% endif %}
                     </div>
-                    {% endif %}
-                {% else %}
-                    <p class="answer-placeholder">Your answer will appear here...</p>
-                {% endif %}
-            </div>
 
-            <!-- Error Message -->
-            {% if error %}
-            <div class="error-message">
-                <strong>Error:</strong> {{ error }}
+                    {% if error %}
+                    <div class="error-message">
+                        <strong>Error:</strong> {{ error }}
+                    </div>
+                    {% endif %}
+                </div>
             </div>
-            {% endif %}
         </section>
 
         <!-- Portfolio Accordion Sections -->
