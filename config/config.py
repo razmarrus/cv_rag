@@ -40,7 +40,10 @@ class Config:
     TOP_K_CHUNKS = 4             
     MAX_CONTEXT_TOKENS = 2500    
     TEMPERATURE = 0.7
-    MAX_NEW_TOKENS = 350  # Shorter answers (2-3 sentences)
+    OFF_TOPIC_TEMPERATURE = float(os.getenv("OFF_TOPIC_TEMPERATURE", "0.9"))
+    PERSONAL_TEMPERATURE = float(os.getenv("PERSONAL_TEMPERATURE", "0.85"))
+    MAX_NEW_TOKENS = 350
+    MAX_PERSONAL_NEW_TOKENS = int(os.getenv("MAX_PERSONAL_NEW_TOKENS", "500"))
 
     RATE_LIMIT = "10/hour"
 

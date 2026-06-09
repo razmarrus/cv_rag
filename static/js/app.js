@@ -104,10 +104,10 @@ const OFF_SCRIPT_QUESTIONS = [
     'Do you like pasta?',
     'Do you like cats?',
     'What games do you play?',
-    'What is your favorite Fallout game?',
+    // 'What is your favorite Fallout game?',
     'Do you collect vinyl records?',
-    'Are you learning a handstand?',
-    'Do you like red caviar?',
+    // 'Are you learning a handstand?',
+    // 'Do you like red caviar?',
     'Who is your favorite film director?',
 ];
 
@@ -124,11 +124,6 @@ function fillOffScriptQuestion() {
         Math.floor(Math.random() * OFF_SCRIPT_QUESTIONS.length)
     ];
     fillQuestion(question);
-
-    const form = document.getElementById('questionForm');
-    if (form) {
-        form.requestSubmit();
-    }
 }
 
 function toggleAccordion(accordionId) {

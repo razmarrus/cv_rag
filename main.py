@@ -4,7 +4,6 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi import BackgroundTasks
 import logging
-import re
 import time
 from datetime import datetime
 
@@ -72,66 +71,14 @@ async def startup_event():
         raise
 
 
-_PERSONAL_PHRASE_KEYWORDS = (
-    "half marathon", "off script", "off-script", "outside work", "free time",
-    "dungeon master", "world of warcraft", "new vegas", "video game",
-)
-
-_PERSONAL_WORD_KEYWORDS = frozenset({
-    "hobby", "hobbies", "marathon", "director", "movie", "film", "cinema",
-    "sport", "squash", "running", "fun", "pasta", "personal", "coppola",
-    "favourite", "favorite", "weekend", "cat", "cats", "caviar", "vinyl",
-    "turntable", "handstand", "dnd", "wow", "fallout", "games", "jarmusch",
-})
-
-_PERSONAL_CHUNK_MARKERS = (
-    "personal interests and activities",
-    "chunk_08_personal_interests",
-    "chunk_09_more_about_margot",
-    "chunk_10_games_and_geekery",
-    "beyond the professional",
-    "more about me",
-    "games and geekery",
-)
-
-
-def is_personal_question(question: str) -> bool:
-    """Return True if the question targets Margot's personal life."""
-    q = question.lower()
-    if "d&d" in q:
-        return True
-    if any(phrase in q for phrase in _PERSONAL_PHRASE_KEYWORDS):
-        return True
-    words = set(re.findall(r"[a-z0-9']+", q))
-    return bool(words & _PERSONAL_WORD_KEYWORDS)
-
-
-def _filter_personal_chunks(chunks: list) -> list:
-    """Keep only chunks that contain personal-life content."""
-    personal = []
+def _is_personal_context(chunks: list) -> bool:
+    """True when retrieved chunks are from personal-life sections."""
+    markers = ("chunk_08_personal", "chunk_09_more_about", "chunk_10_games")
     for chunk in chunks:
         content = chunk.get("content", "").lower()
-        if any(marker in content for marker in _PERSONAL_CHUNK_MARKERS):
-            personal.append(chunk)
-    return personal
-
-
-def _boost_personal_chunks(query_embedding: list, chunks: list) -> tuple[list, bool]:
-    """Prefer personal chunks for off-script questions."""
-    personal = _filter_personal_chunks(chunks)
-    if personal:
-        return personal, True
-
-    logger.info("Personal question: retrying search for personal chunks")
-    extra = db_client.search(
-        query_embedding,
-        k=12,
-        similarity_threshold=Config.RELAXED_SIMILARITY_THRESHOLD,
-    )
-    personal = _filter_personal_chunks(extra)
-    if personal:
-        return personal[: Config.TOP_K_CHUNKS], True
-    return chunks, False
+        if any(marker in content for marker in markers):
+            return True
+    return False
 
 
 def query_rag(question: str) -> dict:
@@ -149,9 +96,6 @@ def query_rag(question: str) -> dict:
     try:
         # Step 1: Generate embedding with automatic memory cleanup
         logger.info(f"Step 1: Generating embedding for question: '{question}'")
-        
-        is_relaxed_search = False
-        is_personal = is_personal_question(question)
         
         with hf_client.embedding_context(question) as query_embedding:
             logger.info(f"Embedding generated: dimension={len(query_embedding)}")
@@ -174,40 +118,22 @@ def query_rag(question: str) -> dict:
                     similarity_threshold=Config.RELAXED_SIMILARITY_THRESHOLD
                 )
                 if chunks:
-                    is_relaxed_search = True
                     logger.info(f"Relaxed search returned {len(chunks)} chunks")
-
-            if is_personal:
-                chunks, boosted = _boost_personal_chunks(query_embedding, chunks)
-                if boosted:
-                    is_relaxed_search = True
-                    logger.info(f"Personal chunk boost returned {len(chunks)} chunks")
 
         if chunks:
             for i, chunk in enumerate(chunks):
                 logger.info(f"Chunk {i+1}: similarity={chunk.get('similarity', 0):.3f}, source={chunk.get('source', 'unknown')}")
         
         if not chunks:
-            if is_personal:
-                logger.warning("No chunks found - generating personal off-script answer without context")
-                answer = hf_client.generate_answer(
-                    question=question,
-                    context="",
-                    max_new_tokens=Config.MAX_NEW_TOKENS,
-                    temperature=min(Config.TEMPERATURE + 0.15, 0.9),
-                    is_personal=True,
-                )
-                source_label = "personal"
-            else:
-                logger.warning("No chunks found - generating witty off-topic answer")
-                answer = hf_client.generate_answer(
-                    question=question,
-                    context="",
-                    max_new_tokens=Config.MAX_NEW_TOKENS,
-                    temperature=Config.TEMPERATURE,
-                    is_off_topic=True,
-                )
-                source_label = "general_knowledge"
+            logger.warning("No chunks found - generating off-topic answer")
+            answer = hf_client.generate_answer(
+                question=question,
+                context="",
+                max_new_tokens=Config.MAX_NEW_TOKENS,
+                temperature=Config.OFF_TOPIC_TEMPERATURE,
+                prompt_mode="off_topic",
+            )
+            source_label = "general_knowledge"
             execution_time = time.time() - start_time
             logger.info(f"Fallback answer generated ({len(answer)} chars)")
             return {
@@ -222,24 +148,18 @@ def query_rag(question: str) -> dict:
         context = text_processor.assemble_context(chunks, question=question)
         logger.info(f"Context assembled: {len(context)} characters")
         
-        # Step 4: Generate answer
-        if is_personal:
-            logger.info("Step 4: Generating personal off-script answer")
-            temperature = min(Config.TEMPERATURE + 0.15, 0.9)
-        elif is_relaxed_search:
-            logger.info("Step 4: Generating answer with LLM (relaxed search - tangential context)")
-            temperature = Config.TEMPERATURE
-        else:
-            logger.info("Step 4: Generating answer with LLM")
-            temperature = Config.TEMPERATURE
-
+        # Step 4: Generate answer from retrieved context
+        personal = _is_personal_context(chunks)
         answer = hf_client.generate_answer(
             question=question,
             context=context,
-            max_new_tokens=Config.MAX_NEW_TOKENS,
-            temperature=temperature,
-            is_tangential=is_relaxed_search and not is_personal,
-            is_personal=is_personal,
+            max_new_tokens=(
+                Config.MAX_PERSONAL_NEW_TOKENS if personal else Config.MAX_NEW_TOKENS
+            ),
+            temperature=(
+                Config.PERSONAL_TEMPERATURE if personal else Config.TEMPERATURE
+            ),
+            prompt_mode="personal" if personal else "standard",
         )
         logger.info(f"Answer generated: {len(answer)} characters")
         
