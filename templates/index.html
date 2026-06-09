@@ -6,7 +6,7 @@
     <title>{{ title }} - RAG System</title>
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
-    <link href="/static/css/custom.css?v=9" rel="stylesheet">
+    <link href="/static/css/custom.css?v=14" rel="stylesheet">
     <style>
         /* Project-specific nested accordion styles */
         .project-item {
@@ -136,6 +136,36 @@
             <line x1="135" y1="0" x2="135" y2="180" stroke="#0A0A0A" stroke-width="1"/>
             <line x1="180" y1="0" x2="180" y2="180" stroke="#0A0A0A" stroke-width="1"/>
         </svg>
+        <svg class="geo-grid geo-grid--3" viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <line x1="0" y1="0" x2="300" y2="0" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="0" y1="50" x2="300" y2="50" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="0" y1="100" x2="300" y2="100" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="0" y1="150" x2="300" y2="150" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="0" y1="200" x2="300" y2="200" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="0" y1="250" x2="300" y2="250" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="0" y1="300" x2="300" y2="300" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="0" y1="0" x2="0" y2="300" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="50" y1="0" x2="50" y2="300" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="100" y1="0" x2="100" y2="300" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="150" y1="0" x2="150" y2="300" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="200" y1="0" x2="200" y2="300" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="250" y1="0" x2="250" y2="300" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="300" y1="0" x2="300" y2="300" stroke="#FFE55C" stroke-width="1"/>
+        </svg>
+        <svg class="geo-grid geo-grid--4" viewBox="0 0 260 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <line x1="0" y1="0" x2="260" y2="0" stroke="#0A0A0A" stroke-width="1"/>
+            <line x1="0" y1="52" x2="260" y2="52" stroke="#0A0A0A" stroke-width="1"/>
+            <line x1="0" y1="104" x2="260" y2="104" stroke="#0A0A0A" stroke-width="1"/>
+            <line x1="0" y1="156" x2="260" y2="156" stroke="#0A0A0A" stroke-width="1"/>
+            <line x1="0" y1="208" x2="260" y2="208" stroke="#0A0A0A" stroke-width="1"/>
+            <line x1="0" y1="260" x2="260" y2="260" stroke="#0A0A0A" stroke-width="1"/>
+            <line x1="0" y1="0" x2="0" y2="260" stroke="#0A0A0A" stroke-width="1"/>
+            <line x1="52" y1="0" x2="52" y2="260" stroke="#0A0A0A" stroke-width="1"/>
+            <line x1="104" y1="0" x2="104" y2="260" stroke="#0A0A0A" stroke-width="1"/>
+            <line x1="156" y1="0" x2="156" y2="260" stroke="#0A0A0A" stroke-width="1"/>
+            <line x1="208" y1="0" x2="208" y2="260" stroke="#0A0A0A" stroke-width="1"/>
+            <line x1="260" y1="0" x2="260" y2="260" stroke="#0A0A0A" stroke-width="1"/>
+        </svg>
         <svg class="geo-bracket geo-bracket--1" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M0 15 L0 0 L15 0" stroke="#FFE55C" stroke-width="2"/>
             <path d="M65 0 L80 0 L80 15" stroke="#FFE55C" stroke-width="2"/>
@@ -162,6 +192,12 @@
         <div class="geo-rect geo-rect--6"></div>
         <div class="geo-rect geo-rect--7"></div>
         <div class="geo-rect geo-rect--8"></div>
+        <div class="geo-rect geo-rect--9"></div>
+        <div class="geo-rect geo-rect--10"></div>
+        <div class="geo-rect geo-rect--11"></div>
+        <div class="geo-rect geo-rect--12"></div>
+        <div class="geo-fill geo-fill--1"></div>
+        <div class="geo-fill geo-fill--2"></div>
         <div class="geo-line geo-line--1"></div>
         <div class="geo-line geo-line--2"></div>
         <div class="geo-line geo-line--3"></div>
@@ -183,17 +219,9 @@
         <div class="hero-section">
             <div class="hero-grid">
                 <div class="hero-name-col">
+                    <p class="hero-greeting">Hello, my name is</p>
                     <h1 class="hero-name">Margot</h1>
-                    <p class="hero-greeting">Nice to meet you</p>
-                </div>
-                <div class="hero-desc-col">
-                    <div class="hero-accent-line"></div>
-                    <p class="hero-subtitle">I'm a Data Scientist with a strong foundation in both machine learning and data engineering.</p>
-                </div>
-            </div>
-
-            <!-- Contact Information -->
-            <div class="contact-info">
+                    <div class="contact-info">
                 <a href="mailto:margo.razumeyeva@gmail.com" class="contact-link">
                     <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                     margo.razumeyeva@gmail.com
@@ -206,6 +234,12 @@
                     <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
                     LinkedIn
                 </a>
+                    </div>
+                </div>
+                <div class="hero-desc-col">
+                    <div class="hero-accent-line"></div>
+                    <p class="hero-subtitle">Machine learning engineer based in Amsterdam</p>
+                </div>
             </div>
         </div>
 
@@ -232,24 +266,22 @@
                 <div class="search-heading-col">
                     <h2>Ask About My Work</h2>
                     <div class="search-accent-line"></div>
-                    <p class="search-subtitle">I have experience building RAG (Retrieval-Augmented Generation) systems. Ask me anything about my background, skills, or projects.</p>
                 </div>
 
-                <div class="search-interactive-col">
-                    <div class="suggestion-pills">
-                        <button type="button" class="pill-btn" onclick="fillQuestion('Tell me about your recent machine learning projects')">Projects</button>
-                        <button type="button" class="pill-btn" onclick="fillQuestion('What is your tech stack and tools you use?')">Stack</button>
-                        <button type="button" class="pill-btn" onclick="fillQuestion('Tell me about your experience as a data scientist')">Experience</button>
-                        <button type="button" class="pill-btn" onclick="fillQuestion('What are your main skills and expertise?')">Skills</button>
-                    </div>
+                <div class="suggestion-pills">
+                    <button type="button" class="pill-btn" onclick="fillQuestion('Tell me about your recent machine learning projects')">Projects</button>
+                    <button type="button" class="pill-btn" onclick="fillQuestion('What is your tech stack and tools you use?')">Stack</button>
+                    <button type="button" class="pill-btn" onclick="fillQuestion('Tell me about your experience as a data scientist')">Experience</button>
+                </div>
 
+                <div class="search-query-col">
                     <form method="POST" action="/ask" id="questionForm" class="inline-search-form" enctype="application/x-www-form-urlencoded">
                         <input
                             type="text"
                             name="question"
                             id="questionInput"
                             class="inline-search-input"
-                            placeholder="Type your question"
+                            placeholder="Ask me about my skills, projects, or favorite movie..."
                             value="{% if question %}{{ question }}{% endif %}"
                             required
                             aria-label="Question input">
