@@ -104,6 +104,10 @@ const OFF_SCRIPT_QUESTIONS = [
     'What do you do for fun?',
     'What is your favorite movie?',
     'Do you like pasta?',
+    'Do you like cats?',
+    'What games do you play?',
+    'What is your favorite Fallout game?',
+    'Do you collect vinyl records?',
 ];
 
 function fillQuestion(question) {

@@ -76,12 +76,17 @@ _PERSONAL_QUESTION_KEYWORDS = (
     "film", "cinema", "sport", "squash", "running", "fun", "pasta",
     "personal", "coppola", "favourite", "favorite", "off script",
     "off-script", "outside work", "free time", "weekend",
+    "cat", "cats", "caviar", "vinyl", "turntable", "handstand",
+    "d&d", "dnd", "dungeon master", "world of warcraft", "wow",
+    "fallout", "new vegas", "video game", "games",
 )
 
 _PERSONAL_CHUNK_MARKERS = (
     "personal interests and activities",
     "chunk_08_personal_interests",
+    "chunk_09_more_about_margot",
     "beyond the professional",
+    "more about me",
 )
 
 
