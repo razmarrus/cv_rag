@@ -6,7 +6,7 @@
     <title>{{ title }} - RAG System</title>
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
-    <link href="/static/css/custom.css?v=14" rel="stylesheet">
+    <link href="/static/css/custom.css?v=15" rel="stylesheet">
     <style>
         /* Project-specific nested accordion styles */
         .project-item {
@@ -204,7 +204,6 @@
         <div class="geo-dot geo-dot--1"></div>
         <div class="geo-dot geo-dot--2"></div>
         <div class="geo-dot geo-dot--3"></div>
-        <div class="geo-circle geo-circle--1"></div>
         <div class="geo-circle geo-circle--2"></div>
         <div class="geo-square geo-square--1"></div>
         <div class="geo-square geo-square--2"></div>
@@ -271,7 +270,7 @@
                 <div class="suggestion-pills">
                     <button type="button" class="pill-btn" onclick="fillQuestion('Tell me about your recent machine learning projects')">Projects</button>
                     <button type="button" class="pill-btn" onclick="fillQuestion('What is your tech stack and tools you use?')">Stack</button>
-                    <button type="button" class="pill-btn" onclick="fillQuestion('Tell me about your experience as a data scientist')">Experience</button>
+                    <button type="button" class="pill-btn" onclick="fillOffScriptQuestion()" title="Personal question — not from the CV">Off Script</button>
                 </div>
 
                 <div class="search-query-col">
@@ -581,7 +580,7 @@
         </footer>
     </main>
 
-    <script src="/static/js/app.js?v=6"></script>
+    <script src="/static/js/app.js?v=7"></script>
     <script>
         // Function to toggle individual project items
         function toggleProject(projectId) {

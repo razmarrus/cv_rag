@@ -334,16 +334,6 @@ main.container {
     border-style: solid;
 }
 
-.geo-circle--1 {
-    top: 52%;
-    left: 45%;
-    width: 130px;
-    height: 130px;
-    border-width: 1px;
-    border-color: #0A0A0A;
-    opacity: 0.07;
-}
-
 .geo-circle--2 {
     bottom: 38%;
     right: 28%;

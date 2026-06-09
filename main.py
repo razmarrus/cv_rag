@@ -71,6 +71,32 @@ async def startup_event():
         raise
 
 
+_PERSONAL_QUESTION_KEYWORDS = (
+    "hobby", "hobbies", "marathon", "half marathon", "director", "movie",
+    "film", "cinema", "sport", "squash", "running", "fun", "pasta",
+    "personal", "coppola", "favourite", "favorite", "off script",
+    "off-script", "outside work", "free time", "weekend",
+)
+
+_PERSONAL_CHUNK_MARKERS = (
+    "personal interests and activities",
+    "chunk_08_personal_interests",
+    "beyond the professional",
+)
+
+
+def is_personal_question(question: str, chunks: list) -> bool:
+    """Return True if the question targets Margot's personal life."""
+    q = question.lower()
+    if any(keyword in q for keyword in _PERSONAL_QUESTION_KEYWORDS):
+        return True
+    for chunk in chunks:
+        content = chunk.get("content", "").lower()
+        if any(marker in content for marker in _PERSONAL_CHUNK_MARKERS):
+            return True
+    return False
+
+
 def query_rag(question: str) -> dict:
     """
     Execute RAG query pipeline.
@@ -118,17 +144,16 @@ def query_rag(question: str) -> dict:
                 logger.info(f"Chunk {i+1}: similarity={chunk.get('similarity', 0):.3f}, source={chunk.get('source', 'unknown')}")
         
         if not chunks:
-            logger.warning("No chunks found matching similarity threshold - generating fallback answer")
-            # Generate answer without context (fallback mode)
-            fallback_context = "You are a helpful AI assistant. Answer the user's question to the best of your ability based on general knowledge."
+            logger.warning("No chunks found - generating witty off-topic answer")
             answer = hf_client.generate_answer(
                 question=question,
-                context=fallback_context,
+                context="",
                 max_new_tokens=Config.MAX_NEW_TOKENS,
-                temperature=Config.TEMPERATURE
+                temperature=Config.TEMPERATURE,
+                is_off_topic=True,
             )
             execution_time = time.time() - start_time
-            logger.info(f"Generic answer generated ({len(answer)} chars)")
+            logger.info(f"Off-topic answer generated ({len(answer)} chars)")
             return {
                 "answer": answer,
                 "sources": ["general_knowledge"],
@@ -142,16 +167,24 @@ def query_rag(question: str) -> dict:
         logger.info(f"Context assembled: {len(context)} characters")
         
         # Step 4: Generate answer
-        if is_relaxed_search:
+        is_personal = is_personal_question(question, chunks)
+        if is_personal:
+            logger.info("Step 4: Generating personal off-script answer")
+            temperature = min(Config.TEMPERATURE + 0.15, 0.9)
+        elif is_relaxed_search:
             logger.info("Step 4: Generating answer with LLM (relaxed search - tangential context)")
+            temperature = Config.TEMPERATURE
         else:
             logger.info("Step 4: Generating answer with LLM")
+            temperature = Config.TEMPERATURE
+
         answer = hf_client.generate_answer(
             question=question,
             context=context,
             max_new_tokens=Config.MAX_NEW_TOKENS,
-            temperature=Config.TEMPERATURE,
-            is_tangential=is_relaxed_search
+            temperature=temperature,
+            is_tangential=is_relaxed_search and not is_personal,
+            is_personal=is_personal,
         )
         logger.info(f"Answer generated: {len(answer)} characters")
         

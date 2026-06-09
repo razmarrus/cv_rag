@@ -141,31 +141,52 @@ class HuggingFaceClient:
             del embedding_list
             gc.collect()
 
-    # Don't mention company names.
-    def build_prompt(self, question: str, context: str, is_tangential: bool = False) -> str:
-        """
-        Build prompt for LLM.
-        
-        Args:
-            question: User question
-            context: Retrieved context
-            is_tangential: Whether results are from relaxed search
-        
-        Returns:
-            Formatted prompt string
-        """
-        if is_tangential:
-            #prompt = f"""<s>[INST] You are a helpful assistant. The retrieved context may be tangentially related to the question. Use it if helpful, but also apply your general knowledge to provide a useful answer. Answer in human written style. Keep friendly and easy to read tone.
-            prompt = f"""<s>[INST] You are a helpful assistant. Use the context if relevant, otherwise use your knowledge. Answer in 2-6 sentences using plain text only (no markdown or formatting). Be concise, friendly, and human. 
+    def build_prompt(
+        self,
+        question: str,
+        context: str,
+        is_tangential: bool = False,
+        is_off_topic: bool = False,
+        is_personal: bool = False,
+    ) -> str:
+        """Build prompt for LLM."""
+        if is_off_topic:
+            prompt = f"""<s>[INST] You are Margot's portfolio assistant: witty, warm, and lightly poetic.
 
+The user's question is unrelated to Margot's professional background, skills, projects, tools, or experience.
+
+Do not answer the question seriously. Instead:
+- Write a short poem (4-8 lines, plain text, no markdown)
+- Be playful, clever, and kind
+- Gently redirect the user to ask about Margot's ML work, tech stack, projects, or experience
+- Keep the full reply under 8 lines total
+
+Question: {question} [/INST]
+"""
+        elif is_personal:
+            prompt = f"""<s>[INST] You are Margot. The user asked a personal, off-script question — hobbies, films, food, sports, or life outside work.
+
+Answer in first person using ONLY the context below. Be warm, witty, and a little playful — like chatting over coffee, not writing a CV bullet. Add a light joke or vivid detail when it fits. Keep it to 3-6 sentences, plain text, no markdown. Do not mention company names.
+
+Context:
+{context}
+
+Question: {question} [/INST]
+"""
+        elif is_tangential:
+            prompt = f"""<s>[INST] You are Margot's portfolio assistant.
+
+If the question is about Margot's professional background, skills, projects, tools, or experience, use the context below and answer in 2-6 plain-text sentences. Be concise, friendly, and human. Do not mention company names.
+
+If the question is unrelated to Margot's work, ignore the context. Reply with a short witty poem (4-8 lines, plain text, no markdown) that playfully deflects the question and suggests asking about her ML projects, skills, or experience instead.
 
 Context (may be loosely related):
 {context}
 
-Question: {question}. [/INST]
+Question: {question} [/INST]
 """
         else:
-            prompt = f"""<s>[INST] You are a helpful assistant. Answer in 2-6 sentences using plain text only (no markdown or formatting). Be concise, friendly, and human. 
+            prompt = f"""<s>[INST] You are a helpful assistant. Answer in 2-6 sentences using plain text only (no markdown or formatting). Be concise, friendly, and human. Do not mention company names.
 
 Context:
 {context}
@@ -182,22 +203,18 @@ Answer based only on the context provided. If the answer is not in the context, 
         context: str,
         max_new_tokens: int = 500,
         temperature: float = 0.2,
-        is_tangential: bool = False
+        is_tangential: bool = False,
+        is_off_topic: bool = False,
+        is_personal: bool = False,
     ) -> str:
-        """
-        Generate answer using LLM.
-        
-        Args:
-            question: User question
-            context: Context string
-            max_new_tokens: Maximum tokens to generate
-            temperature: Sampling temperature
-            is_tangential: Whether context is from relaxed search
-        
-        Returns:
-            Generated answer text
-        """
-        prompt = self.build_prompt(question, context, is_tangential)
+        """Generate answer using LLM."""
+        prompt = self.build_prompt(
+            question,
+            context,
+            is_tangential=is_tangential,
+            is_off_topic=is_off_topic,
+            is_personal=is_personal,
+        )
 
         # response = self.llm_client.text_generation(
         #         prompt,

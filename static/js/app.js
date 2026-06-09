@@ -96,12 +96,29 @@ function togglePortfolioAccordion(accordionId) {
     }
 }
 
+const OFF_SCRIPT_QUESTIONS = [
+    'What are your hobbies?',
+    'Have you participated in any half marathons?',
+    'Who is your favorite film director?',
+    'Do you enjoy sports?',
+    'What do you do for fun?',
+    'What is your favorite movie?',
+    'Do you like pasta?',
+];
+
 function fillQuestion(question) {
     const input = document.getElementById('questionInput');
     if (input) {
         input.value = question;
         input.focus();
     }
+}
+
+function fillOffScriptQuestion() {
+    const question = OFF_SCRIPT_QUESTIONS[
+        Math.floor(Math.random() * OFF_SCRIPT_QUESTIONS.length)
+    ];
+    fillQuestion(question);
 }
 
 function toggleAccordion(accordionId) {
