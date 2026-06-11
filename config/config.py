@@ -18,7 +18,10 @@ class Config:
     USE_LOCAL_EMBEDDINGS = os.getenv("USE_LOCAL_EMBEDDINGS", "false").lower() == "true"
     EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "BAAI/bge-small-en-v1.5")
     # LLM_MODEL = os.getenv("LLM_MODEL", "mistralai/Mistral-7B-Instruct-v0.2")
-    LLM_MODEL = os.getenv("LLM_MODEL", "Qwen/Qwen2.5-7B-Instruct")
+    # LLM_MODEL = os.getenv("LLM_MODEL", "Qwen/Qwen2.5-7B-Instruct")
+    # LLM_MODEL = os.getenv("LLM_MODEL", "HuggingFaceH4/zephyr-7b-beta")
+
+    LLM_MODEL = os.getenv("LLM_MODEL", "mistralai/Mistral-7B-Instruct-v0.3")  # Updated to Mistral
     
     # CHUNK_SIZE = 512
     # CHUNK_OVERLAP = 50
@@ -28,7 +31,7 @@ class Config:
 
     # RAG Settings
     # CHUNK_SIZE = 750
-    CHUNK_SIZE = 400
+    CHUNK_SIZE = 430
     CHUNK_OVERLAP = 25
 
 
@@ -36,13 +39,16 @@ class Config:
     RELAXED_SIMILARITY_THRESHOLD = 0.1
     TOP_K_CHUNKS = 4             
     MAX_CONTEXT_TOKENS = 2500    
-    TEMPERATURE = 0.2
-    MAX_NEW_TOKENS = 350  # Shorter answers (2-3 sentences)
+    TEMPERATURE = 0.7
+    OFF_TOPIC_TEMPERATURE = float(os.getenv("OFF_TOPIC_TEMPERATURE", "0.9"))
+    PERSONAL_TEMPERATURE = float(os.getenv("PERSONAL_TEMPERATURE", "0.8"))
+    MAX_NEW_TOKENS = 350
+    MAX_PERSONAL_NEW_TOKENS = int(os.getenv("MAX_PERSONAL_NEW_TOKENS", "500"))
 
     RATE_LIMIT = "10/hour"
 
     # Rate Limiting
-    DAILY_QUERY_LIMIT = int(os.getenv("DAILY_QUERY_LIMIT", "12"))
+    DAILY_QUERY_LIMIT = int(os.getenv("DAILY_QUERY_LIMIT", "25"))
 
     # Data Retention
     QUERY_LOG_RETENTION_DAYS = int(os.getenv("QUERY_LOG_RETENTION_DAYS", "90"))

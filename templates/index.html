@@ -6,113 +6,148 @@
     <title>{{ title }} - RAG System</title>
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
-    <link href="/static/css/custom.css?v=8" rel="stylesheet">
+    <link href="/static/css/geometric-bg.css?v=1" rel="stylesheet">
+    <link href="/static/css/custom.css?v=25" rel="stylesheet">
     <style>
-        /* Project-specific nested accordion styles */
-        .project-item {
-            margin-bottom: 1rem;
-            border: 1px solid #ddd;
-            border-radius: 0.5rem;
+        /* Fallback if external CSS fails to load on deploy */
+        .geometric-background {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
             overflow: hidden;
-            background: #fff;
+            z-index: 0;
         }
-        
-        .project-header {
-            width: 100%;
-            padding: 1rem;
-            background: #f8f8f8;
-            border: none;
-            text-align: left;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: 600;
-            transition: background-color 0.2s;
+        main.container {
+            position: relative;
+            z-index: 10;
         }
-        
-        .project-header:hover {
-            background: #fffbea;
+        .geometric-background svg,
+        .geometric-background [class^="geo-"] {
+            position: absolute;
         }
-        
-        .project-number {
-            display: inline-block;
-            width: 2rem;
-            height: 2rem;
-            background: #fbbf24;
-            color: #000;
-            border-radius: 50%;
-            text-align: center;
-            line-height: 2rem;
-            font-size: 0.875rem;
-            margin-right: 0.75rem;
-            flex-shrink: 0;
-            font-weight: 700;
-        }
-        
-        .project-title {
-            flex: 1;
-            font-size: 1rem;
-            color: #1f2937;
-        }
-        
-        .project-chevron {
-            width: 1.25rem;
-            height: 1.25rem;
-            transition: transform 0.3s ease;
-            flex-shrink: 0;
-            stroke: #1f2937;
-        }
-        
-        .project-item.active .project-chevron {
-            transform: rotate(180deg);
-        }
-        
-        .project-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-        }
-        
-        .project-item.active .project-content {
-            max-height: 1000px;
-        }
-        
-        .project-content-inner {
-            padding: 1.5rem;
-            background: #fff;
-        }
-        
-        .project-description {
-            margin-bottom: 1rem;
-            line-height: 1.6;
-            color: #374151;
-        }
-        
-        .project-tech {
-            padding: 0.75rem;
-            background: #fffbea;
-            border-left: 3px solid #fbbf24;
-            border-radius: 0.25rem;
-            font-size: 0.9rem;
-        }
-        
-        .project-tech strong {
-            color: #d97706;
-        }
+        .geo-bolt { opacity: 0.11; }
+        .geo-bolt--2 { opacity: 0.08; }
     </style>
 </head>
 <body>
+    <!-- Abstract geometric background -->
+    <div class="geometric-background" aria-hidden="true">
+        <svg class="geo-bolt geo-bolt--1" viewBox="0 0 550 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 90 L180 88 L180 92 L160 120 L190 120 L190 116 L420 115 L420 85 L360 85 L360 60 L480 60 L480 65 L550 64" fill="#FFE55C"/>
+            <path d="M100 140 L280 138 L280 142 L260 155 L350 155" stroke="#FFE55C" stroke-width="3" stroke-linecap="square"/>
+        </svg>
+        <svg class="geo-bolt geo-bolt--2" viewBox="0 0 420 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M420 70 L280 68 L280 75 L250 95 L280 95 L280 100 L120 98 L120 72 L0 70" fill="#FFE55C"/>
+        </svg>
+        <svg class="geo-grid geo-grid--1" viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <line x1="0" y1="0" x2="220" y2="0" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="0" y1="55" x2="220" y2="55" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="0" y1="110" x2="220" y2="110" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="0" y1="165" x2="220" y2="165" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="0" y1="220" x2="220" y2="220" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="0" y1="0" x2="0" y2="220" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="55" y1="0" x2="55" y2="220" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="110" y1="0" x2="110" y2="220" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="165" y1="0" x2="165" y2="220" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="220" y1="0" x2="220" y2="220" stroke="#FFE55C" stroke-width="1"/>
+        </svg>
+        <svg class="geo-grid geo-grid--2" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <line x1="0" y1="0" x2="180" y2="0" stroke="#0A0A0A" stroke-width="1"/>
+            <line x1="0" y1="45" x2="180" y2="45" stroke="#0A0A0A" stroke-width="1"/>
+            <line x1="0" y1="90" x2="180" y2="90" stroke="#0A0A0A" stroke-width="1"/>
+            <line x1="0" y1="135" x2="180" y2="135" stroke="#0A0A0A" stroke-width="1"/>
+            <line x1="0" y1="180" x2="180" y2="180" stroke="#0A0A0A" stroke-width="1"/>
+            <line x1="0" y1="0" x2="0" y2="180" stroke="#0A0A0A" stroke-width="1"/>
+            <line x1="45" y1="0" x2="45" y2="180" stroke="#0A0A0A" stroke-width="1"/>
+            <line x1="90" y1="0" x2="90" y2="180" stroke="#0A0A0A" stroke-width="1"/>
+            <line x1="135" y1="0" x2="135" y2="180" stroke="#0A0A0A" stroke-width="1"/>
+            <line x1="180" y1="0" x2="180" y2="180" stroke="#0A0A0A" stroke-width="1"/>
+        </svg>
+        <svg class="geo-grid geo-grid--3" viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <line x1="0" y1="0" x2="300" y2="0" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="0" y1="50" x2="300" y2="50" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="0" y1="100" x2="300" y2="100" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="0" y1="150" x2="300" y2="150" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="0" y1="200" x2="300" y2="200" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="0" y1="250" x2="300" y2="250" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="0" y1="300" x2="300" y2="300" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="0" y1="0" x2="0" y2="300" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="50" y1="0" x2="50" y2="300" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="100" y1="0" x2="100" y2="300" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="150" y1="0" x2="150" y2="300" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="200" y1="0" x2="200" y2="300" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="250" y1="0" x2="250" y2="300" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="300" y1="0" x2="300" y2="300" stroke="#FFE55C" stroke-width="1"/>
+        </svg>
+        <svg class="geo-grid geo-grid--4" viewBox="0 0 260 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <line x1="0" y1="0" x2="260" y2="0" stroke="#0A0A0A" stroke-width="1"/>
+            <line x1="0" y1="52" x2="260" y2="52" stroke="#0A0A0A" stroke-width="1"/>
+            <line x1="0" y1="104" x2="260" y2="104" stroke="#0A0A0A" stroke-width="1"/>
+            <line x1="0" y1="156" x2="260" y2="156" stroke="#0A0A0A" stroke-width="1"/>
+            <line x1="0" y1="208" x2="260" y2="208" stroke="#0A0A0A" stroke-width="1"/>
+            <line x1="0" y1="260" x2="260" y2="260" stroke="#0A0A0A" stroke-width="1"/>
+            <line x1="0" y1="0" x2="0" y2="260" stroke="#0A0A0A" stroke-width="1"/>
+            <line x1="52" y1="0" x2="52" y2="260" stroke="#0A0A0A" stroke-width="1"/>
+            <line x1="104" y1="0" x2="104" y2="260" stroke="#0A0A0A" stroke-width="1"/>
+            <line x1="156" y1="0" x2="156" y2="260" stroke="#0A0A0A" stroke-width="1"/>
+            <line x1="208" y1="0" x2="208" y2="260" stroke="#0A0A0A" stroke-width="1"/>
+            <line x1="260" y1="0" x2="260" y2="260" stroke="#0A0A0A" stroke-width="1"/>
+        </svg>
+        <svg class="geo-bracket geo-bracket--1" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 15 L0 0 L15 0" stroke="#FFE55C" stroke-width="2"/>
+            <path d="M65 0 L80 0 L80 15" stroke="#FFE55C" stroke-width="2"/>
+            <path d="M80 65 L80 80 L65 80" stroke="#FFE55C" stroke-width="2"/>
+            <path d="M15 80 L0 80 L0 65" stroke="#FFE55C" stroke-width="2"/>
+        </svg>
+        <svg class="geo-bracket geo-bracket--2" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 18 L0 0 L18 0" stroke="#0A0A0A" stroke-width="2"/>
+            <path d="M82 0 L100 0 L100 18" stroke="#0A0A0A" stroke-width="2"/>
+            <path d="M100 82 L100 100 L82 100" stroke="#0A0A0A" stroke-width="2"/>
+            <path d="M18 100 L0 100 L0 82" stroke="#0A0A0A" stroke-width="2"/>
+        </svg>
+        <svg class="geo-bracket geo-bracket--3" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 12 L0 0 L12 0" stroke="#FFE55C" stroke-width="1.5"/>
+            <path d="M48 0 L60 0 L60 12" stroke="#FFE55C" stroke-width="1.5"/>
+            <path d="M60 48 L60 60 L48 60" stroke="#FFE55C" stroke-width="1.5"/>
+            <path d="M12 60 L0 60 L0 48" stroke="#FFE55C" stroke-width="1.5"/>
+        </svg>
+        <div class="geo-rect geo-rect--1"></div>
+        <div class="geo-rect geo-rect--2"></div>
+        <div class="geo-rect geo-rect--3"></div>
+        <div class="geo-rect geo-rect--4"></div>
+        <div class="geo-rect geo-rect--5"></div>
+        <div class="geo-rect geo-rect--6"></div>
+        <div class="geo-rect geo-rect--7"></div>
+        <div class="geo-rect geo-rect--8"></div>
+        <div class="geo-rect geo-rect--9"></div>
+        <div class="geo-rect geo-rect--10"></div>
+        <div class="geo-rect geo-rect--11"></div>
+        <div class="geo-rect geo-rect--12"></div>
+        <div class="geo-fill geo-fill--1"></div>
+        <div class="geo-fill geo-fill--2"></div>
+        <div class="geo-line geo-line--1"></div>
+        <div class="geo-line geo-line--2"></div>
+        <div class="geo-line geo-line--3"></div>
+        <div class="geo-dot geo-dot--1"></div>
+        <div class="geo-dot geo-dot--2"></div>
+        <div class="geo-dot geo-dot--3"></div>
+        <div class="geo-circle geo-circle--2"></div>
+        <div class="geo-square geo-square--1"></div>
+        <div class="geo-square geo-square--2"></div>
+        <div class="geo-square geo-square--3"></div>
+        <div class="geo-streak geo-streak--1"></div>
+        <div class="geo-streak geo-streak--2"></div>
+        <div class="geo-streak geo-streak--3"></div>
+    </div>
+
     <main class="container">
         <!-- Hero Section -->
         <div class="hero-section">
-            <div class="hero-line-1">Nice to meet you</div>
-            <div class="hero-line-2">My name is Margot</div>
-            
-            <p class="hero-subtitle">I'm a Data Scientist with a strong foundation in both machine learning and data engineering.</p>
-            
-            <!-- Contact Information -->
-            <div class="contact-info">
+            <div class="hero-grid">
+                <div class="hero-name-col">
+                    <p class="hero-greeting">Hello, my name is</p>
+                    <h1 class="hero-name">Margot</h1>
+                    <div class="contact-info">
                 <a href="mailto:margo.razumeyeva@gmail.com" class="contact-link">
                     <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                     margo.razumeyeva@gmail.com
@@ -125,6 +160,12 @@
                     <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
                     LinkedIn
                 </a>
+                    </div>
+                </div>
+                <div class="hero-desc-col">
+                    <div class="hero-accent-line"></div>
+                    <p class="hero-subtitle">Machine learning engineer based in Amsterdam</p>
+                </div>
             </div>
         </div>
 
@@ -147,62 +188,66 @@
 
         <!-- Search Section -->
         <section class="search-section">
-            <h2>Ask About My Work</h2>
-            <p class="search-subtitle">I have experience building RAG (Retrieval-Augmented Generation) systems. Check this out! Ask me anything about my background, skills, or projects.</p>
-            
-            <!-- Suggestion Pills -->
-            <div class="suggestion-pills">
-                <button type="button" class="pill-btn" onclick="fillQuestion('Tell me about your recent machine learning projects')">Recent Projects</button>
-                <button type="button" class="pill-btn" onclick="fillQuestion('What is your tech stack and tools you use?')">Tech Stack</button>
-                <button type="button" class="pill-btn" onclick="fillQuestion('Tell me about your experience as a data scientist')">Experience</button>
-                <button type="button" class="pill-btn" onclick="fillQuestion('What are your main skills and expertise?')">Skills</button>
-            </div>
+            <div class="search-grid">
+                <div class="search-heading-col">
+                    <h2>Ask About My Work</h2>
+                    <div class="search-accent-line"></div>
+                </div>
 
-            <!-- Inline Search Form -->
-            <form method="POST" action="/ask" id="questionForm" class="inline-search-form" enctype="application/x-www-form-urlencoded">
-                <input 
-                    type="text" 
-                    name="question" 
-                    id="questionInput"
-                    class="inline-search-input"
-                    placeholder="What would you like to know about my work?"
-                    value="{% if question %}{{ question }}{% endif %}"
-                    required
-                    aria-label="Question input">
-                <button type="submit" id="submitBtn" class="inline-search-btn" aria-label="Submit question">
-                    <span id="btnText">→</span>
-                    <span id="btnSpinner" class="spinner" aria-hidden="true"></span>
-                </button>
-            </form>
+                <div class="suggestion-pills">
+                    <button type="button" class="pill-btn" onclick="fillQuestion('What is your most recent project?')">Projects</button>
+                    <button type="button" class="pill-btn" onclick="fillQuestion('What is your tech stack and tools you use?')">Stack</button>
+                    <!-- <button type="button" class="pill-btn" onclick="fillQuestion('Tell me about your experience as a data scientist')">Experience</button> -->
+                    <button type="button" class="pill-btn" onclick="fillOffScriptQuestion()" title="Personal question — not from the CV">Off Script</button>
+                    <button type="button" class="pill-btn pill-btn-rick" onclick="fillRickRubinQuestion()" title="Rick Rubin vibe — music, teaching, Rick">Rick Rubin</button>
+                </div>
 
-            <!-- Answer Display -->
-            <div class="answer-display">
-                {% if answer %}
-                    <p>{{ answer }}</p>
-                    {% if sources or num_chunks or execution_time %}
-                    <div class="metadata">
-                        {% if sources %}
-                        <span class="tag">Sources: {{ sources|join(', ') }}</span>
-                        {% endif %}
-                        {% if num_chunks %}
-                        <span class="tag">{{ num_chunks }} chunks</span>
-                        {% endif %}
-                        {% if execution_time %}
-                        <span class="tag">{{ execution_time }}s</span>
+                <div class="search-query-col">
+                    <form method="POST" action="/ask" id="questionForm" class="inline-search-form" enctype="application/x-www-form-urlencoded">
+                        <input type="hidden" name="rick_rubin" id="rickRubinMode" value="">
+                        <input
+                            type="text"
+                            name="question"
+                            id="questionInput"
+                            class="inline-search-input"
+                            placeholder="Ask me about my skills, projects, or off-script hobbies..."
+                            value="{% if question %}{{ question }}{% endif %}"
+                            required
+                            aria-label="Question input">
+                        <button type="submit" id="submitBtn" class="inline-search-btn" aria-label="Submit question">
+                            <span id="btnText">→</span>
+                            <span id="btnSpinner" class="spinner" aria-hidden="true"></span>
+                        </button>
+                    </form>
+
+                    <div class="answer-display">
+                        {% if answer %}
+                            <p>{{ answer }}</p>
+                            {% if sources or num_chunks or execution_time %}
+                            <div class="metadata">
+                                {% if sources %}
+                                <span class="tag">Sources: {{ sources|join(', ') }}</span>
+                                {% endif %}
+                                {% if num_chunks %}
+                                <span class="tag">{{ num_chunks }} chunks</span>
+                                {% endif %}
+                                {% if execution_time %}
+                                <span class="tag">{{ execution_time }}s</span>
+                                {% endif %}
+                            </div>
+                            {% endif %}
+                        {% else %}
+                            <p class="answer-placeholder">Your answer will appear here...</p>
                         {% endif %}
                     </div>
-                    {% endif %}
-                {% else %}
-                    <p class="answer-placeholder">Your answer will appear here...</p>
-                {% endif %}
-            </div>
 
-            <!-- Error Message -->
-            {% if error %}
-            <div class="error-message">
-                <strong>Error:</strong> {{ error }}
+                    {% if error %}
+                    <div class="error-message">
+                        <strong>Error:</strong> {{ error }}
+                    </div>
+                    {% endif %}
+                </div>
             </div>
-            {% endif %}
         </section>
 
         <!-- Portfolio Accordion Sections -->
@@ -229,10 +274,10 @@
                     </div>
                 </div>
 
-                <!-- Tools -->
+                <!-- Skills -->
                 <div class="portfolio-accordion-item" id="tools">
                     <button class="portfolio-accordion-header" type="button" onclick="togglePortfolioAccordion('tools')">
-                        <span>Tools</span>
+                        <span>Skills</span>
                         <svg class="accordion-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                         </svg>
@@ -248,6 +293,64 @@
                     </div>
                 </div>
 
+                <!-- Experience -->
+                <div class="portfolio-accordion-item" id="experience">
+                    <button class="portfolio-accordion-header" type="button" onclick="togglePortfolioAccordion('experience')">
+                        <span>Experience</span>
+                        <svg class="accordion-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="portfolio-accordion-content">
+                        <div class="portfolio-accordion-content-inner">
+                            <div class="experience-item">
+                                <div class="experience-header">
+                                    <h4 class="experience-title">Machine Learning Engineer</h4>
+                                    <span class="experience-period">Jan 2026 - Present</span>
+                                </div>
+                                <p class="experience-company">Xomnia · Amsterdam</p>
+                                <p class="experience-description">Helping clients unlock the full potential of their data through production machine learning systems that deliver measurable business value.</p>
+                                <p class="experience-subheading">Key responsibilities</p>
+                                <ul class="experience-list">
+                                    <li>End-to-end GenAI delivery — architecture, infrastructure, and production rollout that delivers measurable business value</li>
+                                    <li>Enterprise-scale RAG systems with real-time search at high concurrency, built and deployed in production</li>
+                                    <li>Hands-on implementation and stakeholder alignment — prompt design, user flows, iterative feedback, and client presentations</li>
+                                </ul>
+                            </div>
+
+                            <div class="experience-item">
+                                <div class="experience-header">
+                                    <h4 class="experience-title">Data / Machine Learning Engineer</h4>
+                                    <span class="experience-period">Jul 2024 - Jan 2026</span>
+                                </div>
+                                <p class="experience-company">Haskoning · Amsterdam</p>
+                                <p class="experience-description">Robust data pipelines and cloud infrastructure for production ML and analytics across Dutch rail, water utilities, and water management authorities.</p>
+                                <p class="experience-subheading">Key responsibilities</p>
+                                <ul class="experience-list">
+                                    <li>Enterprise big-data processing and analytics at scale, enabling production ML and business dashboards</li>
+                                    <li>Production infrastructure and automated pipeline delivery — Terraform, Spark, and CI/CD on Azure</li>
+                                    <li>Cross-functional implementation from design through deployment, including presenting solutions to clients</li>
+                                </ul>
+                            </div>
+
+                            <div class="experience-item">
+                                <div class="experience-header">
+                                    <h4 class="experience-title">Data Scientist</h4>
+                                    <span class="experience-period">Aug 2021 - Apr 2024</span>
+                                </div>
+                                <p class="experience-company">Rubbles · Remote</p>
+                                <p class="experience-description">End-to-end ML for global pharmaceutical companies — turning complex data into actionable business strategies.</p>
+                                <p class="experience-subheading">Key responsibilities</p>
+                                <ul class="experience-list">
+                                    <li>Full ML lifecycle ownership — implementing data pipelines, models, and automated production updates</li>
+                                    <li>Forecasting, segmentation, and recommendation systems at enterprise scale for global pharma clients</li>
+                                    <li>Client-facing delivery — production implementation, presentations, and cross-functional collaboration</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Projects -->
                 <div class="portfolio-accordion-item" id="projects">
                     <button class="portfolio-accordion-header" type="button" onclick="togglePortfolioAccordion('projects')">
@@ -257,181 +360,142 @@
                         </svg>
                     </button>
                     <div class="portfolio-accordion-content">
-                        <div class="portfolio-accordion-content-inner">
-                            
-                            <!-- Project 1: LLM-Powered Document Chatbot Platform -->
+                        <div class="portfolio-accordion-content-inner project-grid">
                             <div class="project-item" id="project1">
                                 <button class="project-header" type="button" onclick="toggleProject('project1')">
-                                    <div style="display: flex; align-items: center; flex: 1;">
-                                        <span class="project-number">1</span>
-                                        <span class="project-title">LLM-Powered Document Chatbot Platform</span>
-                                    </div>
-                                    <svg class="project-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                    </svg>
+                                    <span class="project-marker"></span>
+                                    <span class="project-title">Factory RAG Platform</span>
+                                    <svg class="project-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                                 </button>
                                 <div class="project-content">
                                     <div class="project-content-inner">
-                                        <p class="project-description">
-                                            Built a GPT-based knowledge retrieval system enabling instant queries across SharePoint libraries (100-3,000 documents per domain). Reduced information retrieval from hours to seconds, eliminating manual searches through entire document repositories.
-                                        </p>
-                                        <p class="project-description">
-                                            Built a GPT-based internal QA system with 30+ RAG flows. Automated document ingestion and infrastructure creation using Terraform, supporting daily updates across multiple data domains.
-                                        </p>
-                                        <div class="project-tech">
-                                            <strong>Technology:</strong> RAG, Azure AI, Azure Blob Storage, Terraform, Pgvector db
-                                        </div>
+                                        <p class="project-impact">100+ concurrent users · sub-5-second search · real-time factory decisions</p>
+                                        <p class="project-meta">Xomnia · Factory client · Netherlands</p>
+                                        <p class="project-description-intro">Enabled factory teams to get reliable answers in under five seconds instead of digging through manuals — directly supporting real-time production decisions at scale.</p>
+                                        <p class="project-description-detail"> Developed the full RAG stack end to end. Also built prompt templates, tuned retrieval for domain-specific factory terminology, and iterated on user flows with operators until search quality held up under 100+ concurrent users.</p>
+                                        <p class="project-stack"><span class="project-stack-label">Stack</span> RAG · Azure OpenAI · Python</p>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Project 2: Sales Forecasting Model (was #5) -->
                             <div class="project-item" id="project2">
                                 <button class="project-header" type="button" onclick="toggleProject('project2')">
-                                    <div style="display: flex; align-items: center; flex: 1;">
-                                        <span class="project-number">2</span>
-                                        <span class="project-title">Sales Forecasting Model</span>
-                                    </div>
-                                    <svg class="project-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                    </svg>
+                                    <span class="project-marker"></span>
+                                    <span class="project-title">LLM Document Chatbot Platform</span>
+                                    <svg class="project-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                                 </button>
                                 <div class="project-content">
                                     <div class="project-content-inner">
-                                        <p class="project-description">
-                                            Developed a linear model to forecast sales for 4 months ahead. Identified and quantified key sales drivers including seasonality, historical sales patterns, and marketing campaigns. The model allowed to compare different factors that influenced sales.
-                                        </p>
-                                        <p class="project-description">
-                                            Focused on data preprocessing, feature engineering, and iterative experimentation with model architectures.
-                                        </p>
-                                        <div class="project-tech">
-                                            <strong>Technology:</strong> Time series prediction - Linear model tuning, Scikit learn, AWS, Airflow
-                                        </div>
+                                        <p class="project-impact">30+ domains · 300 weekly users · hours to seconds retrieval</p>
+                                        <p class="project-meta">Haskoning · Dutch industrial clients</p>
+                                        <p class="project-description-intro">Cut document lookup from hours to seconds for 300+ weekly users across 30+ isolated knowledge domains.</p>
+                                        <p class="project-description-detail">I developed a multi-tenant RAG platform that ingests SharePoint libraries (100–3,000 documents each), embeds and indexes them in Pgvector, and serves GPT-based Q&amp;A per domain. I built the Terraform-managed Azure infrastructure, automated daily ingestion jobs, and the backend services that keep each domain isolated while sharing one platform.</p>
+                                        <p class="project-stack"><span class="project-stack-label">Stack</span> RAG · Azure AI · Terraform · Pgvector</p>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Project 3: Customer Segmentation System (was #6) -->
                             <div class="project-item" id="project3">
                                 <button class="project-header" type="button" onclick="toggleProject('project3')">
-                                    <div style="display: flex; align-items: center; flex: 1;">
-                                        <span class="project-number">3</span>
-                                        <span class="project-title">Customer Segmentation System</span>
-                                    </div>
-                                    <svg class="project-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                    </svg>
+                                    <span class="project-marker"></span>
+                                    <span class="project-title">Business Data Layer</span>
+                                    <svg class="project-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                                 </button>
                                 <div class="project-content">
                                     <div class="project-content-inner">
-                                        <p class="project-description">
-                                            Development and integration into the client's infrastructure from scratch. Enabled personalized engagement strategies tailored to each cluster's unique characteristics.
-                                        </p>
-                                        <p class="project-description">
-                                            Within a combination of clustering ML algorithms (K-means, Birch) and marketing analyses (ABC, RFM) business-interpretable clusters were identified.
-                                        </p>
-                                        <div class="project-tech">
-                                            <strong>Technology:</strong> Clustering - Birch, Statistical testing, Scikit learn
-                                        </div>
+                                        <p class="project-impact">28 raw tables → 6 dashboards · daily HR insights for ProRail</p>
+                                        <p class="project-meta">Haskoning · ProRail · Netherlands</p>
+                                        <p class="project-description-intro">Gave ProRail HR teams daily workforce insights through six dashboards instead of wrestling with 28 raw source tables.</p>
+                                        <p class="project-description-detail">I developed the full business data layer in Spark and SQL on Microsoft Fabric — transforming, joining, and validating employee history, leave, and contract data into analytics-ready models. I also built the CI/CD pipeline so the layer refreshes reliably and stays aligned with upstream schema changes.</p>
+                                        <p class="project-stack"><span class="project-stack-label">Stack</span> Spark · SQL · Microsoft Fabric · CI/CD</p>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Project 4: Multi-Channel Recommendation System (was #7) -->
                             <div class="project-item" id="project4">
                                 <button class="project-header" type="button" onclick="toggleProject('project4')">
-                                    <div style="display: flex; align-items: center; flex: 1;">
-                                        <span class="project-number">4</span>
-                                        <span class="project-title">Multi-Channel Recommendation System</span>
-                                    </div>
-                                    <svg class="project-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                    </svg>
+                                    <span class="project-marker"></span>
+                                    <span class="project-title">Real-Time IoT Platform</span>
+                                    <svg class="project-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                                 </button>
                                 <div class="project-content">
                                     <div class="project-content-inner">
-                                        <p class="project-description">
-                                            Enabled strategic planning across multiple communication channels through unified content optimization. Delivered personalized content plans at scale, ensuring relevant messaging for each individual user.
-                                        </p>
-                                        <p class="project-description">
-                                            Developed Gradient Boosting models for personalized content selection across email, call center, and offline channels. Automated training pipelines per channel with custom-tailored datasets and regular updates.
-                                        </p>
-                                        <div class="project-tech">
-                                            <strong>Technology:</strong> Boosting - Catboost, SQL, Pandas, AWS, Airflow
-                                        </div>
+                                        <p class="project-impact">1k messages/min bursts · proactive emergency alerts</p>
+                                        <p class="project-meta">Haskoning · Waterschap · Netherlands</p>
+                                        <p class="project-description-intro">Let waterboard operators detect infrastructure issues proactively instead of reacting to failures after the fact.</p>
+                                        <p class="project-description-detail">I developed a real-time IoT ingestion platform on Azure Event Hub that handles burst traffic up to 1,000 messages per minute, with data-quality checks and automated alerting on pipeline failures. I provisioned the infrastructure with Terraform, containerized services with Docker, and wired CI/CD so deployments stay repeatable in production.</p>
+                                        <p class="project-stack"><span class="project-stack-label">Stack</span> Azure Event Hub · Terraform · Docker · CI/CD</p>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Project 5: Business Data Layer Development (was #2) -->
                             <div class="project-item" id="project5">
                                 <button class="project-header" type="button" onclick="toggleProject('project5')">
-                                    <div style="display: flex; align-items: center; flex: 1;">
-                                        <span class="project-number">5</span>
-                                        <span class="project-title">Business Data Layer Development</span>
-                                    </div>
-                                    <svg class="project-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                    </svg>
+                                    <span class="project-marker"></span>
+                                    <span class="project-title">Document Summarization &amp; Q&amp;A</span>
+                                    <svg class="project-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                                 </button>
                                 <div class="project-content">
                                     <div class="project-content-inner">
-                                        <p class="project-description">
-                                            Designed a business-ready HR data layer in MS Fabric, supporting analytics on aggregated employee history profiles, leave management and contract tracking. Enabled HR teams to access workforce insights directly, without navigating raw data structures.
-                                        </p>
-                                        <p class="project-description">
-                                            Collaborated closely with data analysts to transform raw data using Spark and stored procedures. Built scheduled pipelines that converted 28 raw tables into 6 analytics-ready tables with daily updates.
-                                        </p>
-                                        <div class="project-tech">
-                                            <strong>Technology:</strong> Spark, SQL, Microsoft Fabric (Pipelines, Spark Notebooks), CI/CD Pipelines
-                                        </div>
+                                        <p class="project-impact">60+ page documents · insights in seconds, not hours</p>
+                                        <p class="project-meta">Rubbles · Insurance company</p>
+                                        <p class="project-description-intro">Turned 60+ page insurance documents into searchable, answerable knowledge in seconds instead of hours of manual reading.</p>
+                                        <p class="project-description-detail">I developed the document parsing pipeline, chunking strategy, and Mistral 8B integration for summarization and contextual Q&amp;A tuned to insurance terminology. I fine-tuned prompts and retrieval boundaries so answers stayed grounded in source text and usable by non-technical business users.</p>
+                                        <p class="project-stack"><span class="project-stack-label">Stack</span> Mistral 8B · Document parsing · Fine-tuning</p>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Project 6: Real-Time IoT Data Ingestion & Processing Platform (was #3) -->
                             <div class="project-item" id="project6">
                                 <button class="project-header" type="button" onclick="toggleProject('project6')">
-                                    <div style="display: flex; align-items: center; flex: 1;">
-                                        <span class="project-number">6</span>
-                                        <span class="project-title">Real-Time IoT Data Ingestion & Processing Platform</span>
-                                    </div>
-                                    <svg class="project-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                    </svg>
+                                    <span class="project-marker"></span>
+                                    <span class="project-title">Sales Forecasting</span>
+                                    <svg class="project-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                                 </button>
                                 <div class="project-content">
                                     <div class="project-content-inner">
-                                        <p class="project-description">
-                                            Enabled real-time system monitoring and proactive issue detection through immediate alerts on potential emergencies and system failures. Developed scalable pipelines, handling IOT telemetry data via Azure Event Hub and function apps. Built Terraform-managed infrastructure optimized for bursts up to 1k messages/min. Implemented DQM checks and alerts on failure.
-                                        </p>
-                                        <div class="project-tech">
-                                            <strong>Technology:</strong> Python, Azure, Docker, CI/CD, Terraform
-                                        </div>
+                                        <p class="project-impact">3% prediction error · 4-month forecasts · quantified sales drivers</p>
+                                        <p class="project-meta">Rubbles · UK Big Pharma</p>
+                                        <p class="project-description-intro">Delivered 4-month sales forecasts within 3% error and quantified which drivers actually move revenue — seasonality, history, and campaigns.</p>
+                                        <p class="project-description-detail">I developed the full time-series forecasting pipeline: feature engineering, model training and validation, and automated scoring on AWS. I built the Airflow orchestration so forecasts and driver analysis refresh on schedule and feed directly into client planning workflows.</p>
+                                        <p class="project-stack"><span class="project-stack-label">Stack</span> Time-series forecasting · AWS · Airflow</p>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Project 7: LLM Document Summarization & Querying (was #4) -->
                             <div class="project-item" id="project7">
                                 <button class="project-header" type="button" onclick="toggleProject('project7')">
-                                    <div style="display: flex; align-items: center; flex: 1;">
-                                        <span class="project-number">7</span>
-                                        <span class="project-title">LLM Document Summarization & Querying</span>
-                                    </div>
-                                    <svg class="project-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                    </svg>
+                                    <span class="project-marker"></span>
+                                    <span class="project-title">Customer Segmentation</span>
+                                    <svg class="project-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                                 </button>
                                 <div class="project-content">
                                     <div class="project-content-inner">
-                                        <p class="project-description">
-                                            Integrated and tuned document parsing with Mistral 8b for document summarization and contextual Q&A, enabling users to extract specific insights from lengthy domain-specific documents (60+ pages) in seconds rather than hours.
-                                        </p>
+                                        <p class="project-impact">8 business-interpretable clusters · personalized engagement strategies</p>
+                                        <p class="project-meta">Rubbles · UK Big Pharma</p>
+                                        <p class="project-description-intro">Gave marketing teams eight business-interpretable customer clusters they could act on immediately instead of one opaque segmentation model.</p>
+                                        <p class="project-description-detail">I developed the clustering pipeline from scratch, combined it with ABC and RFM analysis, and validated segments with statistical testing before rollout. I integrated the solution into the client's AWS infrastructure so scores and segment labels update automatically in downstream campaigns.</p>
+                                        <p class="project-stack"><span class="project-stack-label">Stack</span> Clustering · Statistical testing · AWS</p>
                                     </div>
                                 </div>
                             </div>
 
+                            <div class="project-item" id="project8">
+                                <button class="project-header" type="button" onclick="toggleProject('project8')">
+                                    <span class="project-marker"></span>
+                                    <span class="project-title">Multi-Channel Recommendations</span>
+                                    <svg class="project-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                </button>
+                                <div class="project-content">
+                                    <div class="project-content-inner">
+                                        <p class="project-impact">+7% email open rate · omnichannel content at scale</p>
+                                        <p class="project-meta">Rubbles · Top-3 India Pharma</p>
+                                        <p class="project-description-intro">Raised email open rates by 7% and gave a Top-3 India pharma client one recommendation engine across email, call center, and offline channels.</p>
+                                        <p class="project-description-detail">I developed gradient-boosting models per channel, built the SQL feature pipelines and Airflow jobs that retrain them on schedule, and deployed the scoring layer on AWS. Each channel keeps its own model logic while sharing a common feature store — so content teams get consistent, data-driven suggestions at scale.</p>
+                                        <p class="project-stack"><span class="project-stack-label">Stack</span> Gradient boosting · SQL · AWS · Airflow</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -465,7 +529,7 @@
         </footer>
     </main>
 
-    <script src="/static/js/app.js?v=6"></script>
+    <script src="/static/js/app.js?v=17"></script>
     <script>
         // Function to toggle individual project items
         function toggleProject(projectId) {

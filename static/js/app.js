@@ -5,26 +5,21 @@ document.addEventListener('DOMContentLoaded', function() {
     const btnSpinner = document.getElementById('btnSpinner');
     const questionInput = document.getElementById('questionInput');
     const answerDisplay = document.querySelector('.answer-display');
-    
-    // AJAX form submission - no page refresh
+
     if (form && submitBtn) {
         form.addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent page refresh
-            
+            event.preventDefault();
+
             const formData = new FormData(form);
-            const question = formData.get('question');
-            
-            // Show loading state
+
             submitBtn.disabled = true;
             btnText.textContent = '...';
             btnSpinner.classList.add('active');
-            
-            // Show loading in answer box
+
             if (answerDisplay) {
                 answerDisplay.innerHTML = '<p class="answer-placeholder">Thinking...</p>';
             }
-            
-            // Send AJAX request
+
             fetch('/ask', {
                 method: 'POST',
                 headers: {
@@ -36,20 +31,16 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .then(response => response.json())
             .then(data => {
-                // Reset button state
                 submitBtn.disabled = false;
                 btnText.textContent = '→';
                 btnSpinner.classList.remove('active');
-                
-                // Display answer
+
                 if (data.answer && answerDisplay) {
-                    let html = '<p>' + data.answer + '</p>';
-                    
-                    // Add metadata if available
+                    let html = '<p>' + escapeHtml(data.answer) + '</p>';
                     if (data.sources || data.num_chunks || data.execution_time) {
                         html += '<div class="metadata">';
                         if (data.sources) {
-                            html += '<span class="tag">Sources: ' + data.sources.join(', ') + '</span>';
+                            html += '<span class="tag">Sources: ' + escapeHtml(data.sources.join(', ')) + '</span>';
                         }
                         if (data.num_chunks) {
                             html += '<span class="tag">' + data.num_chunks + ' chunks</span>';
@@ -59,13 +50,11 @@ document.addEventListener('DOMContentLoaded', function() {
                         }
                         html += '</div>';
                     }
-                    
                     answerDisplay.innerHTML = html;
                 } else if (data.error && answerDisplay) {
-                    answerDisplay.innerHTML = '<p style="color: #C33;">Error: ' + data.error + '</p>';
+                    answerDisplay.innerHTML = '<p style="color: #C33;">Error: ' + escapeHtml(data.error) + '</p>';
                 }
-                
-                // Update quota if provided
+
                 if (data.remaining_requests !== undefined) {
                     const quotaNumber = document.querySelector('.quota-number');
                     if (quotaNumber && data.daily_limit) {
@@ -78,17 +67,25 @@ document.addEventListener('DOMContentLoaded', function() {
                 submitBtn.disabled = false;
                 btnText.textContent = '→';
                 btnSpinner.classList.remove('active');
-                
                 if (answerDisplay) {
                     answerDisplay.innerHTML = '<p style="color: #C33;">An error occurred. Please try again.</p>';
                 }
             });
         });
     }
-    
 });
 
-// Global function for onclick handlers
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+function clearRickRubinMode() {
+    const mode = document.getElementById('rickRubinMode');
+    if (mode) mode.value = '';
+}
+
 function togglePortfolioAccordion(accordionId) {
     const accordion = document.getElementById(accordionId);
     if (accordion) {
@@ -96,11 +93,69 @@ function togglePortfolioAccordion(accordionId) {
     }
 }
 
+const OFF_SCRIPT_QUESTIONS = [
+    'What are your hobbies?',
+    'Have you participated in any half marathons?',
+    'Do you enjoy sports?',
+    'What makes you happy?',
+    'What do you do for fun?',
+    'Do you like pasta?',
+    'Do you collect vinyl records?',
+    "What's on your mind?",
+    'What are your favorite bands?',
+    'What is your favorite film?',
+    'Why do you work in AI and software engineering?',
+    'Can you explain AI to non-technical people?',
+    'Are you a mentor?',
+    'Can you play piano?',
+    'What is your favorite food?',
+    'Who is your favorite film director?',
+];
+
+const RICK_RUBIN_QUESTIONS = [
+    'What do you think of Rick Rubin?',
+    'Do you like pasta?',
+    'What are your favorite bands?',
+    'Can you play an instrument?',
+    'What do you listen to before sleep?',
+    'Do you lie down at parties?',
+    // 'Thanks for Korn — what do you think?',
+    'What are your favorite bands?',
+    'Do you give presentations?',
+    'Can you explain AI concepts to non-technical people?',
+    'What\'s on your mind?',
+];
+
 function fillQuestion(question) {
+    clearRickRubinMode();
     const input = document.getElementById('questionInput');
     if (input) {
         input.value = question;
         input.focus();
+    }
+}
+
+function fillOffScriptQuestion() {
+    clearRickRubinMode();
+    const question = OFF_SCRIPT_QUESTIONS[
+        Math.floor(Math.random() * OFF_SCRIPT_QUESTIONS.length)
+    ];
+    fillQuestion(question);
+}
+
+function fillRickRubinQuestion() {
+    clearRickRubinMode();
+    const question = RICK_RUBIN_QUESTIONS[
+        Math.floor(Math.random() * RICK_RUBIN_QUESTIONS.length)
+    ];
+    const input = document.getElementById('questionInput');
+    const mode = document.getElementById('rickRubinMode');
+    if (input) {
+        input.value = question;
+        input.focus();
+    }
+    if (mode) {
+        mode.value = '1';
     }
 }
 

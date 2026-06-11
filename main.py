@@ -4,6 +4,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi import BackgroundTasks
 import logging
+import random
 import time
 from datetime import datetime
 
@@ -71,6 +72,131 @@ async def startup_event():
         raise
 
 
+def _is_personal_context(chunks: list) -> bool:
+    """True when retrieved chunks are from personal-life sections."""
+    markers = (
+        "chunk_08_personal",
+        "chunk_09_more_about",
+        "chunk_10_games",
+        "chunk_11_music",
+        "chunk_12_films",
+        "chunk_13_teaching",
+        "chunk_14_rick",
+    )
+    for chunk in chunks:
+        content = chunk.get("content", "").lower()
+        if any(marker in content for marker in markers):
+            return True
+    return False
+
+
+_RICK_RUBIN_TOP_K = 2
+
+_PRESET_PILL_QUESTIONS = (
+    "What is your most recent project?",
+    "What is your tech stack and tools you use?",
+)
+
+_PRESET_OFF_SCRIPT_QUESTIONS = (
+    "What are your hobbies?",
+    "Have you participated in any half marathons?",
+    "Do you enjoy sports?",
+    "What makes you happy?",
+    "What do you do for fun?",
+    "Do you like pasta?",
+    "Do you collect vinyl records?",
+    "What's on your mind?",
+    "What are your favorite bands?",
+    "What is your favorite film?",
+    "Why do you work in AI and software engineering?",
+    "Can you explain AI to non-technical people?",
+    "Are you a mentor?",
+    "Can you play piano?",
+    "What is your favorite food?",
+    "Who is your favorite film director?",
+)
+
+_PRESET_RICK_RUBIN_QUESTIONS = (
+    "What do you think of Rick Rubin?",
+    "What makes you happy?",
+    "Do you like pasta?",
+    "What are your favorite bands?",
+    "Who is your favorite musician?",
+    "Can you play an instrument?",
+    "Are you a mentor?",
+    # "What do you listen to before sleep?",
+    "What do you think of Rick Rubin?",
+    "Do you lie down at parties?",
+    "Do you give presentations?",
+    "Can you explain AI concepts to non-technical people?",
+    "What is your favorite film?",
+    "Why do you work in AI and software engineering?",
+    "What do you think of Rick Rubin?",
+    "What's on your mind?",
+)
+
+_PRESET_QUESTIONS = {
+    " ".join(question.strip().lower().split())
+    for question in (
+        _PRESET_PILL_QUESTIONS
+        + _PRESET_OFF_SCRIPT_QUESTIONS
+        + _PRESET_RICK_RUBIN_QUESTIONS
+    )
+}
+
+
+def _is_preset_question(question: str) -> bool:
+    """True when the question matches a UI pill or random preset pool."""
+    normalized = " ".join(question.strip().lower().split())
+    return normalized in _PRESET_QUESTIONS
+
+
+def _pick_deflect_mode() -> str:
+    """Pick prose or poetry deflect for questions not in portfolio docs."""
+    return "deflect_poetry" if random.random() < 0.5 else "deflect"
+
+
+def query_rick_rubin(question: str) -> dict:
+    """Rick Rubin mode: on-topic answers from best-matching chunks only."""
+    start_time = time.time()
+    is_preset = _is_preset_question(question)
+    logger.info(f"Rick Rubin mode: '{question}' (preset={is_preset})")
+
+    with hf_client.embedding_context(question) as query_embedding:
+        chunks = db_client.search(
+            query_embedding,
+            k=6,
+            similarity_threshold=Config.RELAXED_SIMILARITY_THRESHOLD,
+        )
+        chunks = chunks[:_RICK_RUBIN_TOP_K]
+
+    context = text_processor.assemble_context(chunks, question=question) if chunks else ""
+
+    if not chunks:
+        prompt_mode = _pick_deflect_mode()
+        max_tokens = Config.MAX_NEW_TOKENS
+    else:
+        prompt_mode = "rick_rubin"
+        max_tokens = Config.MAX_PERSONAL_NEW_TOKENS
+
+    answer = hf_client.generate_answer(
+        question=question,
+        context=context,
+        max_new_tokens=max_tokens,
+        temperature=Config.PERSONAL_TEMPERATURE,
+        prompt_mode=prompt_mode,
+        is_preset=is_preset,
+    )
+
+    execution_time = time.time() - start_time
+    return {
+        "answer": answer,
+        "sources": list(set(chunk.get("source", "unknown") for chunk in chunks)) if chunks else ["rick_rubin"],
+        "num_chunks": len(chunks),
+        "execution_time": execution_time,
+    }
+
+
 def query_rag(question: str) -> dict:
     """
     Execute RAG query pipeline.
@@ -82,12 +208,11 @@ def query_rag(question: str) -> dict:
         dict with 'answer', 'sources', 'num_chunks', 'execution_time'
     """
     start_time = time.time()
+    is_preset = _is_preset_question(question)
     
     try:
         # Step 1: Generate embedding with automatic memory cleanup
-        logger.info(f"Step 1: Generating embedding for question: '{question}'")
-        
-        is_relaxed_search = False
+        logger.info(f"Step 1: Generating embedding for question: '{question}' (preset={is_preset})")
         
         with hf_client.embedding_context(question) as query_embedding:
             logger.info(f"Embedding generated: dimension={len(query_embedding)}")
@@ -110,7 +235,6 @@ def query_rag(question: str) -> dict:
                     similarity_threshold=Config.RELAXED_SIMILARITY_THRESHOLD
                 )
                 if chunks:
-                    is_relaxed_search = True
                     logger.info(f"Relaxed search returned {len(chunks)} chunks")
 
         if chunks:
@@ -118,20 +242,22 @@ def query_rag(question: str) -> dict:
                 logger.info(f"Chunk {i+1}: similarity={chunk.get('similarity', 0):.3f}, source={chunk.get('source', 'unknown')}")
         
         if not chunks:
-            logger.warning("No chunks found matching similarity threshold - generating fallback answer")
-            # Generate answer without context (fallback mode)
-            fallback_context = "You are a helpful AI assistant. Answer the user's question to the best of your ability based on general knowledge."
+            prompt_mode = _pick_deflect_mode()
+            logger.warning(f"No chunks found - deflecting ({prompt_mode})")
             answer = hf_client.generate_answer(
                 question=question,
-                context=fallback_context,
+                context="",
                 max_new_tokens=Config.MAX_NEW_TOKENS,
-                temperature=Config.TEMPERATURE
+                temperature=Config.OFF_TOPIC_TEMPERATURE,
+                prompt_mode=prompt_mode,
+                is_preset=is_preset,
             )
+            source_label = "not_in_portfolio"
             execution_time = time.time() - start_time
-            logger.info(f"Generic answer generated ({len(answer)} chars)")
+            logger.info(f"Fallback answer generated ({len(answer)} chars)")
             return {
                 "answer": answer,
-                "sources": ["general_knowledge"],
+                "sources": [source_label],
                 "num_chunks": 0,
                 "execution_time": execution_time
             }
@@ -141,17 +267,19 @@ def query_rag(question: str) -> dict:
         context = text_processor.assemble_context(chunks, question=question)
         logger.info(f"Context assembled: {len(context)} characters")
         
-        # Step 4: Generate answer
-        if is_relaxed_search:
-            logger.info("Step 4: Generating answer with LLM (relaxed search - tangential context)")
-        else:
-            logger.info("Step 4: Generating answer with LLM")
+        # Step 4: Generate answer from retrieved context
+        personal = _is_personal_context(chunks)
         answer = hf_client.generate_answer(
             question=question,
             context=context,
-            max_new_tokens=Config.MAX_NEW_TOKENS,
-            temperature=Config.TEMPERATURE,
-            is_tangential=is_relaxed_search
+            max_new_tokens=(
+                Config.MAX_PERSONAL_NEW_TOKENS if personal else Config.MAX_NEW_TOKENS
+            ),
+            temperature=(
+                Config.PERSONAL_TEMPERATURE if personal else Config.TEMPERATURE
+            ),
+            prompt_mode="personal" if personal else "standard",
+            is_preset=is_preset,
         )
         logger.info(f"Answer generated: {len(answer)} characters")
         
@@ -191,9 +319,10 @@ async def home(request: Request):
 
 @app.post("/ask")
 async def ask_question(
-    request: Request, 
+    request: Request,
     background_tasks: BackgroundTasks,
-    question: str = Form(...)
+    question: str = Form(...),
+    rick_rubin: str = Form(""),
 ):
     # Extract user IP
     user_ip = request.client.host
@@ -224,8 +353,10 @@ async def ask_question(
         })
     
     try:
-        # Process query (this is the slow part users wait for)
-        result = query_rag(question)
+        if rick_rubin == "1":
+            result = query_rick_rubin(question)
+        else:
+            result = query_rag(question)
         
         # Calculate remaining BEFORE logging
         remaining = Config.DAILY_QUERY_LIMIT - (query_count + 1)
@@ -242,14 +373,13 @@ async def ask_question(
             status="success"
         )
         
-        # Return JSON response
         return JSONResponse({
             "answer": result["answer"],
             "sources": result["sources"],
             "num_chunks": result["num_chunks"],
             "execution_time": f"{result['execution_time']:.2f}",
             "remaining_requests": remaining,
-            "daily_limit": Config.DAILY_QUERY_LIMIT
+            "daily_limit": Config.DAILY_QUERY_LIMIT,
         })
         
     except Exception as e:

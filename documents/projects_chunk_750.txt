@@ -183,15 +183,44 @@ Q: What cloud platforms for Margot's projects? A: Microsoft Azure and AWS across
 ================================================================================
 
 ================================================================================
+CHUNK_09_RAG_SYSTEM_FACTORY_CLIENT
+================================================================================
+Most Recent Project (April 2026–Present) — Xomnia, Machine Learning Engineer
+
+Project: RAG System for Factory Client - 100 Simultaneous Users, Sub 5-Second Latency
+
+I designed and implemented a Retrieval-Augmented Generation (RAG) system for a factory client at Xomnia, enabling 100 simultaneous active users to perform fast and efficient searches within an internal database. The system achieves sub-5-second latency for queries, ensuring real-time decision-making capabilities in a high-demand industrial environment.
+
+The project involved end-to-end infrastructure design and deployment:
+- Azure Infrastructure Setup: I configured the entire Azure cloud environment, including Azure OpenAI services, to ensure scalability, reliability, and high performance.
+- Prompt Engineering & Skill Development: I developed optimized prompts and specialized skills for the RAG system, ensuring accurate and context-aware responses tailored to the client’s operational needs.
+- User Flow & Feedback Integration: I designed intuitive user flows and iteratively refined the system based on user feedback, ensuring a seamless and efficient experience.
+- Full Infrastructure Ownership: From architecture to deployment, I managed the entire infrastructure stack, ensuring robustness and scalability for concurrent users.
+
+The system replaced slower, less efficient search methods, enabling factory personnel to access critical information in real time. It supports rapid decision-making, reduces downtime, and enhances operational efficiency.
+Technologies: Azure OpenAI, Azure cloud services, prompt engineering, RAG frameworks, Python.
+
+
+Q: What is Margot's most recent project? A: A RAG system for a factory client at Xomnia — 100+ simultaneous users, sub-5-second latency (April 2026–Present).
+Q: What is Margot's latest project? A: RAG system for a factory client at Xomnia with Azure OpenAI, prompt engineering, and full infrastructure ownership.
+Q: Tell me about Margot's recent machine learning projects? A: Most recent: factory-client RAG platform at Xomnia (April 2026–Present) supporting 100 concurrent users with sub-5-second query latency.
+Q: What is Margot working on at Xomnia? A: Designing and implementing a production RAG system for a factory client with Azure OpenAI and real-time search.
+Q: Last project in Xomnia? A: Margot designed and implemented a RAG system for a factory client with 100+ simultaneous users.
+Q: Has Margot built RAG systems? A: Yes — most recently a factory-client RAG system at Xomnia (April 2026–Present); previously 30+ domain RAG chatbot at Haskoning.
+Q: Does Margot have experience with Azure OpenAI? A: Yes, configured Azure OpenAI services as part of the Xomnia factory RAG system infrastructure.
+Q: What was Margot's role in the RAG project? A: Full infrastructure design, prompt engineering, user flow design, and iterative improvements based on feedback.
+Q: Can Margot design scalable AI systems? A: Yes, built a scalable RAG system for real-time factory operations with 100 simultaneous users.
+
+================================================================================
 METADATA_PROJECT_PORTFOLIO_DOCUMENT
 ================================================================================
 Document Type: Comprehensive Project Portfolio with Technical Details
 Candidate: Margot Razumeyeva (Margo Razumeyeva)
-Total Projects Documented: 7 major projects
+Total Projects Documented: 9 major projects
 Industries: Pharmaceuticals (UK, India), Dutch Infrastructure (ProRail, Waterschap), Insurance
 Project Types: RAG/LLM systems, Data Engineering, IoT platforms, ML (forecasting, clustering, recommendations)
 Key Technologies: Azure, Spark, Terraform, RAG, CatBoost, Scikit-learn, Microsoft Fabric
 Document Purpose: Searchable project reference for technical capabilities and business impact
-Last Updated: January 2026
+Last Updated: Jun 2026
 Context: Real production projects with measurable business outcomes and technical implementation details
 ================================================================================

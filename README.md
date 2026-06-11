@@ -2,6 +2,8 @@
 
 A production-ready Retrieval-Augmented Generation system that intelligently answers questions about my professional experience. Using semantic search and large language models.
 
+**Live portfolio:** [https://who-is-margot.duckdns.org/](https://who-is-margot.duckdns.org/) — open it and ask questions in the search box (projects, skills, experience, or off-script personal ones).
+
 ## Motivation
 
 I built this to demonstrate my LLM engineering skills while solving a practical problem: making my CV information instantly searchable. Instead of asking people to read through lengthy documents, they can ask natural questions and get accurate answers drawn directly from my experience.
