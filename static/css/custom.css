@@ -577,6 +577,16 @@ main.container {
     color: #0A0A0A !important;
 }
 
+.pill-btn-rick {
+    background-color: #FFFDF0 !important;
+}
+
+.pill-btn-rick:hover {
+    background-color: #FFE55C !important;
+    border-color: #FFE55C !important;
+    color: #0A0A0A !important;
+}
+
 /* Inline Search Bar - underline style */
 .inline-search-form {
     display: flex;

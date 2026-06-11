@@ -41,14 +41,14 @@ class Config:
     MAX_CONTEXT_TOKENS = 2500    
     TEMPERATURE = 0.7
     OFF_TOPIC_TEMPERATURE = float(os.getenv("OFF_TOPIC_TEMPERATURE", "0.9"))
-    PERSONAL_TEMPERATURE = float(os.getenv("PERSONAL_TEMPERATURE", "0.85"))
+    PERSONAL_TEMPERATURE = float(os.getenv("PERSONAL_TEMPERATURE", "0.8"))
     MAX_NEW_TOKENS = 350
     MAX_PERSONAL_NEW_TOKENS = int(os.getenv("MAX_PERSONAL_NEW_TOKENS", "500"))
 
     RATE_LIMIT = "10/hour"
 
     # Rate Limiting
-    DAILY_QUERY_LIMIT = int(os.getenv("DAILY_QUERY_LIMIT", "12"))
+    DAILY_QUERY_LIMIT = int(os.getenv("DAILY_QUERY_LIMIT", "25"))
 
     # Data Retention
     QUERY_LOG_RETENTION_DAYS = int(os.getenv("QUERY_LOG_RETENTION_DAYS", "90"))

@@ -6,7 +6,7 @@
     <title>{{ title }} - RAG System</title>
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
-    <link href="/static/css/custom.css?v=21" rel="stylesheet">
+    <link href="/static/css/custom.css?v=24" rel="stylesheet">
 </head>
 <body>
     <!-- Abstract geometric background -->
@@ -176,12 +176,14 @@
                 <div class="suggestion-pills">
                     <button type="button" class="pill-btn" onclick="fillQuestion('What is your most recent project?')">Projects</button>
                     <button type="button" class="pill-btn" onclick="fillQuestion('What is your tech stack and tools you use?')">Stack</button>
-                    <button type="button" class="pill-btn" onclick="fillQuestion('Tell me about your experience as a data scientist')">Experience</button>
+                    <!-- <button type="button" class="pill-btn" onclick="fillQuestion('Tell me about your experience as a data scientist')">Experience</button> -->
                     <button type="button" class="pill-btn" onclick="fillOffScriptQuestion()" title="Personal question — not from the CV">Off Script</button>
+                    <button type="button" class="pill-btn pill-btn-rick" onclick="fillRickRubinQuestion()" title="Rick Rubin vibe — music, teaching, Rick">Rick Rubin</button>
                 </div>
 
                 <div class="search-query-col">
                     <form method="POST" action="/ask" id="questionForm" class="inline-search-form" enctype="application/x-www-form-urlencoded">
+                        <input type="hidden" name="rick_rubin" id="rickRubinMode" value="">
                         <input
                             type="text"
                             name="question"
@@ -506,7 +508,7 @@
         </footer>
     </main>
 
-    <script src="/static/js/app.js?v=11"></script>
+    <script src="/static/js/app.js?v=17"></script>
     <script>
         // Function to toggle individual project items
         function toggleProject(projectId) {
