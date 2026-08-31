@@ -90,58 +90,50 @@ def _is_personal_context(chunks: list) -> bool:
     return False
 
 
-_RICK_RUBIN_TOP_K = 2
-
 _PRESET_PILL_QUESTIONS = (
     "What is your most recent project?",
     "What is your tech stack and tools you use?",
 )
 
+# Keep in sync with OFF_SCRIPT_QUESTIONS in static/js/app.js.
 _PRESET_OFF_SCRIPT_QUESTIONS = (
     "What are your hobbies?",
+    "What do you do for fun?",
+    "What do you do outside of work?",
+    "How do you unwind after work?",
+    "What makes you happy?",
+    "What's on your mind?",
+    "Tell me something that is not on your CV.",
     "Have you participated in any half marathons?",
     "Do you enjoy sports?",
-    "What makes you happy?",
-    "What do you do for fun?",
     "Do you like pasta?",
-    "Do you collect vinyl records?",
-    "What's on your mind?",
-    "What are your favorite bands?",
-    "What is your favorite film?",
-    "Why do you work in AI and software engineering?",
-    "Can you explain AI to non-technical people?",
-    "Are you a mentor?",
-    "Can you play piano?",
     "What is your favorite food?",
-    "Who is your favorite film director?",
-)
-
-_PRESET_RICK_RUBIN_QUESTIONS = (
-    "What do you think of Rick Rubin?",
-    "What makes you happy?",
-    "Do you like pasta?",
+    "Do you like cooking?",
+    "Do you collect vinyl records?",
     "What are your favorite bands?",
     "Who is your favorite musician?",
+    "What is your favorite album?",
+    "What music do you listen to while coding?",
+    "What do you listen to before sleep?",
+    "Can you play piano?",
     "Can you play an instrument?",
-    "Are you a mentor?",
-    # "What do you listen to before sleep?",
-    "What do you think of Rick Rubin?",
-    "Do you lie down at parties?",
-    "Do you give presentations?",
-    "Can you explain AI concepts to non-technical people?",
     "What is your favorite film?",
+    "Who is your favorite film director?",
+    "What films have you watched recently?",
+    "What games do you play?",
+    "Do you play video games?",
+    "Are you a mentor?",
+    "Do you like teaching?",
+    "Do you give presentations?",
+    "Can you explain AI to non-technical people?",
     "Why do you work in AI and software engineering?",
     "What do you think of Rick Rubin?",
-    "What's on your mind?",
+    "Do you lie down at parties?",
 )
 
 _PRESET_QUESTIONS = {
     " ".join(question.strip().lower().split())
-    for question in (
-        _PRESET_PILL_QUESTIONS
-        + _PRESET_OFF_SCRIPT_QUESTIONS
-        + _PRESET_RICK_RUBIN_QUESTIONS
-    )
+    for question in (_PRESET_PILL_QUESTIONS + _PRESET_OFF_SCRIPT_QUESTIONS)
 }
 
 
@@ -154,47 +146,6 @@ def _is_preset_question(question: str) -> bool:
 def _pick_deflect_mode() -> str:
     """Pick prose or poetry deflect for questions not in portfolio docs."""
     return "deflect_poetry" if random.random() < 0.5 else "deflect"
-
-
-def query_rick_rubin(question: str) -> dict:
-    """Rick Rubin mode: on-topic answers from best-matching chunks only."""
-    start_time = time.time()
-    is_preset = _is_preset_question(question)
-    logger.info(f"Rick Rubin mode: '{question}' (preset={is_preset})")
-
-    with hf_client.embedding_context(question) as query_embedding:
-        chunks = db_client.search(
-            query_embedding,
-            k=6,
-            similarity_threshold=Config.RELAXED_SIMILARITY_THRESHOLD,
-        )
-        chunks = chunks[:_RICK_RUBIN_TOP_K]
-
-    context = text_processor.assemble_context(chunks, question=question) if chunks else ""
-
-    if not chunks:
-        prompt_mode = _pick_deflect_mode()
-        max_tokens = Config.MAX_NEW_TOKENS
-    else:
-        prompt_mode = "rick_rubin"
-        max_tokens = Config.MAX_PERSONAL_NEW_TOKENS
-
-    answer = hf_client.generate_answer(
-        question=question,
-        context=context,
-        max_new_tokens=max_tokens,
-        temperature=Config.PERSONAL_TEMPERATURE,
-        prompt_mode=prompt_mode,
-        is_preset=is_preset,
-    )
-
-    execution_time = time.time() - start_time
-    return {
-        "answer": answer,
-        "sources": list(set(chunk.get("source", "unknown") for chunk in chunks)) if chunks else ["rick_rubin"],
-        "num_chunks": len(chunks),
-        "execution_time": execution_time,
-    }
 
 
 def query_rag(question: str) -> dict:
@@ -322,7 +273,6 @@ async def ask_question(
     request: Request,
     background_tasks: BackgroundTasks,
     question: str = Form(...),
-    rick_rubin: str = Form(""),
 ):
     # Extract user IP
     user_ip = request.client.host
@@ -353,10 +303,7 @@ async def ask_question(
         })
     
     try:
-        if rick_rubin == "1":
-            result = query_rick_rubin(question)
-        else:
-            result = query_rag(question)
+        result = query_rag(question)
         
         # Calculate remaining BEFORE logging
         remaining = Config.DAILY_QUERY_LIMIT - (query_count + 1)

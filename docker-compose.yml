@@ -12,8 +12,10 @@ services:
       POSTGRES_WORK_MEM: "4MB"
     mem_limit: 256m
     cpus: "1.5"
+    # Host-side 5433: the host runs its own postgres on 5432. Only needed for
+    # external tooling; the app connects to postgres:5432 over the compose network.
     ports:
-      - "127.0.0.1:5432:5432"
+      - "127.0.0.1:5433:5432"
     volumes:
       - pgvector_data:/var/lib/postgresql/data
     healthcheck:
@@ -27,7 +29,9 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: cv_rag_app
-    mem_limit: 512m
+    # Local embeddings need ~520MB resident (torch ~215MB + bge-small ~215MB +
+    # encode headroom); 512m OOM-killed the worker on startup.
+    mem_limit: 1g
     cpus: "2"
     ports:
       - "0.0.0.0:8000:8000"

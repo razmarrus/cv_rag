@@ -81,11 +81,6 @@ function escapeHtml(text) {
     return div.innerHTML;
 }
 
-function clearRickRubinMode() {
-    const mode = document.getElementById('rickRubinMode');
-    if (mode) mode.value = '';
-}
-
 function togglePortfolioAccordion(accordionId) {
     const accordion = document.getElementById(accordionId);
     if (accordion) {
@@ -93,41 +88,44 @@ function togglePortfolioAccordion(accordionId) {
     }
 }
 
+// Keep in sync with _PRESET_OFF_SCRIPT_QUESTIONS in main.py, which drives
+// preset-aware prompting server-side.
 const OFF_SCRIPT_QUESTIONS = [
     'What are your hobbies?',
+    'What do you do for fun?',
+    'What do you do outside of work?',
+    'How do you unwind after work?',
+    'What makes you happy?',
+    "What's on your mind?",
+    'Tell me something that is not on your CV.',
     'Have you participated in any half marathons?',
     'Do you enjoy sports?',
-    'What makes you happy?',
-    'What do you do for fun?',
     'Do you like pasta?',
-    'Do you collect vinyl records?',
-    "What's on your mind?",
-    'What are your favorite bands?',
-    'What is your favorite film?',
-    'Why do you work in AI and software engineering?',
-    'Can you explain AI to non-technical people?',
-    'Are you a mentor?',
-    'Can you play piano?',
     'What is your favorite food?',
-    'Who is your favorite film director?',
-];
-
-const RICK_RUBIN_QUESTIONS = [
-    'What do you think of Rick Rubin?',
-    'Do you like pasta?',
+    'Do you like cooking?',
+    'Do you collect vinyl records?',
     'What are your favorite bands?',
-    'Can you play an instrument?',
+    'Who is your favorite musician?',
+    'What is your favorite album?',
+    'What music do you listen to while coding?',
     'What do you listen to before sleep?',
-    'Do you lie down at parties?',
-    // 'Thanks for Korn — what do you think?',
-    'What are your favorite bands?',
+    'Can you play piano?',
+    'Can you play an instrument?',
+    'What is your favorite film?',
+    'Who is your favorite film director?',
+    'What films have you watched recently?',
+    'What games do you play?',
+    'Do you play video games?',
+    'Are you a mentor?',
+    'Do you like teaching?',
     'Do you give presentations?',
-    'Can you explain AI concepts to non-technical people?',
-    'What\'s on your mind?',
+    'Can you explain AI to non-technical people?',
+    'Why do you work in AI and software engineering?',
+    'What do you think of Rick Rubin?',
+    'Do you lie down at parties?',
 ];
 
 function fillQuestion(question) {
-    clearRickRubinMode();
     const input = document.getElementById('questionInput');
     if (input) {
         input.value = question;
@@ -136,27 +134,10 @@ function fillQuestion(question) {
 }
 
 function fillOffScriptQuestion() {
-    clearRickRubinMode();
     const question = OFF_SCRIPT_QUESTIONS[
         Math.floor(Math.random() * OFF_SCRIPT_QUESTIONS.length)
     ];
     fillQuestion(question);
-}
-
-function fillRickRubinQuestion() {
-    clearRickRubinMode();
-    const question = RICK_RUBIN_QUESTIONS[
-        Math.floor(Math.random() * RICK_RUBIN_QUESTIONS.length)
-    ];
-    const input = document.getElementById('questionInput');
-    const mode = document.getElementById('rickRubinMode');
-    if (input) {
-        input.value = question;
-        input.focus();
-    }
-    if (mode) {
-        mode.value = '1';
-    }
 }
 
 function toggleAccordion(accordionId) {

@@ -199,12 +199,10 @@
                     <button type="button" class="pill-btn" onclick="fillQuestion('What is your tech stack and tools you use?')">Stack</button>
                     <!-- <button type="button" class="pill-btn" onclick="fillQuestion('Tell me about your experience as a data scientist')">Experience</button> -->
                     <button type="button" class="pill-btn" onclick="fillOffScriptQuestion()" title="Personal question — not from the CV">Off Script</button>
-                    <button type="button" class="pill-btn pill-btn-rick" onclick="fillRickRubinQuestion()" title="Rick Rubin vibe — music, teaching, Rick">Rick Rubin</button>
                 </div>
 
                 <div class="search-query-col">
                     <form method="POST" action="/ask" id="questionForm" class="inline-search-form" enctype="application/x-www-form-urlencoded">
-                        <input type="hidden" name="rick_rubin" id="rickRubinMode" value="">
                         <input
                             type="text"
                             name="question"

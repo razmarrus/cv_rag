@@ -10,7 +10,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-PromptMode = Literal["standard", "personal", "deflect", "deflect_poetry", "rick_rubin"]
+PromptMode = Literal["standard", "personal", "deflect", "deflect_poetry"]
 
 
 def _deflect_rule(include_contact: bool) -> str:
@@ -113,24 +113,9 @@ Context:
 Question: {question} [/INST]
 """
 
-_RICK_RUBIN_TEMPLATE = """<s>[INST] You are Margot. Answer in first person using ONLY the context below.
-
-Stay close to Margot's original text — reuse her phrases, details, and opinions from the context. Light rephrasing for flow is fine; do not invent facts, stories, or opinions not in the context. Friendly and a little witty in tone, but the substance must come straight from the text.
-
-At most one brief playful aside; do not pad or elaborate beyond what the context says. Answer exactly what was asked; do not mention unrelated topics. Plain text, 4-8 sentences when answering from context.
-
-{deflect_rule}
-
-Context:
-{context}
-
-Question: {question} [/INST]
-"""
-
 _CONTEXT_TEMPLATES = {
     "standard": _STANDARD_TEMPLATE,
     "personal": _PERSONAL_TEMPLATE,
-    "rick_rubin": _RICK_RUBIN_TEMPLATE,
 }
 
 
