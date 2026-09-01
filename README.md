@@ -149,3 +149,122 @@ cv_rag/
 Local bge-small plus torch needs about 520 MB resident; the app container is capped at 1g for that reason. A larger encoder (bge-large, 1024-dim) does not fit this budget and would also invalidate the existing 384-dim table.
 
 LLM calls are billed against Hugging Face Inference Providers credits when routed with an HF token. Credits apply to eligible providers; a 402 is quota, not an application bug. A custom provider API key in Hugging Face settings bills the provider instead and leaves the code unchanged.
+
+
+# System infrastructure
+
+Live site: `https://who-is-margot.duckdns.org/`
+
+Pi at home runs the app + Postgres. A small VPS only terminates HTTPS and proxies over WireGuard. LLM calls leave the Pi through Hugging Face → Groq.
+
+---
+
+## Topology
+
+| Piece | Role |
+| --- | --- |
+| DuckDNS | Name → public VPS |
+| Caddy (VPS) | TLS `:443`, reverse proxy |
+| WireGuard | VPS ↔ Pi private net (`10.0.0.1` ↔ `10.0.0.2`) |
+| `cv_rag_app` on Pi | FastAPI `:8000`, local bge-small, outbound LLM |
+| `rag_pgvector` on Pi | Postgres 16 + pgvector, Compose-only |
+| Hugging Face router | Auth + route `chat_completion` |
+| Groq | Runs `openai/gpt-oss-20b` (pinned via `HF_PROVIDER=groq`) |
+
+```
+Browser → HTTPS → Caddy (VPS)
+       → WireGuard → http://10.0.0.2:8000 (Pi app)
+       → local embed + Postgres on Compose network
+       → HTTPS router.huggingface.co → Groq
+       ← answer back the same path
+```
+
+Caddy is the only public face. Postgres is not on the internet (`127.0.0.1:5433` on the Pi for local tools only).
+
+---
+
+## Pi containers (`docker-compose.yml`)
+
+**App** — `mem_limit: 1g`. Env from `.env` (`HF_*`, `USE_LOCAL_EMBEDDINGS`). DB URL forced to `postgresql://raguser:ragpass@postgres:5432/ragdb`. Cache volume for encoder weights.
+
+**Postgres** — `mem_limit: 256m`. Internal `:5432`. Host map `127.0.0.1:5433:5432`.
+
+`.env` change → `docker compose up -d --force-recreate app` (restart is not enough).
+
+---
+
+## Data path
+
+1. Embed question locally (`BAAI/bge-small-en-v1.5`, 384-dim).
+2. Cosine search in pgvector (top-k 4; threshold 0.5 then 0.1).
+3. Build prompt from chunks (or deflect).
+4. `InferenceClient(..., provider=HF_PROVIDER).chat_completion(...)`.
+
+Ingest with the same embed mode as queries:
+
+```bash
+docker compose exec app python ingest_documents.py
+```
+
+Switching local ↔ remote embeddings or encoder model ⇒ truncate `documents` and re-ingest. Width is checked at startup; vector-space drift is not.
+
+---
+
+## Hugging Face
+
+| Call | How |
+| --- | --- |
+| Embed (prod) | Local sentence-transformers — no HF HTTP after cache warm |
+| Embed (dev flag) | `provider="hf-inference"` feature-extraction — separate vector space |
+| LLM | `provider=HF_PROVIDER` (e.g. `groq`) — always remote |
+
+Model must be **conversational** on that provider. HTTP 402 = quota.
+
+---
+
+## Ports
+
+| Port | Where | Who |
+| --- | --- | --- |
+| `:443` | VPS Caddy | browsers |
+| `:8000` | Pi app | Caddy via WireGuard |
+| `:5432` | Compose `postgres` | app container |
+| `:5433` | Pi localhost | notebooks / `psql` on that host |
+
+---
+
+## Eraser diagrams
+
+Paste into [Eraser](https://www.eraser.io).
+
+### Deploy
+
+```eraser
+title CV RAG — deploy
+direction right
+
+Browser [icon: monitor] > Caddy [icon: server]: HTTPS :443
+Caddy > App [icon: server]: WireGuard → 10.0.0.2:8000
+App > DB [icon: database]: pgvector cosine search
+App > HF [icon: cloud]: chat_completion + HF_TOKEN
+HF > Groq [icon: cloud]: openai/gpt-oss-20b
+Groq > HF > App > Caddy > Browser: answer
+```
+
+### One ask
+
+```eraser
+title One ask
+Browser > Caddy: 1. HTTPS ask
+Caddy > App: 2. proxy
+App > Encoder [icon: cpu]: 3. local embed
+App > DB [icon: database]: 4. vector search
+DB > App: 5. chunks
+App > HF [icon: cloud]: 6. chat_completion
+HF > Groq: 7. run
+Groq > HF > App > Caddy > Browser: 8–11. answer
+```
+
+---
+
+
