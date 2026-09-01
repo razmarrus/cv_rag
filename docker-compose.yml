@@ -12,8 +12,10 @@ services:
       POSTGRES_WORK_MEM: "4MB"
     mem_limit: 256m
     cpus: "1.5"
+    # Host-side 5433: the host runs its own postgres on 5432. Only needed for
+    # external tooling; the app connects to postgres:5432 over the compose network.
     ports:
-      - "127.0.0.1:5432:5432"
+      - "127.0.0.1:5433:5432"
     volumes:
       - pgvector_data:/var/lib/postgresql/data
     healthcheck:
@@ -27,16 +29,21 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: cv_rag_app
-    mem_limit: 512m
+    # Local embeddings need ~520MB resident (torch ~215MB + bge-small ~215MB +
+    # encode headroom); 512m OOM-killed the worker on startup.
+    mem_limit: 1g
     cpus: "2"
     ports:
       - "0.0.0.0:8000:8000"
     environment:
-      HF_TOKEN: ${HF_TOKEN}
-      EMBEDDING_MODEL: ${EMBEDDING_MODEL:-BAAI/bge-small-en-v1.5}
-      LLM_MODEL: ${LLM_MODEL:-Qwen/Qwen2.5-7B-Instruct}
+      # .env is the single source of truth; :? fails the command with a named
+      # error instead of starting the app on a silent default.
+      HF_TOKEN: ${HF_TOKEN:?set HF_TOKEN in .env}
+      EMBEDDING_MODEL: ${EMBEDDING_MODEL:?set EMBEDDING_MODEL in .env}
+      LLM_MODEL: ${LLM_MODEL:?set LLM_MODEL in .env}
+      HF_PROVIDER: ${HF_PROVIDER:?set HF_PROVIDER in .env}
+      USE_LOCAL_EMBEDDINGS: ${USE_LOCAL_EMBEDDINGS:?set USE_LOCAL_EMBEDDINGS in .env}
       DATABASE_URL: postgresql://raguser:ragpass@postgres:5432/ragdb
-      USE_LOCAL_EMBEDDINGS: ${USE_LOCAL_EMBEDDINGS:-true}
     depends_on:
       postgres:
         condition: service_healthy

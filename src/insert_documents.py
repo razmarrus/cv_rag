@@ -6,11 +6,9 @@ into a PostgreSQL vector database.
 """
 
 import logging
-import os
 from typing import List, Dict
 
-from dotenv import load_dotenv
-
+from config.config import Config
 from src.text_processor import TextProcessor
 from src.pgvector_client import PgVectorClient
 from src.hf_client import HuggingFaceClient
@@ -27,23 +25,26 @@ def load_configuration():
     Returns:
         dict: Configuration dictionary with all necessary parameters.
     """
-    load_dotenv()
-    
+    Config.validate()
+
     config = {
-        'pg_conn_string': os.getenv("PG_CONNECTION_STRING"),
-        'hf_token': os.getenv("HF_TOKEN"),
+        'pg_conn_string': Config.DATABASE_URL,
+        'hf_token': Config.HF_TOKEN,
         'file_paths': [
             "documents/contact_info_chunk_750.txt",
             "documents/hr_qa_chunk_750.txt",
             "documents/projects_chunk_750.txt",
             "documents/motivation_chunk_750.txt",
         ],
+        # Chunking is specific to this script; everything else comes from Config
+        # so documents and queries are embedded by the same model and provider.
         'chunk_size': 750,
         'chunk_overlap': 125,
         'max_context_tokens': 3500,
-        'embedding_dim': 384,
-        'embedding_model': "BAAI/bge-small-en-v1.5",
-        'llm_model': "mistralai/Mistral-7B-Instruct-v0.2",
+        'embedding_model': Config.EMBEDDING_MODEL,
+        'llm_model': Config.LLM_MODEL,
+        'use_local_embeddings': Config.USE_LOCAL_EMBEDDINGS,
+        'provider': Config.HF_PROVIDER,
     }
     
     logger.info("Configuration loaded successfully")
@@ -66,15 +67,17 @@ def initialize_components(config):
         max_context_tokens=config['max_context_tokens']
     )
     
-    db_client = PgVectorClient(
-        connection_string=config['pg_conn_string'],
-        embedding_dim=config['embedding_dim']
-    )
-    
     hf_client = HuggingFaceClient(
         hf_token=config['hf_token'],
         embedding_model=config['embedding_model'],
         llm_model=config['llm_model'],
+        use_local_embeddings=config['use_local_embeddings'],
+        provider=config['provider'],
+    )
+
+    db_client = PgVectorClient(
+        connection_string=config['pg_conn_string'],
+        embedding_dim=hf_client.embedding_dim
     )
     
     logger.info("Components initialized successfully")

@@ -1,257 +1,151 @@
 # CV RAG System
 
-A production-ready Retrieval-Augmented Generation system that intelligently answers questions about my professional experience. Using semantic search and large language models.
+A Retrieval-Augmented Generation app that answers questions about my professional experience from indexed CV documents. 
 
-**Live portfolio:** [https://who-is-margot.duckdns.org/](https://who-is-margot.duckdns.org/) — open it and ask questions in the search box (projects, skills, experience, or off-script personal ones).
+**Live portfolio:** [https://who-is-margot.duckdns.org/](https://who-is-margot.duckdns.org/)
 
 ## Motivation
 
-I built this to demonstrate my LLM engineering skills while solving a practical problem: making my CV information instantly searchable. Instead of asking people to read through lengthy documents, they can ask natural questions and get accurate answers drawn directly from my experience.
+I thought a chatbot on top of my CV would be cool. I like building things. It runs at home on my own Raspberry Pi 5 — that part is cool too.
 
-The system showcases the ML engineering work I do professionally: building RAG pipelines, implementing vector databases, integrating LLM APIs, and deploying production systems. It's designed to be scalable, maintainable, and solve real problems.
+Under the hood it is still a real RAG pipeline: search my documents first, then an LLM answers only from what it found. Not a bot that invents a bio from the open web.
 
-## System Architecture
+## Current stack
 
-### Core Components
+| Piece | What runs |
+|---|---|
+| Encoder | `BAAI/bge-small-en-v1.5` locally via sentence-transformers (384-dim) |
+| LLM | `openai/gpt-oss-20b` via Hugging Face Inference Providers |
+| Provider | `groq` (pinned; do not use `auto`) |
+| Vector store | PostgreSQL 16 + pgvector, cosine similarity, IVFFlat index |
+| App | FastAPI + Jinja2, one uvicorn worker |
+| Deploy | Docker Compose, app `mem_limit: 1g`, postgres `256m` |
 
-**Source Code (`src/`)**
-- `text_processor.py`: Handles document chunking with token-aware splitting (512 tokens, 50 token overlap) and context assembly within LLM token budgets
-- `hf_client.py`: Manages HuggingFace API integration for embeddings (sentence-transformers/all-MiniLM-L6-v2) and text generation (Mistral-7B-Instruct). Implements context manager pattern for explicit memory management on resource-constrained hardware
-- `pgvector_client.py`: PostgreSQL client with pgvector extension for vector similarity search using cosine distance. Implements connection pooling for concurrent query handling
+Model names and the provider slug live in `.env`. There are no code-side fallbacks: a missing variable fails at startup.
 
-**Backend (`main.py`)**
-FastAPI application serving both REST API and web interface. Orchestrates the RAG pipeline: embedding generation, vector search, context assembly, and LLM answer generation. Includes health checks, error handling, and comprehensive logging.
+The LLM must be mapped for the **conversational** task on the chosen provider. `text-generation`-only models fail `chat_completion` with HTTP 400. Local and remote encoders must not be mixed: they produce different vector spaces even at the same width. Ingestion and queries both take `USE_LOCAL_EMBEDDINGS` from the same config.
 
-**Frontend (`templates/` + `static/`)**
-Responsive web interface built with Pico CSS framework. Users submit questions via a simple form, results display with answer text, source attribution, retrieval metrics (chunks used, similarity scores), and execution time.
+## Architecture
 
-**Configuration (`config/`)**
-Centralized configuration management with environment variable support for API keys, model selection, and RAG parameters (chunk size, top-k retrieval, similarity thresholds).
+**`src/hf_client.py`** — One encoder path (local *or* remote, never both). Reads embedding width from the loaded model. LLM calls go to `InferenceClient(provider=...)`. Empty completions raise instead of returning a blank 200.
 
-### Query Flow
+**`src/pgvector_client.py`** — Connection pool, schema, cosine search. After `CREATE TABLE IF NOT EXISTS`, `_verify_embedding_dim` compares the encoder width to the stored `VECTOR(n)` column and refuses to start on mismatch.
 
-When a user submits a question through the frontend, the system executes a four-stage pipeline:
+**`src/text_processor.py`** — Token-aware chunking and context assembly under the LLM token budget.
 
-1. **Embedding Generation**: The question is sent to HuggingFace's embedding API, which transforms it into a 384-dimensional semantic vector representing its meaning.
+**`main.py`** — FastAPI. Pipeline: embed → search (threshold 0.5, then 0.1 if empty) → assemble context → generate. Off-topic questions deflect; personal chunks use a warmer prompt. Daily query cap is 25.
 
-2. **Vector Search**: The query embedding is compared against all stored document chunk embeddings in PostgreSQL using cosine similarity. The database returns the top-k most semantically similar chunks (default: 5) that exceed the similarity threshold (0.1), leveraging IVFFlat indexing for efficient approximate nearest neighbor search.
+**`templates/` + `static/`** — Single-page UI with preset question pills (including Off Script) and a privacy page.
 
-3. **Context Assembly**: Retrieved chunks are assembled into a context string within the LLM's token budget (2000 tokens reserved for context). The text processor includes metadata headers with source files and similarity scores, then truncates if necessary to fit the budget while prioritizing higher-relevance chunks.
+**`config/config.py`** — Required: `HF_TOKEN`, `DATABASE_URL`, `EMBEDDING_MODEL`, `LLM_MODEL`, `HF_PROVIDER`. RAG constants (chunk size, top-k, thresholds) are in code, not env.
 
-4. **Answer Generation**: The assembled context and original question are formatted into a prompt and sent to the Mistral-7B-Instruct model via HuggingFace's Inference API. The LLM generates a natural language answer grounded in the provided context, instructed to only use information from retrieved chunks.
+## Query flow
 
-The frontend displays the complete response including the answer, source documents, number of chunks used, and total execution time (typically 3-6 seconds).
+1. **Embed** the question locally with bge-small (384-dim).
+2. **Search** pgvector for the top 4 chunks above similarity 0.5. If none, retry at 0.1. If still none, generate a deflect answer with no document context.
+3. **Assemble** retrieved chunks into a prompt, capped at 2500 context tokens.
+4. **Generate** via Inference Providers (`chat_completion` on the pinned provider). Typical latency is well under a second on Groq once the encoder is warm.
 
-## Documentation
+Chunking used at ingest: 430 tokens, 25 overlap. Changing the embedding model requires dropping `documents` and re-ingesting; width is checked at startup, vector-space drift is not.
 
-- [Backend Setup](BACKEND_SETUP.md) - Detailed deployment instructions
-- [Requirements](requirements.txt) - Python dependencies
+## Quick start
 
-## Quick Start
-
-### Prerequisites
-- Docker and Docker Compose installed
-- HuggingFace API token ([get one here](https://huggingface.co/settings/tokens))
-- PostgreSQL database with pgvector extension (or use bundled Docker setup)
-
-### With Bundled Database
+Prerequisites: Docker Compose, a Hugging Face token with **Make calls to Inference Providers**.
 
 ```bash
-# Create environment file
 cat > .env << EOF
-HF_TOKEN=your_huggingface_token
+HF_TOKEN=hf_...
+EMBEDDING_MODEL=BAAI/bge-small-en-v1.5
+LLM_MODEL=openai/gpt-oss-20b
+HF_PROVIDER=groq
+USE_LOCAL_EMBEDDINGS=true
 EOF
 
-# Start application
-docker compose up --build
-
-# Access application
-open http://localhost:8000
+docker compose up -d --build
+docker compose exec app python ingest_documents.py
+# open http://localhost:8000
 ```
 
-### With External PostgreSQL
+The app container ignores `DATABASE_URL` from `.env` and uses `postgresql://raguser:ragpass@postgres:5432/ragdb` on the compose network. Host tools (notebooks, `psql`) reach the same database at `127.0.0.1:5433` because the host already occupies 5432.
+
+`.env` is read only at container create. After changing it:
 
 ```bash
-# Create environment file with database URL
-cat > .env << EOF
-HF_TOKEN=your_huggingface_token
-DATABASE_URL=postgresql://user:password@host:5432/database
-EOF
-
-# Start application (uses bundled PostgreSQL by default)
-docker compose up --build
+docker compose up -d --force-recreate app
 ```
 
-## Hosting Options
+`docker compose restart app` will not pick up new values.
 
-The system supports flexible deployment configurations via Docker Compose port bindings:
+## Configuration
 
-**Local Hosting** (default):
-```yaml
-ports:
-  - "127.0.0.1:8000:8000"  # Bind to localhost only
-```
-Access restricted to the host machine. Suitable for development and single-machine deployments.
-
-**Remote Access via WireGuard**:
-```yaml
-ports:
-  - "127.0.0.1:8000:8000"        # Local access
-  - "x.x.x.x:8000:8000"         # WireGuard tunnel interface
-```
-Enables secure remote access through an encrypted WireGuard VPN tunnel. Services bind to the WireGuard interface IP, allowing authorized peers to connect while maintaining network-level encryption. Requires active WireGuard tunnel (`wg-quick up wg0`) before container startup.
-
-**Multi-interface binding**: Both local and remote bindings can coexist, providing simultaneous localhost and VPN access without exposing services to the public internet.
-
-## Technical Features
-
-- **FastAPI**: Async REST API with automatic OpenAPI documentation
-- **HuggingFace Integration**: Remote Inference API for embeddings and LLM generation
-- **Vector Search**: PostgreSQL with pgvector extension for semantic similarity
-- **Connection Pooling**: Threaded connection pool for concurrent database access
-- **Memory Management**: Context manager pattern for explicit cleanup on resource-constrained hardware
-- **Responsive UI**: Modern Pico CSS framework with loading states
-- **Docker Deployment**: Multi-container setup with health checks
-- **Production Ready**: Logging, error handling, configuration management
-
-## Project Structure
-
-```
-cv_rag/
-├── main.py                      # FastAPI application & RAG pipeline
-├── ingest_documents.py          # ETL script for document ingestion
-├── config/
-│   └── config.py               # Environment-based configuration
-├── src/
-│   ├── text_processor.py       # Chunking & context assembly
-│   ├── hf_client.py            # HuggingFace API client
-│   └── pgvector_client.py      # PostgreSQL vector operations
-├── templates/
-│   └── index.html              # Web interface
-├── static/
-│   ├── css/custom.css          # Styling
-│   └── js/app.js               # Frontend logic
-├── documents/                   # Source CV documents
-├── docker-compose.yml           # Docker services configuration
-└── Dockerfile
-```
-
-## Docker Commands
+Set in `.env` (all required except `DATABASE_URL` for the container):
 
 ```bash
-# Start services (foreground with logs)
-docker compose up --build
+HF_TOKEN=...
+EMBEDDING_MODEL=BAAI/bge-small-en-v1.5
+LLM_MODEL=openai/gpt-oss-20b
+HF_PROVIDER=groq
+USE_LOCAL_EMBEDDINGS=true
+```
 
-# Start in background
-# docker compose -f docker-compose.external-db.yml up --build -d
-docker compose up --build -d
+`HF_PROVIDER` is a provider slug (`groq`, `featherless-ai`, `together`, `novita`, …), not a model id. Pin a provider that actually serves `LLM_MODEL` for `conversational`. Switching models without re-ingest only works if the new encoder has the same width *and* the same vector space — in practice, re-ingest.
 
-# Stop services
-# docker compose -f docker-compose.external-db.yml down
-docker compose down
+In-code RAG settings (`config/config.py`):
 
-# View logs
+| Setting | Value |
+|---|---|
+| `CHUNK_SIZE` / `CHUNK_OVERLAP` | 430 / 25 |
+| `TOP_K_CHUNKS` | 4 |
+| `SIMILARITY_THRESHOLD` | 0.5 (relaxed 0.1) |
+| `MAX_CONTEXT_TOKENS` | 2500 |
+| `MAX_NEW_TOKENS` | 350 (500 for personal) |
+| `DAILY_QUERY_LIMIT` | 25 |
+
+## Docker
+
+```bash
+docker compose up -d --build
 docker compose logs -f app
-
-# Restart app only
-docker compose restart app
-
-# Access database
-docker compose exec postgres psql -U <db_user> -d <db_name>
+docker compose exec postgres psql -U raguser -d ragdb
+docker compose down
 ```
 
-## Running Without Docker
+Ingest must run inside the app container so it uses local embeddings and the compose database:
 
 ```bash
-# Install dependencies
-pip install -r requirements-backend.txt
-
-# Set environment variables
-export HF_TOKEN=your_token
-export DATABASE_URL=postgresql://user:password@host:5432/database
-
-# Run application
-python main.py
-```
-
-## Health Check
-
-```bash
-curl http://localhost:8000/health
-
-# Expected response:
-# {"status":"healthy","database":"connected"}
-```
-
-## Data Ingestion
-
-After starting the services, load your documents into the database:
-
-```bash
-# Run ingestion script (creates embeddings and stores chunks)
 docker compose exec app python ingest_documents.py
 ```
 
-## Configuration Options
+Without Docker, install `requirements-backend.txt` (CPU torch is installed from the PyTorch index in the Dockerfile; from PyPI it pulls CUDA wheels). Export the same env vars, point `DATABASE_URL` at a pgvector instance, then `python main.py`.
 
-Set these in your `.env` file to customize behavior:
+## Health check
 
 ```bash
-# Required
-HF_TOKEN=your_token
-DATABASE_URL=postgresql://user:pass@host:5432/db
-
-# Optional (defaults shown)
-EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2
-LLM_MODEL=mistralai/Mistral-7B-Instruct-v0.2
-CHUNK_SIZE=512
-CHUNK_OVERLAP=50
-TOP_K_CHUNKS=5
-SIMILARITY_THRESHOLD=0.1
+curl http://localhost:8000/health
+# {"status":"healthy","database":"connected"}
 ```
 
-## Memory Management & Optimization
+## Project layout
 
-### Context Manager for Embeddings
+```
+cv_rag/
+├── main.py                 # FastAPI + RAG orchestration
+├── ingest_documents.py     # ETL into pgvector
+├── config/config.py
+├── src/
+│   ├── hf_client.py        # local encoder + Inference Providers LLM
+│   ├── pgvector_client.py  # search, schema, dim check
+│   └── text_processor.py
+├── templates/              # index + privacy
+├── static/
+├── documents/              # source CV text
+├── docker-compose.yml
+├── Dockerfile
+└── requirements-backend.txt
+```
 
-The system implements explicit memory management for embedding operations using Python context managers. This is particularly important for resource-constrained deployments like Raspberry Pi.
+## Notes on hardware and billing
 
+Local bge-small plus torch needs about 520 MB resident; the app container is capped at 1g for that reason. A larger encoder (bge-large, 1024-dim) does not fit this budget and would also invalidate the existing 384-dim table.
 
-**Motivation:**
-
-When generating embeddings, temporary objects (numpy arrays, list wrappers) are created that consume memory. While Python's garbage collector handles cleanup, on memory-constrained hardware like Raspberry Pi (512MB container limit), explicit cleanup ensures:
-
-1. **Immediate Memory Release**: Objects are deleted as soon as they're no longer needed, not when GC decides to run
-2. **Predictable Resource Usage**: Memory footprint is bounded and deterministic per request
-3. **Exception Safety**: Cleanup occurs even if errors happen during processing
-4. **Clear Lifecycle**: Embedding scope is visually apparent in code
-
-**Technical Details:**
-
-The `embedding_context` context manager (in `hf_client.py`):
-- Generates embedding from text
-- Yields the embedding vector for use
-- Executes `del` statements on exit to remove references
-- Forces garbage collection with `gc.collect()`
-
-
-### Connection Pooling
-
-
-**Technical Details:**
-
-- Uses `ThreadedConnectionPool` for thread-safe connection management
-- Min connections (2): Kept warm and ready for immediate use
-- Max connections (10): Upper limit to prevent resource exhaustion
-- Automatic connection lifecycle: get → use → return to pool
-- Health checks verify pool connectivity
-
-
-
-## Technology Stack
-
-- **Backend**: Python 3.11+, FastAPI, Uvicorn
-- **ML/AI**: HuggingFace Inference API, tiktoken
-- **Database**: PostgreSQL 16 with pgvector extension
-- **Deployment**: Docker, Docker Compose
-- **Frontend**: Pico CSS, Vanilla JavaScript
+LLM calls are billed against Hugging Face Inference Providers credits when routed with an HF token. Credits apply to eligible providers; a 402 is quota, not an application bug. A custom provider API key in Hugging Face settings bills the provider instead and leaves the code unchanged.

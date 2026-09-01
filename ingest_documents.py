@@ -41,15 +41,17 @@ def initialize_components() -> Tuple[TextProcessor, PgVectorClient,
         max_context_tokens=Config.MAX_CONTEXT_TOKENS
     )
 
-    db_client = PgVectorClient(
-        connection_string=Config.DATABASE_URL,
-        embedding_dim=Config.EMBEDDING_DIM
-    )
-
     hf_client = HuggingFaceClient(
         hf_token=Config.HF_TOKEN,
         embedding_model=Config.EMBEDDING_MODEL,
-        llm_model=Config.LLM_MODEL
+        llm_model=Config.LLM_MODEL,
+        use_local_embeddings=Config.USE_LOCAL_EMBEDDINGS,
+        provider=Config.HF_PROVIDER,
+    )
+
+    db_client = PgVectorClient(
+        connection_string=Config.DATABASE_URL,
+        embedding_dim=hf_client.embedding_dim
     )
 
     logger.info("Components initialized successfully")

@@ -178,7 +178,7 @@
         </div>
 
         <!-- Quota Exceeded Message -->
-        {% if quota_exceeded %}
+        {% if remaining_requests <= 0 %}
         <div class="quota-message">
             <h3>Daily Quota Reached</h3>
             <p>You've used all {{ daily_limit }} questions for today. Your quota will reset tomorrow. Thank you for your interest in my work!</p>
@@ -195,16 +195,14 @@
                 </div>
 
                 <div class="suggestion-pills">
-                    <button type="button" class="pill-btn" onclick="fillQuestion('What is your most recent project?')">Projects</button>
-                    <button type="button" class="pill-btn" onclick="fillQuestion('What is your tech stack and tools you use?')">Stack</button>
-                    <!-- <button type="button" class="pill-btn" onclick="fillQuestion('Tell me about your experience as a data scientist')">Experience</button> -->
-                    <button type="button" class="pill-btn" onclick="fillOffScriptQuestion()" title="Personal question — not from the CV">Off Script</button>
-                    <button type="button" class="pill-btn pill-btn-rick" onclick="fillRickRubinQuestion()" title="Rick Rubin vibe — music, teaching, Rick">Rick Rubin</button>
+                    <button type="button" class="pill-btn" onclick="fillPreset('projects')" title="Project question — from the portfolio">Projects</button>
+                    <button type="button" class="pill-btn" onclick="fillPreset('stack')" title="Stack question — tools and technologies">Stack</button>
+                    <button type="button" class="pill-btn" onclick="fillPreset('offScript')" title="Personal question — not from the CV">Off Script</button>
                 </div>
 
                 <div class="search-query-col">
                     <form method="POST" action="/ask" id="questionForm" class="inline-search-form" enctype="application/x-www-form-urlencoded">
-                        <input type="hidden" name="rick_rubin" id="rickRubinMode" value="">
+                        <input type="hidden" name="preset" id="presetFlag" value="">
                         <input
                             type="text"
                             name="question"
@@ -255,7 +253,7 @@
             <div class="portfolio-accordion-container">
                 <!-- Basic Info -->
                 <div class="portfolio-accordion-item" id="basicInfo">
-                    <button class="portfolio-accordion-header" type="button" onclick="togglePortfolioAccordion('basicInfo')">
+                    <button class="portfolio-accordion-header" type="button" onclick="toggleAccordion('basicInfo')">
                         <span>Basic Info</span>
                         <svg class="accordion-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -276,7 +274,7 @@
 
                 <!-- Skills -->
                 <div class="portfolio-accordion-item" id="tools">
-                    <button class="portfolio-accordion-header" type="button" onclick="togglePortfolioAccordion('tools')">
+                    <button class="portfolio-accordion-header" type="button" onclick="toggleAccordion('tools')">
                         <span>Skills</span>
                         <svg class="accordion-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -295,7 +293,7 @@
 
                 <!-- Experience -->
                 <div class="portfolio-accordion-item" id="experience">
-                    <button class="portfolio-accordion-header" type="button" onclick="togglePortfolioAccordion('experience')">
+                    <button class="portfolio-accordion-header" type="button" onclick="toggleAccordion('experience')">
                         <span>Experience</span>
                         <svg class="accordion-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -353,7 +351,7 @@
 
                 <!-- Projects -->
                 <div class="portfolio-accordion-item" id="projects">
-                    <button class="portfolio-accordion-header" type="button" onclick="togglePortfolioAccordion('projects')">
+                    <button class="portfolio-accordion-header" type="button" onclick="toggleAccordion('projects')">
                         <span>Projects</span>
                         <svg class="accordion-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -362,7 +360,7 @@
                     <div class="portfolio-accordion-content">
                         <div class="portfolio-accordion-content-inner project-grid">
                             <div class="project-item" id="project1">
-                                <button class="project-header" type="button" onclick="toggleProject('project1')">
+                                <button class="project-header" type="button" onclick="toggleAccordion('project1')">
                                     <span class="project-marker"></span>
                                     <span class="project-title">Factory RAG Platform</span>
                                     <svg class="project-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
@@ -379,7 +377,7 @@
                             </div>
 
                             <div class="project-item" id="project2">
-                                <button class="project-header" type="button" onclick="toggleProject('project2')">
+                                <button class="project-header" type="button" onclick="toggleAccordion('project2')">
                                     <span class="project-marker"></span>
                                     <span class="project-title">LLM Document Chatbot Platform</span>
                                     <svg class="project-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
@@ -396,7 +394,7 @@
                             </div>
 
                             <div class="project-item" id="project3">
-                                <button class="project-header" type="button" onclick="toggleProject('project3')">
+                                <button class="project-header" type="button" onclick="toggleAccordion('project3')">
                                     <span class="project-marker"></span>
                                     <span class="project-title">Business Data Layer</span>
                                     <svg class="project-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
@@ -413,7 +411,7 @@
                             </div>
 
                             <div class="project-item" id="project4">
-                                <button class="project-header" type="button" onclick="toggleProject('project4')">
+                                <button class="project-header" type="button" onclick="toggleAccordion('project4')">
                                     <span class="project-marker"></span>
                                     <span class="project-title">Real-Time IoT Platform</span>
                                     <svg class="project-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
@@ -430,7 +428,7 @@
                             </div>
 
                             <div class="project-item" id="project5">
-                                <button class="project-header" type="button" onclick="toggleProject('project5')">
+                                <button class="project-header" type="button" onclick="toggleAccordion('project5')">
                                     <span class="project-marker"></span>
                                     <span class="project-title">Document Summarization &amp; Q&amp;A</span>
                                     <svg class="project-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
@@ -447,7 +445,7 @@
                             </div>
 
                             <div class="project-item" id="project6">
-                                <button class="project-header" type="button" onclick="toggleProject('project6')">
+                                <button class="project-header" type="button" onclick="toggleAccordion('project6')">
                                     <span class="project-marker"></span>
                                     <span class="project-title">Sales Forecasting</span>
                                     <svg class="project-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
@@ -464,7 +462,7 @@
                             </div>
 
                             <div class="project-item" id="project7">
-                                <button class="project-header" type="button" onclick="toggleProject('project7')">
+                                <button class="project-header" type="button" onclick="toggleAccordion('project7')">
                                     <span class="project-marker"></span>
                                     <span class="project-title">Customer Segmentation</span>
                                     <svg class="project-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
@@ -481,7 +479,7 @@
                             </div>
 
                             <div class="project-item" id="project8">
-                                <button class="project-header" type="button" onclick="toggleProject('project8')">
+                                <button class="project-header" type="button" onclick="toggleAccordion('project8')">
                                     <span class="project-marker"></span>
                                     <span class="project-title">Multi-Channel Recommendations</span>
                                     <svg class="project-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
@@ -502,7 +500,7 @@
 
                 <!-- Education & Certification -->
                 <div class="portfolio-accordion-item" id="educationCerts">
-                    <button class="portfolio-accordion-header" type="button" onclick="togglePortfolioAccordion('educationCerts')">
+                    <button class="portfolio-accordion-header" type="button" onclick="toggleAccordion('educationCerts')">
                         <span>Education & Certification</span>
                         <svg class="accordion-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -529,13 +527,6 @@
         </footer>
     </main>
 
-    <script src="/static/js/app.js?v=17"></script>
-    <script>
-        // Function to toggle individual project items
-        function toggleProject(projectId) {
-            const project = document.getElementById(projectId);
-            project.classList.toggle('active');
-        }
-    </script>
+    <script src="/static/js/app.js?v=22"></script>
 </body>
 </html>

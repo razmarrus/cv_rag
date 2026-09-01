@@ -18,9 +18,12 @@ COPY requirements-backend.txt .
 # - put pre-downloaded wheels into ./wheels (see README below)
 COPY wheels/ /wheels/
 
-# Install Python dependencies with BuildKit cache mount for faster rebuilds
+# Install Python dependencies with BuildKit cache mount for faster rebuilds.
+# torch comes from the CPU-only index first so the pin in requirements-backend.txt
+# is already satisfied and PyPI never resolves the CUDA build.
 RUN --mount=type=cache,target=/root/.cache/pip \
     python -m pip install --upgrade pip setuptools wheel && \
+    python -m pip install --index-url https://download.pytorch.org/whl/cpu torch==2.9.1 && \
     if ls /wheels/*.whl >/dev/null 2>&1; then \
         python -m pip install --find-links=/wheels -r requirements-backend.txt || \
         python -m pip install -r requirements-backend.txt; \

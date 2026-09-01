@@ -4,7 +4,6 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi import BackgroundTasks
 import logging
-import random
 import time
 from datetime import datetime
 
@@ -52,12 +51,13 @@ async def startup_event():
             hf_token=Config.HF_TOKEN,
             embedding_model=Config.EMBEDDING_MODEL,
             llm_model=Config.LLM_MODEL,
-            use_local_embeddings=Config.USE_LOCAL_EMBEDDINGS  
+            use_local_embeddings=Config.USE_LOCAL_EMBEDDINGS,
+            provider=Config.HF_PROVIDER,
         )
         
         db_client = PgVectorClient(
             connection_string=Config.DATABASE_URL,
-            embedding_dim=Config.EMBEDDING_DIM
+            embedding_dim=hf_client.embedding_dim
         )
         
         text_processor = TextProcessor(
@@ -90,129 +90,15 @@ def _is_personal_context(chunks: list) -> bool:
     return False
 
 
-_RICK_RUBIN_TOP_K = 2
-
-_PRESET_PILL_QUESTIONS = (
-    "What is your most recent project?",
-    "What is your tech stack and tools you use?",
-)
-
-_PRESET_OFF_SCRIPT_QUESTIONS = (
-    "What are your hobbies?",
-    "Have you participated in any half marathons?",
-    "Do you enjoy sports?",
-    "What makes you happy?",
-    "What do you do for fun?",
-    "Do you like pasta?",
-    "Do you collect vinyl records?",
-    "What's on your mind?",
-    "What are your favorite bands?",
-    "What is your favorite film?",
-    "Why do you work in AI and software engineering?",
-    "Can you explain AI to non-technical people?",
-    "Are you a mentor?",
-    "Can you play piano?",
-    "What is your favorite food?",
-    "Who is your favorite film director?",
-)
-
-_PRESET_RICK_RUBIN_QUESTIONS = (
-    "What do you think of Rick Rubin?",
-    "What makes you happy?",
-    "Do you like pasta?",
-    "What are your favorite bands?",
-    "Who is your favorite musician?",
-    "Can you play an instrument?",
-    "Are you a mentor?",
-    # "What do you listen to before sleep?",
-    "What do you think of Rick Rubin?",
-    "Do you lie down at parties?",
-    "Do you give presentations?",
-    "Can you explain AI concepts to non-technical people?",
-    "What is your favorite film?",
-    "Why do you work in AI and software engineering?",
-    "What do you think of Rick Rubin?",
-    "What's on your mind?",
-)
-
-_PRESET_QUESTIONS = {
-    " ".join(question.strip().lower().split())
-    for question in (
-        _PRESET_PILL_QUESTIONS
-        + _PRESET_OFF_SCRIPT_QUESTIONS
-        + _PRESET_RICK_RUBIN_QUESTIONS
-    )
-}
-
-
-def _is_preset_question(question: str) -> bool:
-    """True when the question matches a UI pill or random preset pool."""
-    normalized = " ".join(question.strip().lower().split())
-    return normalized in _PRESET_QUESTIONS
-
-
-def _pick_deflect_mode() -> str:
-    """Pick prose or poetry deflect for questions not in portfolio docs."""
-    return "deflect_poetry" if random.random() < 0.5 else "deflect"
-
-
-def query_rick_rubin(question: str) -> dict:
-    """Rick Rubin mode: on-topic answers from best-matching chunks only."""
+def query_rag(question: str, preset: str = "") -> dict:
+    """Run embedding, retrieval, and answer generation."""
     start_time = time.time()
-    is_preset = _is_preset_question(question)
-    logger.info(f"Rick Rubin mode: '{question}' (preset={is_preset})")
+    from_pill = preset in ("projects", "stack", "offScript")
+    include_contact = not from_pill
+    off_script = preset == "offScript"
 
-    with hf_client.embedding_context(question) as query_embedding:
-        chunks = db_client.search(
-            query_embedding,
-            k=6,
-            similarity_threshold=Config.RELAXED_SIMILARITY_THRESHOLD,
-        )
-        chunks = chunks[:_RICK_RUBIN_TOP_K]
-
-    context = text_processor.assemble_context(chunks, question=question) if chunks else ""
-
-    if not chunks:
-        prompt_mode = _pick_deflect_mode()
-        max_tokens = Config.MAX_NEW_TOKENS
-    else:
-        prompt_mode = "rick_rubin"
-        max_tokens = Config.MAX_PERSONAL_NEW_TOKENS
-
-    answer = hf_client.generate_answer(
-        question=question,
-        context=context,
-        max_new_tokens=max_tokens,
-        temperature=Config.PERSONAL_TEMPERATURE,
-        prompt_mode=prompt_mode,
-        is_preset=is_preset,
-    )
-
-    execution_time = time.time() - start_time
-    return {
-        "answer": answer,
-        "sources": list(set(chunk.get("source", "unknown") for chunk in chunks)) if chunks else ["rick_rubin"],
-        "num_chunks": len(chunks),
-        "execution_time": execution_time,
-    }
-
-
-def query_rag(question: str) -> dict:
-    """
-    Execute RAG query pipeline.
-    
-    Args:
-        question: User question
-        
-    Returns:
-        dict with 'answer', 'sources', 'num_chunks', 'execution_time'
-    """
-    start_time = time.time()
-    is_preset = _is_preset_question(question)
-    
     try:
-        # Step 1: Generate embedding with automatic memory cleanup
-        logger.info(f"Step 1: Generating embedding for question: '{question}' (preset={is_preset})")
+        logger.info(f"Generating embedding for: '{question}'")
         
         with hf_client.embedding_context(question) as query_embedding:
             logger.info(f"Embedding generated: dimension={len(query_embedding)}")
@@ -242,15 +128,15 @@ def query_rag(question: str) -> dict:
                 logger.info(f"Chunk {i+1}: similarity={chunk.get('similarity', 0):.3f}, source={chunk.get('source', 'unknown')}")
         
         if not chunks:
-            prompt_mode = _pick_deflect_mode()
-            logger.warning(f"No chunks found - deflecting ({prompt_mode})")
+            logger.warning("No chunks found - deflecting with poem")
             answer = hf_client.generate_answer(
                 question=question,
                 context="",
-                max_new_tokens=Config.MAX_NEW_TOKENS,
+                max_new_tokens=Config.MAX_DEFLECT_NEW_TOKENS,
                 temperature=Config.OFF_TOPIC_TEMPERATURE,
-                prompt_mode=prompt_mode,
-                is_preset=is_preset,
+                prompt_mode="deflect",
+                include_contact=include_contact,
+                off_script=off_script,
             )
             source_label = "not_in_portfolio"
             execution_time = time.time() - start_time
@@ -268,7 +154,7 @@ def query_rag(question: str) -> dict:
         logger.info(f"Context assembled: {len(context)} characters")
         
         # Step 4: Generate answer from retrieved context
-        personal = _is_personal_context(chunks)
+        personal = _is_personal_context(chunks) or off_script
         answer = hf_client.generate_answer(
             question=question,
             context=context,
@@ -279,14 +165,13 @@ def query_rag(question: str) -> dict:
                 Config.PERSONAL_TEMPERATURE if personal else Config.TEMPERATURE
             ),
             prompt_mode="personal" if personal else "standard",
-            is_preset=is_preset,
+            include_contact=include_contact,
+            off_script=off_script,
         )
         logger.info(f"Answer generated: {len(answer)} characters")
         
         execution_time = time.time() - start_time
-        
-        # TODO: Log query here (db_client.log_query(...))
-        
+
         return {
             "answer": answer,
             "sources": list(set([chunk.get("source", "unknown") for chunk in chunks])),
@@ -322,24 +207,18 @@ async def ask_question(
     request: Request,
     background_tasks: BackgroundTasks,
     question: str = Form(...),
-    rick_rubin: str = Form(""),
+    preset: str = Form(""),
 ):
-    # Extract user IP
     user_ip = request.client.host
     if request.headers.get("X-Forwarded-For"):
         user_ip = request.headers.get("X-Forwarded-For").split(",")[0].strip()
-    
-    # Always return JSON for POST requests (only used via AJAX)
-    is_ajax = True
-    
-    # Check rate limit BEFORE validation (fast indexed query)
+
     query_count = db_client.get_daily_query_count(user_ip)
     remaining = Config.DAILY_QUERY_LIMIT - query_count
     
     if query_count >= Config.DAILY_QUERY_LIMIT:
         return JSONResponse({
             "error": "Daily quota reached. You've used all questions for today.",
-            "quota_exceeded": True,
             "remaining_requests": 0,
             "daily_limit": Config.DAILY_QUERY_LIMIT
         })
@@ -353,10 +232,7 @@ async def ask_question(
         })
     
     try:
-        if rick_rubin == "1":
-            result = query_rick_rubin(question)
-        else:
-            result = query_rag(question)
+        result = query_rag(question, preset=preset)
         
         # Calculate remaining BEFORE logging
         remaining = Config.DAILY_QUERY_LIMIT - (query_count + 1)

@@ -10,73 +10,55 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-PromptMode = Literal["standard", "personal", "deflect", "deflect_poetry", "rick_rubin"]
+PromptMode = Literal["standard", "personal", "deflect"]
 
 
-def _deflect_rule(include_contact: bool) -> str:
+def _deflect_rule(include_contact: bool, off_script: bool = False) -> str:
     """Fallback rule when retrieved context does not answer the question."""
+    if off_script:
+        return (
+            "If the context does not contain the answer, write a short calm poem "
+            "(4-6 lines) inspired by the theme only — playful, not a real answer. "
+            "No disclaimer, no contact info."
+        )
     if include_contact:
         return (
             "If the context is empty or does not contain the answer, do NOT answer the question "
-            "or use outside knowledge. Either say warmly their question is fun and they can email "
-            "Margot at margo.razumeyeva@gmail.com, OR one short joke on the theme, then suggest "
-            "finding Margot on LinkedIn (say LinkedIn only — never paste a URL). "
-            "2-4 sentences, plain text."
+            "or use outside knowledge. Write a short calm poem (4-6 lines, plain text, no markdown) "
+            "inspired by the theme only — playful, not a real answer. "
+            "Finish with one plain sentence inviting them to email Margot at margo.razumeyeva@gmail.com "
+            "or find her on LinkedIn (say LinkedIn only — never paste a URL)."
         )
     return (
         "If the context is empty or does not contain the answer, do NOT answer the question "
-        "or use outside knowledge. Say warmly that is not in your portfolio notes, OR one short "
-        "playful line on the theme. Do not suggest contacting Margot, email, or LinkedIn. "
-        "2-4 sentences, plain text."
+        "or use outside knowledge. Write a short calm poem (4-6 lines, plain text, no markdown) "
+        "inspired by the theme only — playful, not a real answer. "
+        "Finish with one plain sentence that you do not have that in Margot's portfolio notes. "
+        "Do not suggest contacting Margot, email, or LinkedIn."
     )
 
 
-def _build_deflect_prompt(question: str, poetry: bool, include_contact: bool) -> str:
+def _build_deflect_prompt(question: str, include_contact: bool, off_script: bool = False) -> str:
     """Prompt for questions with no matching portfolio documents."""
-    if poetry:
-        if include_contact:
-            closing = (
-                "Always finish with one plain sentence inviting them to email Margot at "
-                "margo.razumeyeva@gmail.com or find her on LinkedIn (say LinkedIn only — never paste a URL)."
-            )
-        else:
-            closing = (
-                "Finish with one plain sentence that you do not have that in Margot's portfolio notes. "
-                "Do not suggest contacting Margot."
-            )
-        return f"""<s>[INST] You are Margot's portfolio assistant — calm, warm, lightly poetic.
+    if off_script:
+        closing = "No disclaimer or contact information — just the poem."
+    elif include_contact:
+        closing = (
+            "Always finish with one plain sentence inviting them to email Margot at "
+            "margo.razumeyeva@gmail.com or find her on LinkedIn (say LinkedIn only — never paste a URL)."
+        )
+    else:
+        closing = (
+            "Finish with one plain sentence that you do not have that in Margot's portfolio notes. "
+            "Do not suggest contacting Margot."
+        )
+    return f"""<s>[INST] You are Margot's portfolio assistant — calm, warm, lightly poetic.
 
 The question is not in Margot's portfolio documents — unrelated to her work, experience, or what is documented about her.
 
 Do NOT answer the question. Do not use general knowledge.
 
 Write a short calm poem (4-6 lines, plain text, no markdown) inspired by the question's theme only — playful, not a real answer. {closing}
-
-Question: {question} [/INST]
-"""
-
-    if include_contact:
-        body = (
-            "Either: say warmly their question is fun and they can ask Margot at margo.razumeyeva@gmail.com\n"
-            "OR: one short playful joke on the question's theme, then suggest finding Margot on LinkedIn "
-            "(say LinkedIn only — never paste a URL)"
-        )
-    else:
-        body = (
-            "Say warmly that you do not have that in Margot's portfolio notes, "
-            "OR one short playful joke on the question's theme. "
-            "Do not suggest contacting Margot, email, or LinkedIn."
-        )
-
-    return f"""<s>[INST] You are Margot's portfolio assistant.
-
-The question is not in Margot's portfolio documents — unrelated to her work, experience, or what is documented about her.
-
-Do NOT answer the question. Do not use general knowledge.
-
-{body}
-
-Plain text, 2-4 sentences.
 
 Question: {question} [/INST]
 """
@@ -97,11 +79,9 @@ Question: {question} [/INST]
 
 _PERSONAL_TEMPLATE = """<s>[INST] You are Margot. The user asked a personal, off-script question.
 
-Answer in first person using the context below — but lightly. Pick only one or two details that fit the question. Do not pile on facts or list everything you know. Stay calm and unhurried.
+Answer in first person using the context below — but lightly. Pick only one detail that fits. Do not list hobbies or pile on facts.
 
-Often add a short poetic touch: a line of verse, a metaphor, or a gentle mini-poem mixed with plain sentences. Vary the style; not every answer needs poetry, but use it regularly.
-
-About 5-7 sentences total when answering from context, plain text, no markdown. Warm, a little witty, never breathless. Do not mention company names.
+Always answer as a short calm poem: 4-6 lines, plain text, no markdown. Warm and a little witty. Weave in one fact from the context. Do not mention company names.
 
 {deflect_rule}
 
@@ -113,97 +93,93 @@ Context:
 Question: {question} [/INST]
 """
 
-_RICK_RUBIN_TEMPLATE = """<s>[INST] You are Margot. Answer in first person using ONLY the context below.
-
-Stay close to Margot's original text — reuse her phrases, details, and opinions from the context. Light rephrasing for flow is fine; do not invent facts, stories, or opinions not in the context. Friendly and a little witty in tone, but the substance must come straight from the text.
-
-At most one brief playful aside; do not pad or elaborate beyond what the context says. Answer exactly what was asked; do not mention unrelated topics. Plain text, 4-8 sentences when answering from context.
-
-{deflect_rule}
-
-Context:
-{context}
-
-Question: {question} [/INST]
-"""
-
 _CONTEXT_TEMPLATES = {
     "standard": _STANDARD_TEMPLATE,
     "personal": _PERSONAL_TEMPLATE,
-    "rick_rubin": _RICK_RUBIN_TEMPLATE,
 }
 
 
+def _describe_error(exc: Exception) -> str:
+    """Error description including HTTP status when the exception carries one."""
+    status = getattr(getattr(exc, "response", None), "status_code", None)
+    label = type(exc).__name__ if status is None else f"{type(exc).__name__} HTTP {status}"
+    return f"{label}: {exc}"
+
+
 class HuggingFaceClient:
-    """Client for Hugging Face Inference API."""
+    """Client for Hugging Face Inference Providers."""
 
     def __init__(
         self,
         hf_token: str,
-        embedding_model: str = "sentence-transformers/all-MiniLM-L6-v2",
-        llm_model: str = "mistralai/Mistral-7B-Instruct-v0.2",
-        use_local_embeddings: bool = False,
+        embedding_model: str,
+        llm_model: str,
+        use_local_embeddings: bool,
+        provider: str,
     ):
         """Initialize Hugging Face client."""
         self.hf_token = hf_token
         self.embedding_model = embedding_model
         self.llm_model = llm_model
         self.use_local_embeddings = use_local_embeddings
+        self.provider = provider
         self.local_embedding_model = None
+        self.embedding_client = None
 
+        # One encoder, chosen by config. Never both: local and remote pooling
+        # differ, so switching at runtime would mix incompatible vector spaces.
         if use_local_embeddings:
-            try:
-                from sentence_transformers import SentenceTransformer
-                self.local_embedding_model = SentenceTransformer(embedding_model)
-            except (ImportError, Exception) as e:
-                logger.warning(
-                    f"Local embeddings unavailable ({type(e).__name__}), using remote API"
-                )
-                self.use_local_embeddings = False
+            from sentence_transformers import SentenceTransformer
+            self.local_embedding_model = SentenceTransformer(embedding_model)
+            self.embedding_dim = self.local_embedding_model.get_embedding_dimension()
+        else:
+            # feature-extraction is served by hf-inference, not the chat providers.
+            self.embedding_client = InferenceClient(
+                model=embedding_model,
+                api_key=hf_token,
+                provider="hf-inference",
+            )
+            # The remote model exposes no metadata endpoint for width, so pay for
+            # one probe call rather than trusting a configured number.
+            self.embedding_dim = len(self.get_embeddings(["dimension probe"])[0])
 
-        self.embedding_client = InferenceClient(
-            model=embedding_model,
-            token=hf_token,
-        )
         self.llm_client = InferenceClient(
             model=llm_model,
-            token=hf_token,
+            api_key=hf_token,
+            provider=provider,
         )
 
-        embedding_mode = "LOCAL" if self.use_local_embeddings else "REMOTE"
-        logger.info(f"Embeddings: {embedding_mode} | LLM: {llm_model}")
+        embedding_mode = "LOCAL" if use_local_embeddings else "REMOTE"
+        logger.info(
+            f"Embeddings: {embedding_mode} ({embedding_model}, dim={self.embedding_dim}) "
+            f"| LLM: {llm_model} | provider: {provider}"
+        )
 
     def get_embeddings(self, texts: List[str]) -> List[List[float]]:
-        """Generate embeddings for texts using local model or remote API."""
-        if self.use_local_embeddings and self.local_embedding_model is not None:
-            try:
-                logger.debug(f"Generating {len(texts)} embeddings using LOCAL model")
+        """Generate embeddings using the configured encoder."""
+        try:
+            if self.use_local_embeddings:
                 embeddings = self.local_embedding_model.encode(
                     texts,
                     convert_to_numpy=True,
                     show_progress_bar=False,
                 )
-                if hasattr(embeddings, "tolist"):
-                    embeddings = embeddings.tolist()
-                logger.info(f"Generated {len(embeddings)} embeddings (LOCAL)")
-                return embeddings
-            except Exception as e:
-                logger.warning(f"Local embedding generation failed: {e}")
-                logger.info("Falling back to remote API")
+            else:
+                embeddings = self.embedding_client.feature_extraction(texts)
 
-        try:
-            logger.debug(f"Generating {len(texts)} embeddings using REMOTE API")
-            embeddings = self.embedding_client.feature_extraction(texts)
             if hasattr(embeddings, "tolist"):
                 embeddings = embeddings.tolist()
-            elif isinstance(embeddings, list) and len(embeddings) > 0:
+            elif isinstance(embeddings, list) and embeddings:
                 if hasattr(embeddings[0], "tolist"):
                     embeddings = [emb.tolist() for emb in embeddings]
-            logger.info(f"Generated {len(embeddings)} embeddings (REMOTE)")
+
+            mode = "LOCAL" if self.use_local_embeddings else "REMOTE"
+            logger.info(f"Generated {len(embeddings)} embeddings ({mode})")
             return embeddings
         except Exception as e:
-            logger.error(f"Remote embedding generation failed: {e}")
-            raise RuntimeError(f"Failed to generate embeddings: {e}") from e
+            detail = _describe_error(e)
+            logger.error(f"Embedding generation failed: {detail}")
+            raise RuntimeError(f"Failed to generate embeddings: {detail}") from e
 
     @contextmanager
     def embedding_context(self, text: str):
@@ -226,21 +202,42 @@ class HuggingFaceClient:
         question: str,
         context: str,
         prompt_mode: PromptMode = "standard",
-        is_preset: bool = False,
+        include_contact: bool = True,
+        off_script: bool = False,
     ) -> str:
         """Build prompt for LLM."""
-        include_contact = not is_preset
         if prompt_mode == "deflect":
-            return _build_deflect_prompt(question, poetry=False, include_contact=include_contact)
-        if prompt_mode == "deflect_poetry":
-            return _build_deflect_prompt(question, poetry=True, include_contact=include_contact)
+            return _build_deflect_prompt(
+                question, include_contact=include_contact, off_script=off_script
+            )
 
         template = _CONTEXT_TEMPLATES[prompt_mode]
         return template.format(
             question=question,
             context=context or "No specific context retrieved.",
-            deflect_rule=_deflect_rule(include_contact),
+            deflect_rule=_deflect_rule(include_contact, off_script=off_script),
         )
+
+    def _is_reasoning_model(self) -> bool:
+        """True for models that spend tokens on internal reasoning (e.g. gpt-oss)."""
+        return "gpt-oss" in self.llm_model.lower()
+
+    def _chat_completion(
+        self,
+        prompt: str,
+        max_new_tokens: int,
+        temperature: float,
+        reasoning_effort: str | None = None,
+    ):
+        """Call chat_completion, passing reasoning_effort when supported."""
+        kwargs: dict = {
+            "messages": [{"role": "user", "content": prompt}],
+            "max_tokens": max_new_tokens,
+            "temperature": temperature,
+        }
+        if reasoning_effort:
+            kwargs["extra_body"] = {"reasoning_effort": reasoning_effort}
+        return self.llm_client.chat_completion(**kwargs)
 
     def generate_answer(
         self,
@@ -249,25 +246,68 @@ class HuggingFaceClient:
         max_new_tokens: int = 500,
         temperature: float = 0.2,
         prompt_mode: PromptMode = "standard",
-        is_preset: bool = False,
+        include_contact: bool = True,
+        off_script: bool = False,
+        reasoning_effort: str | None = None,
     ) -> str:
         """Generate answer using LLM."""
+        from config.config import Config
+
         prompt = self.build_prompt(
             question,
             context,
             prompt_mode=prompt_mode,
-            is_preset=is_preset,
+            include_contact=include_contact,
+            off_script=off_script,
         )
-        try:
-            messages = [{"role": "user", "content": prompt}]
-            response = self.llm_client.chat_completion(
-                messages=messages,
-                max_tokens=max_new_tokens,
-                temperature=temperature,
+        if reasoning_effort is None and self._is_reasoning_model():
+            reasoning_effort = Config.REASONING_EFFORT
+
+        attempts = [
+            (max_new_tokens, reasoning_effort),
+            (max_new_tokens * 2, "none"),
+        ]
+        last_error: RuntimeError | None = None
+
+        for attempt_idx, (tokens, effort) in enumerate(attempts):
+            try:
+                response = self._chat_completion(
+                    prompt, tokens, temperature, reasoning_effort=effort
+                )
+            except Exception as e:
+                detail = _describe_error(e)
+                logger.error(
+                    f"Answer generation failed (model={self.llm_model}, "
+                    f"provider={self.provider}): {detail}"
+                )
+                raise RuntimeError(f"Failed to generate answer: {detail}") from e
+
+            choice = response.choices[0]
+            answer = (choice.message.content or "").strip()
+            if answer:
+                if attempt_idx:
+                    logger.info(
+                        f"Retry succeeded (tokens={tokens}, reasoning_effort={effort})"
+                    )
+                logger.info(f"Generated answer ({len(answer)} chars)")
+                return answer
+
+            finish_reason = getattr(choice, "finish_reason", None)
+            usage = getattr(response, "usage", None)
+            completion_tokens = getattr(usage, "completion_tokens", None)
+            last_error = RuntimeError(
+                f"LLM returned an empty answer (finish_reason={finish_reason}, "
+                f"completion_tokens={completion_tokens}/{tokens})"
             )
-            answer = response.choices[0].message.content.strip()
-            logger.info(f"Generated answer ({len(answer)} chars)")
-            return answer
-        except Exception as e:
-            logger.error(f"Answer generation failed: {e}")
-            raise RuntimeError(f"Failed to generate answer: {e}") from e
+            if attempt_idx == 0:
+                logger.warning(
+                    f"Empty completion (model={self.llm_model}, "
+                    f"finish_reason={finish_reason}, "
+                    f"completion_tokens={completion_tokens}/{tokens}) — retrying"
+                )
+
+        logger.error(
+            f"Empty completion after retry (model={self.llm_model}, "
+            f"provider={self.provider})"
+        )
+        raise last_error

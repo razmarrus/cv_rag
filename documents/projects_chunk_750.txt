@@ -164,52 +164,57 @@ CHUNK_08_PROJECT_TECHNOLOGIES_SUMMARY
 ================================================================================
 Summary: Margot's Project Technology Stack Across Industries
 
-Across my projects, I've worked with diverse technology stacks adapted to specific business needs. For LLM and RAG systems: GPT models via Azure AI, Mistral 8b fine-tuning, RAG frameworks, vector databases (Pgvector), LangChain, document parsing tools, and embedding generation.
+Across my projects, I've worked with diverse technology stacks adapted to specific business needs. For LLM and RAG systems: GPT models via Azure AI, Mistral 8b fine-tuning, custom RAG platforms (ZetaAlpha), agentic retrieval workflows, Langfuse for LLM observability, vector databases (Pgvector), LangChain, document parsing tools, and embedding generation.
 
 For data engineering and pipelines: Apache Spark (PySpark) for distributed processing, SQL and stored procedures, Microsoft Fabric platform, Azure Data Factory, Apache Airflow orchestration, ETL/ELT pipeline development, data quality frameworks.
 
-For cloud infrastructure and DevOps: Microsoft Azure (Event Hub, Function Apps, Blob Storage, AI Services, Databricks), AWS (S3, Lambda, SageMaker), Terraform infrastructure as code, Docker containerization, CI/CD pipelines with Azure DevOps and GitHub Actions.
+For cloud infrastructure and DevOps: Microsoft Azure (Event Hub, Function Apps, Blob Storage, AI Services, Databricks), AWS (S3, Lambda, SageMaker), Kubernetes for platform deployment, Terraform infrastructure as code, Docker containerization, CI/CD pipelines with Azure DevOps and GitHub Actions, on-premises database integration.
 
 For machine learning: Scikit-learn for classical ML, CatBoost and LightGBM for gradient boosting, PyTorch and TensorFlow for deep learning, time-series forecasting techniques, clustering algorithms (K-means, Birch), statistical modeling and testing.
 
 For data processing: Python (primary language), Pandas and NumPy, PySpark for distributed computing, SQL for database operations, data visualization with Matplotlib and Seaborn.
 
-My project experience spans: pharmaceutical customer analytics (UK and India Top-3 companies), Dutch critical infrastructure (ProRail rail transportation, Waterschap water management), document intelligence and RAG systems, real-time IoT and streaming platforms, HR analytics and workforce insights, sales forecasting and prediction, customer segmentation and clustering, recommendation systems and personalization.
+My project experience spans: pharmaceutical customer analytics (UK and India Top-3 companies), Dutch critical infrastructure (ProRail rail transportation, Waterschap water management), manufacturing and industrial GenAI (Van Halteren Technologies), document intelligence and RAG systems, real-time IoT and streaming platforms, HR analytics and workforce insights, sales forecasting and prediction, customer segmentation and clustering, recommendation systems and personalization.
 
-Q: What technologies does Margot use in projects? A: Spark, Azure, Terraform, RAG, ML libraries, cloud infrastructure
-Q: What industries has Margot delivered projects in? A: Pharmaceuticals, rail infrastructure, water management, insurance
+Q: What technologies does Margot use in projects? A: Spark, Azure, Terraform, RAG, ZetaAlpha, Langfuse, Kubernetes, ML libraries, cloud infrastructure
+Q: What industries has Margot delivered projects in? A: Pharmaceuticals, rail infrastructure, water management, insurance, manufacturing
 Q: Does Margot have full-stack ML experience? A: Yes, from data pipelines to model deployment to infrastructure
 Q: What cloud platforms for Margot's projects? A: Microsoft Azure and AWS across multiple projects
 ================================================================================
 
 ================================================================================
-CHUNK_09_RAG_SYSTEM_FACTORY_CLIENT
+CHUNK_09_FACTORY_RAG_PLATFORM_VAN_HALTEREN_XOMNIA
 ================================================================================
-Most Recent Project (April 2026–Present) — Xomnia, Machine Learning Engineer
+Project: Factory RAG Platform for Van Halteren Technologies - 2,000+ Documents, Sub-5-Second Answers, 100+ Concurrent Users
 
-Project: RAG System for Factory Client - 100 Simultaneous Users, Sub 5-Second Latency
+At Xomnia as a Machine Learning Engineer, I delivered hands-on end-to-end development of a scalable GenAI RAG platform for Van Halteren Technologies in the Netherlands. The system answers questions from 2,000+ technical documents in under five seconds and supports 100+ concurrent users. I focused on delivery and translating stakeholder requirements into AI solutions, and technically led the engineering team through the development process.
 
-I designed and implemented a Retrieval-Augmented Generation (RAG) system for a factory client at Xomnia, enabling 100 simultaneous active users to perform fast and efficient searches within an internal database. The system achieves sub-5-second latency for queries, ensuring real-time decision-making capabilities in a high-demand industrial environment.
+The business problem was manual searches across project documentation: engineers spent significant time hunting through manuals and technical drawings. I replaced that with an agentic question-answering workflow. Engineers can query manuals and technical drawings using specialized manufacturing terminology and receive source-grounded answers with suggested next steps, so shop-floor and engineering decisions stay grounded in the client's own documentation.
 
-The project involved end-to-end infrastructure design and deployment:
-- Azure Infrastructure Setup: I configured the entire Azure cloud environment, including Azure OpenAI services, to ensure scalability, reliability, and high performance.
-- Prompt Engineering & Skill Development: I developed optimized prompts and specialized skills for the RAG system, ensuring accurate and context-aware responses tailored to the client’s operational needs.
-- User Flow & Feedback Integration: I designed intuitive user flows and iteratively refined the system based on user feedback, ensuring a seamless and efficient experience.
-- Full Infrastructure Ownership: From architecture to deployment, I managed the entire infrastructure stack, ensuring robustness and scalability for concurrent users.
+I provided technical leadership of the development team through integration of a custom RAG platform (ZetaAlpha). I designed in-platform agents and document-specific retrieval flows, evaluated retrieval quality, and deployed the platform on Kubernetes with on-premises data sources. The stack combined Azure AI with the ZetaAlpha RAG platform, Langfuse for observability and evaluation, Kubernetes for deployment, and on-premises databases for secure access to factory documentation.
 
-The system replaced slower, less efficient search methods, enabling factory personnel to access critical information in real time. It supports rapid decision-making, reduces downtime, and enhances operational efficiency.
-Technologies: Azure OpenAI, Azure cloud services, prompt engineering, RAG frameworks, Python.
+The measurable impact: answers from 2,000+ technical documents in under five seconds, support for 100+ concurrent users, replacement of manual documentation search with agentic Q&A, and source-grounded responses tailored to manufacturing terminology.
 
+Technologies: Azure AI, Custom RAG platform (ZetaAlpha), Langfuse, Kubernetes, On-Premises Databases, agentic RAG workflows, retrieval quality evaluation, Python.
 
-Q: What is Margot's most recent project? A: A RAG system for a factory client at Xomnia — 100+ simultaneous users, sub-5-second latency (April 2026–Present).
-Q: What is Margot's latest project? A: RAG system for a factory client at Xomnia with Azure OpenAI, prompt engineering, and full infrastructure ownership.
-Q: Tell me about Margot's recent machine learning projects? A: Most recent: factory-client RAG platform at Xomnia (April 2026–Present) supporting 100 concurrent users with sub-5-second query latency.
-Q: What is Margot working on at Xomnia? A: Designing and implementing a production RAG system for a factory client with Azure OpenAI and real-time search.
-Q: Last project in Xomnia? A: Margot designed and implemented a RAG system for a factory client with 100+ simultaneous users.
-Q: Has Margot built RAG systems? A: Yes — most recently a factory-client RAG system at Xomnia (April 2026–Present); previously 30+ domain RAG chatbot at Haskoning.
-Q: Does Margot have experience with Azure OpenAI? A: Yes, configured Azure OpenAI services as part of the Xomnia factory RAG system infrastructure.
-Q: What was Margot's role in the RAG project? A: Full infrastructure design, prompt engineering, user flow design, and iterative improvements based on feedback.
-Q: Can Margot design scalable AI systems? A: Yes, built a scalable RAG system for real-time factory operations with 100 simultaneous users.
+Q: What is Margot's most recent project? A: Factory RAG platform for Van Halteren Technologies at Xomnia — 2,000+ docs, under five seconds, 100+ concurrent users
+Q: What is Margot's latest project? A: Agentic RAG Q&A over manuals and technical drawings for a Dutch manufacturing client (Van Halteren)
+Q: Tell me about Margot's recent machine learning projects? A: Most recent: Factory RAG at Xomnia for Van Halteren Technologies with ZetaAlpha, Langfuse, and Kubernetes
+Q: What is Margot working on at Xomnia? A: End-to-end GenAI and RAG systems; currently Factory RAG for Van Halteren with technical team leadership
+Q: Last project in Xomnia? A: Factory RAG platform for Van Halteren Technologies — agentic Q&A over 2,000+ technical documents
+Q: Has Margot built RAG systems? A: Yes — Factory RAG at Xomnia (Van Halteren); previously 30+ domain RAG chatbot at Haskoning
+Q: Has Margot worked with manufacturing clients? A: Yes, Van Halteren Technologies in the Netherlands — manuals and technical drawings RAG
+Q: What is Van Halteren Technologies? A: Dutch manufacturing client for Margot's Factory RAG platform at Xomnia
+Q: Does Margot have experience with ZetaAlpha? A: Yes, led integration of the custom ZetaAlpha RAG platform for the factory client
+Q: Does Margot use Langfuse? A: Yes, used Langfuse for LLM observability and retrieval evaluation on the Factory RAG project
+Q: Has Margot deployed RAG on Kubernetes? A: Yes, deployed the Factory RAG platform on Kubernetes with on-premises data sources
+Q: Can Margot design agentic RAG workflows? A: Yes, designed in-platform agents and document-specific retrieval flows for manufacturing Q&A
+Q: Does Margot provide source-grounded answers? A: Yes, Factory RAG returns grounded answers with suggested next steps from technical docs
+Q: What was Margot's role on the Factory RAG project? A: Hands-on end-to-end delivery plus technical leadership of the engineering team
+Q: Can Margot lead ML engineering teams? A: Yes, technically led the team through ZetaAlpha RAG integration and Kubernetes deployment
+Q: Can Margot design scalable AI systems? A: Yes, Factory RAG supporting 100+ concurrent users with sub-5-second latency
+Q: Does Margot have experience with Azure AI? A: Yes, Azure AI as part of the Van Halteren Factory RAG stack at Xomnia
+Q: Has Margot worked with on-premises data for GenAI? A: Yes, connected Kubernetes-deployed RAG to on-premises databases for factory docs
 
 ================================================================================
 METADATA_PROJECT_PORTFOLIO_DOCUMENT
@@ -217,10 +222,10 @@ METADATA_PROJECT_PORTFOLIO_DOCUMENT
 Document Type: Comprehensive Project Portfolio with Technical Details
 Candidate: Margot Razumeyeva (Margo Razumeyeva)
 Total Projects Documented: 9 major projects
-Industries: Pharmaceuticals (UK, India), Dutch Infrastructure (ProRail, Waterschap), Insurance
-Project Types: RAG/LLM systems, Data Engineering, IoT platforms, ML (forecasting, clustering, recommendations)
-Key Technologies: Azure, Spark, Terraform, RAG, CatBoost, Scikit-learn, Microsoft Fabric
+Industries: Pharmaceuticals (UK, India), Dutch Infrastructure (ProRail, Waterschap), Manufacturing (Van Halteren Technologies), Insurance
+Project Types: RAG/LLM/GenAI systems, Data Engineering, IoT platforms, ML (forecasting, clustering, recommendations)
+Key Technologies: Azure AI, ZetaAlpha, Langfuse, Kubernetes, Spark, Terraform, RAG, CatBoost, Scikit-learn, Microsoft Fabric
 Document Purpose: Searchable project reference for technical capabilities and business impact
-Last Updated: Jun 2026
+Last Updated: Aug 2026
 Context: Real production projects with measurable business outcomes and technical implementation details
 ================================================================================
