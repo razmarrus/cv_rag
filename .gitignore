@@ -74,3 +74,4 @@ dmypy.json
 documents/docks_backup/
 wheels/
 set_up.md
+rag_cv_env/

@@ -52,12 +52,13 @@ async def startup_event():
             hf_token=Config.HF_TOKEN,
             embedding_model=Config.EMBEDDING_MODEL,
             llm_model=Config.LLM_MODEL,
-            use_local_embeddings=Config.USE_LOCAL_EMBEDDINGS  
+            use_local_embeddings=Config.USE_LOCAL_EMBEDDINGS,
+            provider=Config.HF_PROVIDER,
         )
         
         db_client = PgVectorClient(
             connection_string=Config.DATABASE_URL,
-            embedding_dim=Config.EMBEDDING_DIM
+            embedding_dim=hf_client.embedding_dim
         )
         
         text_processor = TextProcessor(
@@ -90,80 +91,18 @@ def _is_personal_context(chunks: list) -> bool:
     return False
 
 
-_PRESET_PILL_QUESTIONS = (
-    "What is your most recent project?",
-    "What is your tech stack and tools you use?",
-)
-
-# Keep in sync with OFF_SCRIPT_QUESTIONS in static/js/app.js.
-_PRESET_OFF_SCRIPT_QUESTIONS = (
-    "What are your hobbies?",
-    "What do you do for fun?",
-    "What do you do outside of work?",
-    "How do you unwind after work?",
-    "What makes you happy?",
-    "What's on your mind?",
-    "Tell me something that is not on your CV.",
-    "Have you participated in any half marathons?",
-    "Do you enjoy sports?",
-    "Do you like pasta?",
-    "What is your favorite food?",
-    "Do you like cooking?",
-    "Do you collect vinyl records?",
-    "What are your favorite bands?",
-    "Who is your favorite musician?",
-    "What is your favorite album?",
-    "What music do you listen to while coding?",
-    "What do you listen to before sleep?",
-    "Can you play piano?",
-    "Can you play an instrument?",
-    "What is your favorite film?",
-    "Who is your favorite film director?",
-    "What films have you watched recently?",
-    "What games do you play?",
-    "Do you play video games?",
-    "Are you a mentor?",
-    "Do you like teaching?",
-    "Do you give presentations?",
-    "Can you explain AI to non-technical people?",
-    "Why do you work in AI and software engineering?",
-    "What do you think of Rick Rubin?",
-    "Do you lie down at parties?",
-)
-
-_PRESET_QUESTIONS = {
-    " ".join(question.strip().lower().split())
-    for question in (_PRESET_PILL_QUESTIONS + _PRESET_OFF_SCRIPT_QUESTIONS)
-}
-
-
-def _is_preset_question(question: str) -> bool:
-    """True when the question matches a UI pill or random preset pool."""
-    normalized = " ".join(question.strip().lower().split())
-    return normalized in _PRESET_QUESTIONS
-
-
 def _pick_deflect_mode() -> str:
     """Pick prose or poetry deflect for questions not in portfolio docs."""
     return "deflect_poetry" if random.random() < 0.5 else "deflect"
 
 
-def query_rag(question: str) -> dict:
-    """
-    Execute RAG query pipeline.
-    
-    Args:
-        question: User question
-        
-    Returns:
-        dict with 'answer', 'sources', 'num_chunks', 'execution_time'
-    """
+def query_rag(question: str, from_pill: bool = False) -> dict:
+    """Run embedding, retrieval, and answer generation."""
     start_time = time.time()
-    is_preset = _is_preset_question(question)
-    
+    include_contact = not from_pill
+
     try:
-        # Step 1: Generate embedding with automatic memory cleanup
-        logger.info(f"Step 1: Generating embedding for question: '{question}' (preset={is_preset})")
+        logger.info(f"Generating embedding for: '{question}'")
         
         with hf_client.embedding_context(question) as query_embedding:
             logger.info(f"Embedding generated: dimension={len(query_embedding)}")
@@ -201,7 +140,7 @@ def query_rag(question: str) -> dict:
                 max_new_tokens=Config.MAX_NEW_TOKENS,
                 temperature=Config.OFF_TOPIC_TEMPERATURE,
                 prompt_mode=prompt_mode,
-                is_preset=is_preset,
+                include_contact=include_contact,
             )
             source_label = "not_in_portfolio"
             execution_time = time.time() - start_time
@@ -230,14 +169,12 @@ def query_rag(question: str) -> dict:
                 Config.PERSONAL_TEMPERATURE if personal else Config.TEMPERATURE
             ),
             prompt_mode="personal" if personal else "standard",
-            is_preset=is_preset,
+            include_contact=include_contact,
         )
         logger.info(f"Answer generated: {len(answer)} characters")
         
         execution_time = time.time() - start_time
-        
-        # TODO: Log query here (db_client.log_query(...))
-        
+
         return {
             "answer": answer,
             "sources": list(set([chunk.get("source", "unknown") for chunk in chunks])),
@@ -273,23 +210,18 @@ async def ask_question(
     request: Request,
     background_tasks: BackgroundTasks,
     question: str = Form(...),
+    preset: str = Form(""),
 ):
-    # Extract user IP
     user_ip = request.client.host
     if request.headers.get("X-Forwarded-For"):
         user_ip = request.headers.get("X-Forwarded-For").split(",")[0].strip()
-    
-    # Always return JSON for POST requests (only used via AJAX)
-    is_ajax = True
-    
-    # Check rate limit BEFORE validation (fast indexed query)
+
     query_count = db_client.get_daily_query_count(user_ip)
     remaining = Config.DAILY_QUERY_LIMIT - query_count
     
     if query_count >= Config.DAILY_QUERY_LIMIT:
         return JSONResponse({
             "error": "Daily quota reached. You've used all questions for today.",
-            "quota_exceeded": True,
             "remaining_requests": 0,
             "daily_limit": Config.DAILY_QUERY_LIMIT
         })
@@ -303,7 +235,7 @@ async def ask_question(
         })
     
     try:
-        result = query_rag(question)
+        result = query_rag(question, from_pill=(preset == "1"))
         
         # Calculate remaining BEFORE logging
         remaining = Config.DAILY_QUERY_LIMIT - (query_count + 1)

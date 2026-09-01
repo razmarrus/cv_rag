@@ -20,7 +20,7 @@ class PgVectorClient:
     def __init__(
         self, 
         connection_string: str, 
-        embedding_dim: int = 384,
+        embedding_dim: int,
         min_connections: int = 2,
         max_connections: int = 10
     ):
@@ -29,7 +29,7 @@ class PgVectorClient:
         
         Args:
             connection_string: PostgreSQL connection string
-            embedding_dim: Dimension of embedding vectors
+            embedding_dim: Width of the encoder's vectors, from HuggingFaceClient
             min_connections: Minimum connections to keep in pool
             max_connections: Maximum connections allowed in pool
         """
@@ -49,6 +49,7 @@ class PgVectorClient:
         
         self._create_extension()
         self._create_table()
+        self._verify_embedding_dim()
     
     @contextmanager
     def get_connection(self):
@@ -129,6 +130,35 @@ class PgVectorClient:
         except Exception as e:
             logger.error(f"Failed to create table: {e}")
             raise
+
+    def _verify_embedding_dim(self):
+        """Fail startup when the encoder's width disagrees with the stored column."""
+        # CREATE TABLE IF NOT EXISTS silently keeps the old width, so a change of
+        # EMBEDDING_MODEL would otherwise surface as a query-time pgvector error.
+        with self.get_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute("""
+                    SELECT atttypmod
+                    FROM pg_attribute
+                    WHERE attrelid = 'documents'::regclass
+                      AND attname = 'embedding'
+                      AND NOT attisdropped
+                """)
+                row = cur.fetchone()
+
+        if row is None:
+            raise RuntimeError("Table 'documents' has no 'embedding' column")
+
+        table_dim = row[0]
+        if table_dim != self.embedding_dim:
+            raise RuntimeError(
+                f"Embedding dimension mismatch: encoder produces {self.embedding_dim}, "
+                f"table 'documents' stores VECTOR({table_dim}). The embedding model "
+                f"changed since ingestion. Drop the table and re-ingest, or restore "
+                f"the previous EMBEDDING_MODEL."
+            )
+
+        logger.info(f"Embedding dimension verified: {table_dim}")
 
     
     def insert_chunks(self, chunks: List[Dict]):
@@ -231,8 +261,11 @@ class PgVectorClient:
                         for row in results
                     ]
         except Exception as e:
+            # Never return [] here: the caller reads an empty result as "nothing
+            # relevant found" and deflects, turning a database fault into a
+            # plausible-looking answer.
             logger.error(f"Search failed: {e}")
-            return []
+            raise RuntimeError(f"Vector search failed: {e}") from e
 
     # def count_documents(self) -> int:
     #     """Get total number of chunks in database."""

@@ -10,18 +10,21 @@ class Config:
     # API Keys
     HF_TOKEN = os.getenv("HF_TOKEN")
 
-    # Database
-    DATABASE_URL = os.getenv("DATABASE_URL")
-    EMBEDDING_DIM = 384
-    
-    # Model Configuration 
-    USE_LOCAL_EMBEDDINGS = os.getenv("USE_LOCAL_EMBEDDINGS", "false").lower() == "true"
-    EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "BAAI/bge-small-en-v1.5")
-    # LLM_MODEL = os.getenv("LLM_MODEL", "mistralai/Mistral-7B-Instruct-v0.2")
-    # LLM_MODEL = os.getenv("LLM_MODEL", "Qwen/Qwen2.5-7B-Instruct")
-    # LLM_MODEL = os.getenv("LLM_MODEL", "HuggingFaceH4/zephyr-7b-beta")
+    # Database. Embedding width is not configured here: it is read off the loaded
+    # encoder and checked against the table, so the two cannot drift apart.
 
-    LLM_MODEL = os.getenv("LLM_MODEL", "mistralai/Mistral-7B-Instruct-v0.3")  # Updated to Mistral
+    DATABASE_URL = os.getenv("DATABASE_URL")
+    
+    # Model Configuration. Values come from .env only - no fallbacks here, so a
+    # missing variable fails at startup instead of silently using a stale model.
+    USE_LOCAL_EMBEDDINGS = os.getenv("USE_LOCAL_EMBEDDINGS", "false").lower() == "true"
+    EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL")
+    # LLM_MODEL must be exposed for the "conversational" task by HF_PROVIDER;
+    # text-generation-only models fail chat_completion with HTTP 400.
+    LLM_MODEL = os.getenv("LLM_MODEL")
+    # Inference Providers routing (huggingface_hub >= 1.0). Pin a provider rather
+    # than using "auto", which can reroute onto one that maps LLM_MODEL differently.
+    HF_PROVIDER = os.getenv("HF_PROVIDER")
     
     # CHUNK_SIZE = 512
     # CHUNK_OVERLAP = 50
@@ -59,7 +62,15 @@ class Config:
     @classmethod
     def validate(cls):
         """Validate required configuration."""
-        required = ["HF_TOKEN", "DATABASE_URL"]
+        required = [
+            "HF_TOKEN",
+            "DATABASE_URL",
+            "EMBEDDING_MODEL",
+            "LLM_MODEL",
+            "HF_PROVIDER",
+        ]
         missing = [key for key in required if not getattr(cls, key)]
         if missing:
-            raise ValueError(f"Missing required config: {', '.join(missing)}")
+            raise ValueError(
+                f"Missing required config (set in .env): {', '.join(missing)}"
+            )

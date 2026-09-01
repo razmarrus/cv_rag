@@ -1,181 +1,91 @@
-# Backend Setup Instructions
+# Backend setup
+
+Run the FastAPI RAG app with Docker Compose (app + pgvector). Same path on laptop or Pi.
 
 ## Prerequisites
 
-- Docker and Docker Compose installed
-- PostgreSQL database with pgvector extension and populated data
-- HuggingFace API token
+- Docker Compose
+- Hugging Face token with **Inference Providers** access
+- `.env` in the repo root (never commit it)
 
-## Configuration
+## `.env`
 
-### 1. Environment Variables
-
-Create a `.env` file in the project root:
+All of these are required. Missing one fails container start (`:?` in compose).
 
 ```bash
-HF_TOKEN=your_huggingface_api_token
-DATABASE_URL=postgresql://user:password@host:port/database
+HF_TOKEN=hf_...
+EMBEDDING_MODEL=BAAI/bge-small-en-v1.5
+LLM_MODEL=openai/gpt-oss-20b
+HF_PROVIDER=groq
+USE_LOCAL_EMBEDDINGS=true
 ```
 
-Replace the following:
-- `your_huggingface_api_token`: Your HuggingFace API token
-- `user`: Database username
-- `password`: Database password
-- `host`: Database host (use `db` for Docker Compose, or external host)
-- `port`: Database port (default: 5432)
-- `database`: Database name
+| Var | Notes |
+| --- | --- |
+| `HF_TOKEN` | HF token used for Inference Providers |
+| `EMBEDDING_MODEL` | Local encoder when `USE_LOCAL_EMBEDDINGS=true` |
+| `LLM_MODEL` | Must be **conversational** on the chosen provider |
+| `HF_PROVIDER` | Provider slug (`groq`, …). Do not use `auto` |
+| `USE_LOCAL_EMBEDDINGS` | `true` on Pi/prod. Do not mix true/false against the same DB |
 
-### 2. Optional Configuration
+The app container **ignores** `DATABASE_URL` from `.env`. Compose sets:
 
-Additional environment variables can be set in `.env`:
+`postgresql://raguser:ragpass@postgres:5432/ragdb`
+
+Host tools (notebook / `psql`) use `127.0.0.1:5433` → same DB.
+
+RAG knobs (chunk size, top-k, thresholds) live in `config/config.py`, not env.
+
+## Start
 
 ```bash
-EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2
-LLM_MODEL=mistralai/Mistral-7B-Instruct-v0.2
-CHUNK_SIZE=512
-CHUNK_OVERLAP=50
-TOP_K_CHUNKS=5
-SIMILARITY_THRESHOLD=0.7
+docker compose up -d --build
+docker compose exec app python ingest_documents.py
+curl http://localhost:8000/health
+# open http://localhost:8000
 ```
 
-## Running with Docker Compose
-
-### Using Bundled PostgreSQL
-
-If you want to use the bundled PostgreSQL container:
+After changing `.env`:
 
 ```bash
-docker-compose up --build
+docker compose up -d --force-recreate app
 ```
 
-This starts both the database and application containers.
+`docker compose restart app` does **not** reload env.
 
-### Using External PostgreSQL
-
-If you have an existing PostgreSQL server with data, use the external database compose file:
+## Without Docker
 
 ```bash
-docker-compose -f docker-compose.external-db.yml up --build
-```
-
-Ensure your `.env` file contains the correct `DATABASE_URL` pointing to your external database.
-
-## Running Without Docker
-
-### 1. Install Dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-### 2. Set Environment Variables
-
-Export environment variables or create `.env` file as described above.
-
-### 3. Run Application
-
-```bash
+# Prefer requirements-backend.txt. Install torch from the PyTorch CPU index
+# (see Dockerfile) — plain PyPI pulls CUDA wheels.
+export HF_TOKEN=... EMBEDDING_MODEL=... LLM_MODEL=... HF_PROVIDER=... USE_LOCAL_EMBEDDINGS=...
+export DATABASE_URL=postgresql://raguser:ragpass@127.0.0.1:5433/ragdb
 python main.py
 ```
 
-Or with uvicorn directly:
-
-```bash
-uvicorn main:app --host 0.0.0.0 --port 8000
-```
-
-## Verification
-
-### Health Check
-
-Test the application is running:
+## Checks
 
 ```bash
 curl http://localhost:8000/health
+# {"status":"healthy","database":"connected"}
+
+docker compose logs -f app
+docker compose exec postgres psql -U raguser -d ragdb
 ```
 
-Expected response:
+## Common failures
 
-```json
-{
-  "status": "healthy",
-  "database": "connected"
-}
-```
-
-### Frontend Access
-
-Open browser and navigate to:
-
-```
-http://localhost:8000
-```
-
-## Troubleshooting
-
-### Database Connection Failed
-
-Verify database credentials and network connectivity:
+| Symptom | Cause |
+| --- | --- |
+| App exits on start | Missing `.env` var |
+| `chat_completion` HTTP 400 | Model not conversational on `HF_PROVIDER` |
+| HTTP 402 | HF Inference Providers quota |
+| Dim mismatch at startup | Table width ≠ encoder — truncate + re-ingest |
+| Weird retrieval after toggling local/remote embed | Different vector spaces — re-ingest |
 
 ```bash
-psql "postgresql://user:password@host:port/database"
+docker compose exec postgres psql -U raguser -d ragdb -c "TRUNCATE TABLE documents;"
+docker compose exec app python ingest_documents.py
 ```
 
-Ensure pgvector extension is installed:
-
-```sql
-CREATE EXTENSION IF NOT EXISTS vector;
-```
-
-### Application Fails to Start
-
-Check logs:
-
-```bash
-docker-compose logs app
-```
-
-Or without Docker:
-
-```bash
-python main.py
-```
-
-### Port Already in Use
-
-Change the port mapping in `docker-compose.yml`:
-
-```yaml
-ports:
-  - "8080:8000"  # Use port 8080 instead
-```
-
-Or when running directly:
-
-```bash
-uvicorn main:app --host 0.0.0.0 --port 8080
-```
-
-## Stopping the Application
-
-With Docker Compose:
-
-```bash
-docker-compose down
-```
-
-Without Docker, use Ctrl+C to stop the process.
-
-## Production Deployment
-
-For production deployments:
-
-1. Remove volume mounts in `docker-compose.yml`
-2. Set appropriate resource limits
-3. Use production WSGI server configuration
-4. Enable HTTPS with reverse proxy
-5. Configure log aggregation
-6. Set up monitoring and alerting
-
-Refer to deployment documentation for platform-specific instructions.
-
+See also: root `README.md`, `documents/SYSTEM_INFRASTRUCTURE.md`, `documents/set_up.md`.

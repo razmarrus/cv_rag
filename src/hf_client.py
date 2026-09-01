@@ -119,76 +119,87 @@ _CONTEXT_TEMPLATES = {
 }
 
 
+def _describe_error(exc: Exception) -> str:
+    """Error description including HTTP status when the exception carries one."""
+    status = getattr(getattr(exc, "response", None), "status_code", None)
+    label = type(exc).__name__ if status is None else f"{type(exc).__name__} HTTP {status}"
+    return f"{label}: {exc}"
+
+
 class HuggingFaceClient:
-    """Client for Hugging Face Inference API."""
+    """Client for Hugging Face Inference Providers."""
 
     def __init__(
         self,
         hf_token: str,
-        embedding_model: str = "sentence-transformers/all-MiniLM-L6-v2",
-        llm_model: str = "mistralai/Mistral-7B-Instruct-v0.2",
-        use_local_embeddings: bool = False,
+        embedding_model: str,
+        llm_model: str,
+        use_local_embeddings: bool,
+        provider: str,
     ):
         """Initialize Hugging Face client."""
         self.hf_token = hf_token
         self.embedding_model = embedding_model
         self.llm_model = llm_model
         self.use_local_embeddings = use_local_embeddings
+        self.provider = provider
         self.local_embedding_model = None
+        self.embedding_client = None
 
+        # One encoder, chosen by config. Never both: local and remote pooling
+        # differ, so switching at runtime would mix incompatible vector spaces.
         if use_local_embeddings:
-            try:
-                from sentence_transformers import SentenceTransformer
-                self.local_embedding_model = SentenceTransformer(embedding_model)
-            except (ImportError, Exception) as e:
-                logger.warning(
-                    f"Local embeddings unavailable ({type(e).__name__}), using remote API"
-                )
-                self.use_local_embeddings = False
+            from sentence_transformers import SentenceTransformer
+            self.local_embedding_model = SentenceTransformer(embedding_model)
+            self.embedding_dim = self.local_embedding_model.get_embedding_dimension()
+        else:
+            # feature-extraction is served by hf-inference, not the chat providers.
+            self.embedding_client = InferenceClient(
+                model=embedding_model,
+                api_key=hf_token,
+                provider="hf-inference",
+            )
+            # The remote model exposes no metadata endpoint for width, so pay for
+            # one probe call rather than trusting a configured number.
+            self.embedding_dim = len(self.get_embeddings(["dimension probe"])[0])
 
-        self.embedding_client = InferenceClient(
-            model=embedding_model,
-            token=hf_token,
-        )
         self.llm_client = InferenceClient(
             model=llm_model,
-            token=hf_token,
+            api_key=hf_token,
+            provider=provider,
         )
 
-        embedding_mode = "LOCAL" if self.use_local_embeddings else "REMOTE"
-        logger.info(f"Embeddings: {embedding_mode} | LLM: {llm_model}")
+        embedding_mode = "LOCAL" if use_local_embeddings else "REMOTE"
+        logger.info(
+            f"Embeddings: {embedding_mode} ({embedding_model}, dim={self.embedding_dim}) "
+            f"| LLM: {llm_model} | provider: {provider}"
+        )
 
     def get_embeddings(self, texts: List[str]) -> List[List[float]]:
-        """Generate embeddings for texts using local model or remote API."""
-        if self.use_local_embeddings and self.local_embedding_model is not None:
-            try:
-                logger.debug(f"Generating {len(texts)} embeddings using LOCAL model")
+        """Generate embeddings using the configured encoder."""
+        try:
+            if self.use_local_embeddings:
                 embeddings = self.local_embedding_model.encode(
                     texts,
                     convert_to_numpy=True,
                     show_progress_bar=False,
                 )
-                if hasattr(embeddings, "tolist"):
-                    embeddings = embeddings.tolist()
-                logger.info(f"Generated {len(embeddings)} embeddings (LOCAL)")
-                return embeddings
-            except Exception as e:
-                logger.warning(f"Local embedding generation failed: {e}")
-                logger.info("Falling back to remote API")
+            else:
+                embeddings = self.embedding_client.feature_extraction(texts)
 
-        try:
-            logger.debug(f"Generating {len(texts)} embeddings using REMOTE API")
-            embeddings = self.embedding_client.feature_extraction(texts)
             if hasattr(embeddings, "tolist"):
                 embeddings = embeddings.tolist()
-            elif isinstance(embeddings, list) and len(embeddings) > 0:
+            elif isinstance(embeddings, list) and embeddings:
                 if hasattr(embeddings[0], "tolist"):
                     embeddings = [emb.tolist() for emb in embeddings]
-            logger.info(f"Generated {len(embeddings)} embeddings (REMOTE)")
+
+            mode = "LOCAL" if self.use_local_embeddings else "REMOTE"
+            logger.info(f"Generated {len(embeddings)} embeddings ({mode})")
             return embeddings
         except Exception as e:
-            logger.error(f"Remote embedding generation failed: {e}")
-            raise RuntimeError(f"Failed to generate embeddings: {e}") from e
+            detail = _describe_error(e)
+            logger.error(f"Embedding generation failed: {detail}")
+            raise RuntimeError(f"Failed to generate embeddings: {detail}") from e
 
     @contextmanager
     def embedding_context(self, text: str):
@@ -211,10 +222,9 @@ class HuggingFaceClient:
         question: str,
         context: str,
         prompt_mode: PromptMode = "standard",
-        is_preset: bool = False,
+        include_contact: bool = True,
     ) -> str:
         """Build prompt for LLM."""
-        include_contact = not is_preset
         if prompt_mode == "deflect":
             return _build_deflect_prompt(question, poetry=False, include_contact=include_contact)
         if prompt_mode == "deflect_poetry":
@@ -234,25 +244,47 @@ class HuggingFaceClient:
         max_new_tokens: int = 500,
         temperature: float = 0.2,
         prompt_mode: PromptMode = "standard",
-        is_preset: bool = False,
+        include_contact: bool = True,
     ) -> str:
         """Generate answer using LLM."""
         prompt = self.build_prompt(
             question,
             context,
             prompt_mode=prompt_mode,
-            is_preset=is_preset,
+            include_contact=include_contact,
         )
         try:
-            messages = [{"role": "user", "content": prompt}]
             response = self.llm_client.chat_completion(
-                messages=messages,
+                messages=[{"role": "user", "content": prompt}],
                 max_tokens=max_new_tokens,
                 temperature=temperature,
             )
-            answer = response.choices[0].message.content.strip()
-            logger.info(f"Generated answer ({len(answer)} chars)")
-            return answer
         except Exception as e:
-            logger.error(f"Answer generation failed: {e}")
-            raise RuntimeError(f"Failed to generate answer: {e}") from e
+            detail = _describe_error(e)
+            logger.error(
+                f"Answer generation failed (model={self.llm_model}, "
+                f"provider={self.provider}): {detail}"
+            )
+            raise RuntimeError(f"Failed to generate answer: {detail}") from e
+
+        choice = response.choices[0]
+        answer = (choice.message.content or "").strip()
+
+        # Reasoning models (gpt-oss) spend max_tokens on an internal analysis
+        # channel before the final one, so a 200 response can carry no answer.
+        if not answer:
+            finish_reason = getattr(choice, "finish_reason", None)
+            usage = getattr(response, "usage", None)
+            completion_tokens = getattr(usage, "completion_tokens", None)
+            logger.error(
+                f"Empty completion (model={self.llm_model}, provider={self.provider}, "
+                f"finish_reason={finish_reason}, "
+                f"completion_tokens={completion_tokens}/{max_new_tokens})"
+            )
+            raise RuntimeError(
+                f"LLM returned an empty answer (finish_reason={finish_reason}, "
+                f"completion_tokens={completion_tokens}/{max_new_tokens})"
+            )
+
+        logger.info(f"Generated answer ({len(answer)} chars)")
+        return answer
