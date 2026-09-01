@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photos - Margot</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <link href="/static/css/geometric-bg.css?v=1" rel="stylesheet">
+    <link href="/static/css/custom.css?v=27" rel="stylesheet">
+    <style>
+        .geometric-background {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+        main.container {
+            position: relative;
+            z-index: 10;
+        }
+        .geometric-background svg,
+        .geometric-background [class^="geo-"] {
+            position: absolute;
+        }
+        /* Calmer than the main page */
+        .photo-portfolio-page .geo-bolt { opacity: 0.05; }
+        .photo-portfolio-page .geo-grid { opacity: 0.35; }
+        .photo-portfolio-page .geo-bracket { opacity: 0.4; }
+        .photo-portfolio-page .geo-rect,
+        .photo-portfolio-page .geo-fill,
+        .photo-portfolio-page .geo-line,
+        .photo-portfolio-page .geo-dot,
+        .photo-portfolio-page .geo-square,
+        .photo-portfolio-page .geo-streak { opacity: 0.35; }
+    </style>
+</head>
+<body class="photo-portfolio-page">
+    <div class="geometric-background" aria-hidden="true">
+        <svg class="geo-bolt geo-bolt--1" viewBox="0 0 550 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 90 L180 88 L180 92 L160 120 L190 120 L190 116 L420 115 L420 85 L360 85 L360 60 L480 60 L480 65 L550 64" fill="#FFE55C"/>
+        </svg>
+        <svg class="geo-grid geo-grid--1" viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <line x1="0" y1="0" x2="220" y2="0" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="0" y1="55" x2="220" y2="55" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="0" y1="110" x2="220" y2="110" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="0" y1="165" x2="220" y2="165" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="0" y1="220" x2="220" y2="220" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="0" y1="0" x2="0" y2="220" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="55" y1="0" x2="55" y2="220" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="110" y1="0" x2="110" y2="220" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="165" y1="0" x2="165" y2="220" stroke="#FFE55C" stroke-width="1"/>
+            <line x1="220" y1="0" x2="220" y2="220" stroke="#FFE55C" stroke-width="1"/>
+        </svg>
+        <svg class="geo-grid geo-grid--4" viewBox="0 0 260 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <line x1="0" y1="0" x2="260" y2="0" stroke="#0A0A0A" stroke-width="1"/>
+            <line x1="0" y1="52" x2="260" y2="52" stroke="#0A0A0A" stroke-width="1"/>
+            <line x1="0" y1="104" x2="260" y2="104" stroke="#0A0A0A" stroke-width="1"/>
+            <line x1="0" y1="156" x2="260" y2="156" stroke="#0A0A0A" stroke-width="1"/>
+            <line x1="0" y1="208" x2="260" y2="208" stroke="#0A0A0A" stroke-width="1"/>
+            <line x1="0" y1="260" x2="260" y2="260" stroke="#0A0A0A" stroke-width="1"/>
+            <line x1="0" y1="0" x2="0" y2="260" stroke="#0A0A0A" stroke-width="1"/>
+            <line x1="52" y1="0" x2="52" y2="260" stroke="#0A0A0A" stroke-width="1"/>
+            <line x1="104" y1="0" x2="104" y2="260" stroke="#0A0A0A" stroke-width="1"/>
+            <line x1="156" y1="0" x2="156" y2="260" stroke="#0A0A0A" stroke-width="1"/>
+            <line x1="208" y1="0" x2="208" y2="260" stroke="#0A0A0A" stroke-width="1"/>
+            <line x1="260" y1="0" x2="260" y2="260" stroke="#0A0A0A" stroke-width="1"/>
+        </svg>
+        <svg class="geo-bracket geo-bracket--1" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 15 L0 0 L15 0" stroke="#FFE55C" stroke-width="2"/>
+            <path d="M65 0 L80 0 L80 15" stroke="#FFE55C" stroke-width="2"/>
+            <path d="M80 65 L80 80 L65 80" stroke="#FFE55C" stroke-width="2"/>
+            <path d="M15 80 L0 80 L0 65" stroke="#FFE55C" stroke-width="2"/>
+        </svg>
+        <div class="geo-rect geo-rect--1"></div>
+        <div class="geo-rect geo-rect--4"></div>
+        <div class="geo-line geo-line--2"></div>
+        <div class="geo-dot geo-dot--1"></div>
+        <div class="geo-square geo-square--2"></div>
+    </div>
+
+    <main class="container photo-portfolio">
+        <div class="hero-section photo-hero">
+            <div class="hero-grid">
+                <div class="hero-name-col">
+                    <p class="hero-greeting">Away from the terminal</p>
+                    <h1 class="hero-name">Photos</h1>
+                </div>
+                <div class="hero-desc-col">
+                    <div class="hero-accent-line"></div>
+                    <p class="hero-subtitle">A quieter corner — placeholders for now.</p>
+                    <p class="photo-back-link"><a href="/">&larr; Back to main page</a></p>
+                </div>
+            </div>
+        </div>
+
+        <section class="photo-grid" aria-label="Photo portfolio">
+            {% for item in photos %}
+            <figure class="photo-grid-item{% if item.placeholder %} photo-grid-item--placeholder{% endif %}">
+                {% if item.placeholder %}
+                <div class="photo-placeholder" aria-hidden="true">
+                    <span class="photo-placeholder-mark"></span>
+                </div>
+                {% else %}
+                <img src="{{ item.url }}" alt="Portfolio photo {{ loop.index }}" loading="lazy">
+                {% endif %}
+            </figure>
+            {% endfor %}
+        </section>
+
+        <footer class="site-footer">
+            <small class="footer-line">
+                <a href="/">&larr; Back to main page</a>
+            </small>
+        </footer>
+    </main>
+</body>
+</html>

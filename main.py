@@ -1,11 +1,12 @@
-from fastapi import FastAPI, Request, Form
-from fastapi.templating import Jinja2Templates
-from fastapi.staticfiles import StaticFiles
-from fastapi.responses import HTMLResponse, JSONResponse
-from fastapi import BackgroundTasks
+from pathlib import Path
+
+from fastapi import BackgroundTasks, FastAPI, Form, Request
 import logging
 import time
 from datetime import datetime
+from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 
 from config.config import Config
 from src.hf_client import HuggingFaceClient
@@ -278,40 +279,44 @@ async def ask_question(
             "remaining_requests": remaining,
             "daily_limit": Config.DAILY_QUERY_LIMIT
         }, status_code=500)
-@app.get("/privacy", response_class=HTMLResponse)
-async def privacy_policy(request: Request):
-    """Serve privacy policy page."""
-    return templates.TemplateResponse("privacy.html", {
+_PHOTO_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp", ".gif"}
+_PHOTO_GRID_SLOTS = 9
+
+
+def _list_portfolio_photos() -> list[dict]:
+    """Return photo grid slots: real images plus row padding, or 9 placeholders."""
+    photos_dir = Path("static/photos")
+    urls: list[str] = []
+    if photos_dir.is_dir():
+        urls = sorted(
+            f"/static/photos/{path.name}"
+            for path in photos_dir.iterdir()
+            if path.is_file() and path.suffix.lower() in _PHOTO_EXTENSIONS
+        )
+
+    if not urls:
+        return [{"url": None, "placeholder": True} for _ in range(_PHOTO_GRID_SLOTS)]
+
+    slots = [{"url": url, "placeholder": False} for url in urls]
+    remainder = len(slots) % 3
+    if remainder:
+        slots.extend({"url": None, "placeholder": True} for _ in range(3 - remainder))
+    return slots
+
+
+@app.get("/photos", response_class=HTMLResponse)
+async def photo_portfolio(request: Request):
+    """Serve photo portfolio grid."""
+    return templates.TemplateResponse("portfolio.html", {
         "request": request,
-        "title": "Privacy Policy"
+        "photos": _list_portfolio_photos(),
     })
 
 
-@app.get("/data-request", response_class=HTMLResponse)
-async def data_request_form(request: Request):
-    """Serve data subject rights request form."""
-    return templates.TemplateResponse("data_request.html", {
-        "request": request,
-        "title": "Data Subject Rights Request"
-    })
-
-
-@app.post("/data-request", response_class=HTMLResponse)
-async def submit_data_request(
-    request: Request,
-    request_type: str = Form(...),
-    user_ip: str = Form(...),
-    email: str = Form(...),
-    details: str = Form(...)
-):
-    """Handle data subject rights requests."""
-    logger.info(f"GDPR request received: {request_type} from IP {user_ip}, contact: {email}")
-    
-    return templates.TemplateResponse("data_request.html", {
-        "request": request,
-        "success": True,
-        "message": "Your request has been received. We will respond within 30 days as required by GDPR."
-    })
+@app.get("/privacy")
+async def privacy_redirect():
+    """Legacy URL — photo portfolio lives at /photos."""
+    return RedirectResponse(url="/photos", status_code=301)
 
 
 @app.get("/robots.txt")
