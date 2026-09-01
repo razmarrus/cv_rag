@@ -4,7 +4,6 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi import BackgroundTasks
 import logging
-import random
 import time
 from datetime import datetime
 
@@ -91,15 +90,12 @@ def _is_personal_context(chunks: list) -> bool:
     return False
 
 
-def _pick_deflect_mode() -> str:
-    """Pick prose or poetry deflect for questions not in portfolio docs."""
-    return "deflect_poetry" if random.random() < 0.5 else "deflect"
-
-
-def query_rag(question: str, from_pill: bool = False) -> dict:
+def query_rag(question: str, preset: str = "") -> dict:
     """Run embedding, retrieval, and answer generation."""
     start_time = time.time()
+    from_pill = preset in ("projects", "stack", "offScript")
     include_contact = not from_pill
+    off_script = preset == "offScript"
 
     try:
         logger.info(f"Generating embedding for: '{question}'")
@@ -132,15 +128,15 @@ def query_rag(question: str, from_pill: bool = False) -> dict:
                 logger.info(f"Chunk {i+1}: similarity={chunk.get('similarity', 0):.3f}, source={chunk.get('source', 'unknown')}")
         
         if not chunks:
-            prompt_mode = _pick_deflect_mode()
-            logger.warning(f"No chunks found - deflecting ({prompt_mode})")
+            logger.warning("No chunks found - deflecting with poem")
             answer = hf_client.generate_answer(
                 question=question,
                 context="",
-                max_new_tokens=Config.MAX_NEW_TOKENS,
+                max_new_tokens=Config.MAX_DEFLECT_NEW_TOKENS,
                 temperature=Config.OFF_TOPIC_TEMPERATURE,
-                prompt_mode=prompt_mode,
+                prompt_mode="deflect",
                 include_contact=include_contact,
+                off_script=off_script,
             )
             source_label = "not_in_portfolio"
             execution_time = time.time() - start_time
@@ -158,7 +154,7 @@ def query_rag(question: str, from_pill: bool = False) -> dict:
         logger.info(f"Context assembled: {len(context)} characters")
         
         # Step 4: Generate answer from retrieved context
-        personal = _is_personal_context(chunks)
+        personal = _is_personal_context(chunks) or off_script
         answer = hf_client.generate_answer(
             question=question,
             context=context,
@@ -170,6 +166,7 @@ def query_rag(question: str, from_pill: bool = False) -> dict:
             ),
             prompt_mode="personal" if personal else "standard",
             include_contact=include_contact,
+            off_script=off_script,
         )
         logger.info(f"Answer generated: {len(answer)} characters")
         
@@ -235,7 +232,7 @@ async def ask_question(
         })
     
     try:
-        result = query_rag(question, from_pill=(preset == "1"))
+        result = query_rag(question, preset=preset)
         
         # Calculate remaining BEFORE logging
         remaining = Config.DAILY_QUERY_LIMIT - (query_count + 1)

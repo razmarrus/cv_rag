@@ -86,7 +86,7 @@ function fillPreset(kind) {
     input.value = pool[Math.floor(Math.random() * pool.length)];
     input.focus();
     if (presetFlag) {
-        presetFlag.value = '1';
+        presetFlag.value = kind;
     }
 }
 

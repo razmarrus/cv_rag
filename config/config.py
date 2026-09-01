@@ -46,7 +46,11 @@ class Config:
     OFF_TOPIC_TEMPERATURE = float(os.getenv("OFF_TOPIC_TEMPERATURE", "0.9"))
     PERSONAL_TEMPERATURE = float(os.getenv("PERSONAL_TEMPERATURE", "0.8"))
     MAX_NEW_TOKENS = 350
-    MAX_PERSONAL_NEW_TOKENS = int(os.getenv("MAX_PERSONAL_NEW_TOKENS", "500"))
+    # gpt-oss spends max_tokens on internal reasoning before the visible answer;
+    # 400 is too low for poem/deflect paths and yields empty completions.
+    MAX_PERSONAL_NEW_TOKENS = int(os.getenv("MAX_PERSONAL_NEW_TOKENS", "768"))
+    MAX_DEFLECT_NEW_TOKENS = int(os.getenv("MAX_DEFLECT_NEW_TOKENS", "768"))
+    REASONING_EFFORT = os.getenv("REASONING_EFFORT", "low")
 
     RATE_LIMIT = "10/hour"
 

@@ -10,73 +10,55 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-PromptMode = Literal["standard", "personal", "deflect", "deflect_poetry"]
+PromptMode = Literal["standard", "personal", "deflect"]
 
 
-def _deflect_rule(include_contact: bool) -> str:
+def _deflect_rule(include_contact: bool, off_script: bool = False) -> str:
     """Fallback rule when retrieved context does not answer the question."""
+    if off_script:
+        return (
+            "If the context does not contain the answer, write a short calm poem "
+            "(4-6 lines) inspired by the theme only — playful, not a real answer. "
+            "No disclaimer, no contact info."
+        )
     if include_contact:
         return (
             "If the context is empty or does not contain the answer, do NOT answer the question "
-            "or use outside knowledge. Either say warmly their question is fun and they can email "
-            "Margot at margo.razumeyeva@gmail.com, OR one short joke on the theme, then suggest "
-            "finding Margot on LinkedIn (say LinkedIn only — never paste a URL). "
-            "2-4 sentences, plain text."
+            "or use outside knowledge. Write a short calm poem (4-6 lines, plain text, no markdown) "
+            "inspired by the theme only — playful, not a real answer. "
+            "Finish with one plain sentence inviting them to email Margot at margo.razumeyeva@gmail.com "
+            "or find her on LinkedIn (say LinkedIn only — never paste a URL)."
         )
     return (
         "If the context is empty or does not contain the answer, do NOT answer the question "
-        "or use outside knowledge. Say warmly that is not in your portfolio notes, OR one short "
-        "playful line on the theme. Do not suggest contacting Margot, email, or LinkedIn. "
-        "2-4 sentences, plain text."
+        "or use outside knowledge. Write a short calm poem (4-6 lines, plain text, no markdown) "
+        "inspired by the theme only — playful, not a real answer. "
+        "Finish with one plain sentence that you do not have that in Margot's portfolio notes. "
+        "Do not suggest contacting Margot, email, or LinkedIn."
     )
 
 
-def _build_deflect_prompt(question: str, poetry: bool, include_contact: bool) -> str:
+def _build_deflect_prompt(question: str, include_contact: bool, off_script: bool = False) -> str:
     """Prompt for questions with no matching portfolio documents."""
-    if poetry:
-        if include_contact:
-            closing = (
-                "Always finish with one plain sentence inviting them to email Margot at "
-                "margo.razumeyeva@gmail.com or find her on LinkedIn (say LinkedIn only — never paste a URL)."
-            )
-        else:
-            closing = (
-                "Finish with one plain sentence that you do not have that in Margot's portfolio notes. "
-                "Do not suggest contacting Margot."
-            )
-        return f"""<s>[INST] You are Margot's portfolio assistant — calm, warm, lightly poetic.
+    if off_script:
+        closing = "No disclaimer or contact information — just the poem."
+    elif include_contact:
+        closing = (
+            "Always finish with one plain sentence inviting them to email Margot at "
+            "margo.razumeyeva@gmail.com or find her on LinkedIn (say LinkedIn only — never paste a URL)."
+        )
+    else:
+        closing = (
+            "Finish with one plain sentence that you do not have that in Margot's portfolio notes. "
+            "Do not suggest contacting Margot."
+        )
+    return f"""<s>[INST] You are Margot's portfolio assistant — calm, warm, lightly poetic.
 
 The question is not in Margot's portfolio documents — unrelated to her work, experience, or what is documented about her.
 
 Do NOT answer the question. Do not use general knowledge.
 
 Write a short calm poem (4-6 lines, plain text, no markdown) inspired by the question's theme only — playful, not a real answer. {closing}
-
-Question: {question} [/INST]
-"""
-
-    if include_contact:
-        body = (
-            "Either: say warmly their question is fun and they can ask Margot at margo.razumeyeva@gmail.com\n"
-            "OR: one short playful joke on the question's theme, then suggest finding Margot on LinkedIn "
-            "(say LinkedIn only — never paste a URL)"
-        )
-    else:
-        body = (
-            "Say warmly that you do not have that in Margot's portfolio notes, "
-            "OR one short playful joke on the question's theme. "
-            "Do not suggest contacting Margot, email, or LinkedIn."
-        )
-
-    return f"""<s>[INST] You are Margot's portfolio assistant.
-
-The question is not in Margot's portfolio documents — unrelated to her work, experience, or what is documented about her.
-
-Do NOT answer the question. Do not use general knowledge.
-
-{body}
-
-Plain text, 2-4 sentences.
 
 Question: {question} [/INST]
 """
@@ -97,11 +79,9 @@ Question: {question} [/INST]
 
 _PERSONAL_TEMPLATE = """<s>[INST] You are Margot. The user asked a personal, off-script question.
 
-Answer in first person using the context below — but lightly. Pick only one or two details that fit the question. Do not pile on facts or list everything you know. Stay calm and unhurried.
+Answer in first person using the context below — but lightly. Pick only one detail that fits. Do not list hobbies or pile on facts.
 
-Often add a short poetic touch: a line of verse, a metaphor, or a gentle mini-poem mixed with plain sentences. Vary the style; not every answer needs poetry, but use it regularly.
-
-About 5-7 sentences total when answering from context, plain text, no markdown. Warm, a little witty, never breathless. Do not mention company names.
+Always answer as a short calm poem: 4-6 lines, plain text, no markdown. Warm and a little witty. Weave in one fact from the context. Do not mention company names.
 
 {deflect_rule}
 
@@ -223,19 +203,41 @@ class HuggingFaceClient:
         context: str,
         prompt_mode: PromptMode = "standard",
         include_contact: bool = True,
+        off_script: bool = False,
     ) -> str:
         """Build prompt for LLM."""
         if prompt_mode == "deflect":
-            return _build_deflect_prompt(question, poetry=False, include_contact=include_contact)
-        if prompt_mode == "deflect_poetry":
-            return _build_deflect_prompt(question, poetry=True, include_contact=include_contact)
+            return _build_deflect_prompt(
+                question, include_contact=include_contact, off_script=off_script
+            )
 
         template = _CONTEXT_TEMPLATES[prompt_mode]
         return template.format(
             question=question,
             context=context or "No specific context retrieved.",
-            deflect_rule=_deflect_rule(include_contact),
+            deflect_rule=_deflect_rule(include_contact, off_script=off_script),
         )
+
+    def _is_reasoning_model(self) -> bool:
+        """True for models that spend tokens on internal reasoning (e.g. gpt-oss)."""
+        return "gpt-oss" in self.llm_model.lower()
+
+    def _chat_completion(
+        self,
+        prompt: str,
+        max_new_tokens: int,
+        temperature: float,
+        reasoning_effort: str | None = None,
+    ):
+        """Call chat_completion, passing reasoning_effort when supported."""
+        kwargs: dict = {
+            "messages": [{"role": "user", "content": prompt}],
+            "max_tokens": max_new_tokens,
+            "temperature": temperature,
+        }
+        if reasoning_effort:
+            kwargs["extra_body"] = {"reasoning_effort": reasoning_effort}
+        return self.llm_client.chat_completion(**kwargs)
 
     def generate_answer(
         self,
@@ -245,46 +247,67 @@ class HuggingFaceClient:
         temperature: float = 0.2,
         prompt_mode: PromptMode = "standard",
         include_contact: bool = True,
+        off_script: bool = False,
+        reasoning_effort: str | None = None,
     ) -> str:
         """Generate answer using LLM."""
+        from config.config import Config
+
         prompt = self.build_prompt(
             question,
             context,
             prompt_mode=prompt_mode,
             include_contact=include_contact,
+            off_script=off_script,
         )
-        try:
-            response = self.llm_client.chat_completion(
-                messages=[{"role": "user", "content": prompt}],
-                max_tokens=max_new_tokens,
-                temperature=temperature,
-            )
-        except Exception as e:
-            detail = _describe_error(e)
-            logger.error(
-                f"Answer generation failed (model={self.llm_model}, "
-                f"provider={self.provider}): {detail}"
-            )
-            raise RuntimeError(f"Failed to generate answer: {detail}") from e
+        if reasoning_effort is None and self._is_reasoning_model():
+            reasoning_effort = Config.REASONING_EFFORT
 
-        choice = response.choices[0]
-        answer = (choice.message.content or "").strip()
+        attempts = [
+            (max_new_tokens, reasoning_effort),
+            (max_new_tokens * 2, "none"),
+        ]
+        last_error: RuntimeError | None = None
 
-        # Reasoning models (gpt-oss) spend max_tokens on an internal analysis
-        # channel before the final one, so a 200 response can carry no answer.
-        if not answer:
+        for attempt_idx, (tokens, effort) in enumerate(attempts):
+            try:
+                response = self._chat_completion(
+                    prompt, tokens, temperature, reasoning_effort=effort
+                )
+            except Exception as e:
+                detail = _describe_error(e)
+                logger.error(
+                    f"Answer generation failed (model={self.llm_model}, "
+                    f"provider={self.provider}): {detail}"
+                )
+                raise RuntimeError(f"Failed to generate answer: {detail}") from e
+
+            choice = response.choices[0]
+            answer = (choice.message.content or "").strip()
+            if answer:
+                if attempt_idx:
+                    logger.info(
+                        f"Retry succeeded (tokens={tokens}, reasoning_effort={effort})"
+                    )
+                logger.info(f"Generated answer ({len(answer)} chars)")
+                return answer
+
             finish_reason = getattr(choice, "finish_reason", None)
             usage = getattr(response, "usage", None)
             completion_tokens = getattr(usage, "completion_tokens", None)
-            logger.error(
-                f"Empty completion (model={self.llm_model}, provider={self.provider}, "
-                f"finish_reason={finish_reason}, "
-                f"completion_tokens={completion_tokens}/{max_new_tokens})"
-            )
-            raise RuntimeError(
+            last_error = RuntimeError(
                 f"LLM returned an empty answer (finish_reason={finish_reason}, "
-                f"completion_tokens={completion_tokens}/{max_new_tokens})"
+                f"completion_tokens={completion_tokens}/{tokens})"
             )
+            if attempt_idx == 0:
+                logger.warning(
+                    f"Empty completion (model={self.llm_model}, "
+                    f"finish_reason={finish_reason}, "
+                    f"completion_tokens={completion_tokens}/{tokens}) — retrying"
+                )
 
-        logger.info(f"Generated answer ({len(answer)} chars)")
-        return answer
+        logger.error(
+            f"Empty completion after retry (model={self.llm_model}, "
+            f"provider={self.provider})"
+        )
+        raise last_error
